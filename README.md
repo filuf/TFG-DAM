@@ -150,3 +150,67 @@ curl -X POST http://localhost:11434/api/generate \
   -d '{"model":"llama3","prompt":"cuanto es 5 + 5","stream":false}'
 ```
 
+---
+
+## PostgreSQL en Kubernetes
+
+### 1) Crear ConfigMap con el script de inicialización
+
+```bash
+kubectl create configmap postgres-init --from-file=./db/reserves_init_pg.sql
+```
+
+- Crea un ConfigMap llamado `postgres-init` que contiene el archivo `reserves_init_pg.sql` de la carpeta `db/`.
+
+### 2) Crear secreto para la contraseña de PostgreSQL
+
+```bash
+kubectl create secret generic postgres-secret --from-literal=password=miContraseñaSecreta
+```
+
+- Crea un secreto genérico llamado `postgres-secret` con la contraseña para el usuario de PostgreSQL.
+
+### 3) Aplicar manifiestos locales en `k8s/`
+
+```bash
+kubectl apply -f ./k8s/
+```
+
+- Aplica todos los manifiestos en la carpeta `k8s`, incluyendo el StatefulSet y Service para PostgreSQL.
+
+### 4) Esperar a que el pod esté levantado
+
+- Espera a que el pod de PostgreSQL esté en estado `Running`.
+
+### 5) Verificar estado de pods de PostgreSQL
+
+```bash
+kubectl get pods -l app=postgres
+```
+
+- Lista los pods etiquetados con `app=postgres` para verificar que esté corriendo.
+
+### 6) En caso de error, ejecutar el script de inicialización manualmente
+
+Si hay problemas con la inicialización automática, puedes ejecutar el script manualmente:
+
+```bash
+kubectl exec -it postgres-0 -- psql -U postgres -d appdb
+```
+
+Dentro del pod, ejecuta:
+
+```sql
+\i /docker-entrypoint-initdb.d/reserves_init_pg.sql
+```
+
+### 7) Dropear el esquema si es necesario
+
+Si necesitas reiniciar el esquema:
+
+```sql
+DROP SCHEMA IF EXISTS reserves CASCADE;
+```
+
+- Esto elimina el esquema `reserves` y todos sus objetos dependientes.
+
