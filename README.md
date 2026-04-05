@@ -74,3 +74,79 @@ $secret = kubectl get secret elastic-es-elastic-user -o jsonpath='{.data.elastic
 - Contraseña: valor obtenido en el paso anterior.
 ---
 
+## Ollama en Kubernetes
+
+### 1) Aplicar manifiestos de Ollama
+
+```bash
+kubectl apply -f .\k8s\
+```
+
+- Esto despliega los recursos definidos para Ollama en el namespace correspondiente.
+
+### 2) Verificar estado de pods de Ollama
+
+```bash
+kubectl get pods -n ollama
+```
+
+- Espera a que el pod de Ollama esté en `1/1` y `Running`.
+- Si hay problemas, usa `kubectl describe pod <nombre> -n ollama` o `kubectl logs <nombre> -n ollama`.
+
+### 3) Conectar al pod de Ollama
+
+```bash
+kubectl exec -it mi-ollama -n ollama -- /bin/bash
+```
+
+- Reemplaza `mi-ollama` por el nombre real del pod si es diferente.
+
+### 4) Descargar el modelo en Ollama
+
+Dentro del pod de Ollama:
+
+```bash
+ollama pull llama3:instruct
+```
+
+- Esto descarga el modelo `llama3` con la variante `instruct` para su uso.
+
+### 5) Ejecutar Ollama localmente
+
+```bash
+ollama run llama3
+```
+
+- Inicia el servicio de Ollama con el modelo cargado.
+
+### 6) Hacer port-forward para acceder desde fuera
+
+```bash
+kubectl port-forward -n ollama svc/ollama 11434:11434
+```
+
+- Esto expone el servicio Ollama en `http://localhost:11434`.
+
+### 7) Interactuar con Ollama vía API HTTP
+
+Realiza una petición POST a `http://localhost:11434/api/generate`.
+
+Ejemplo de body JSON:
+
+```json
+{
+    "model": "llama3",
+    "prompt": "cuanto es 5 + 5",
+    "stream": false
+}
+```
+
+- La respuesta contendrá el texto generado por el modelo.
+- Si usas `curl`, puedes enviar la petición así:
+
+```bash
+curl -X POST http://localhost:11434/api/generate \
+  -H "Content-Type: application/json" \
+  -d '{"model":"llama3","prompt":"cuanto es 5 + 5","stream":false}'
+```
+
