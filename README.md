@@ -48,7 +48,7 @@ kubectl get svc
 kubectl port-forward service/kibana-kb-http 5601:5601
 ```
 
-- Abre localmente `https://localhost:5601`.
+- Abre localmente `http://localhost:5601`.
 - Por defecto Kibana usa HTTPS con certificado autofirmado.
 
 ### 6) Obtener contraseña del usuario `elastic`
@@ -69,7 +69,7 @@ $secret = kubectl get secret elastic-es-elastic-user -o jsonpath='{.data.elastic
 
 ### 7) Iniciar sesión en Kibana
 
-- URL: `https://localhost:5601`
+- URL: `http://localhost:5601`
 - Usuario: `elastic`
 - Contraseña: valor obtenido en el paso anterior.
 ---
