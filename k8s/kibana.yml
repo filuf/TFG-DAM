@@ -7,6 +7,10 @@ spec:
   count: 1
   elasticsearchRef:
     name: elastic
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
   podTemplate:
     spec:
       containers:
