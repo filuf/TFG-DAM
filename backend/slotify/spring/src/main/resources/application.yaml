@@ -1,0 +1,63 @@
+spring:
+  application:
+    name: slotify-backend
+
+  # hilos virtuales de Java 25
+  threads:
+    virtual:
+      enabled: true
+
+  # POSTGRE
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:postgres}:${POSTGRES_PORT:5432}/${POSTGRES_DB:slotify}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate.format_sql: true
+
+  # REDIS
+  data:
+    redis:
+      host: ${REDIS_HOST:redis-service}
+      port: ${REDIS_PORT:6379}
+
+  # ELASTIC
+  elasticsearch:
+    uris: https://${ELASTIC_HOST:elastic-es-http}:9200
+    username: elastic
+    password: ${ELASTIC_PASSWORD}
+    ssl:
+      verification-mode: none
+
+  # KEYCLOAK
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://${KEYCLOAK_HOST:keycloak}:80/realms/${KEYCLOAK_REALM:slotify}
+
+  # OLLAMA
+  ai:
+    ollama:
+      base-url: http://${OLLAMA_HOST:ollama}:11434
+      chat:
+        model: llama3:instruct
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+  javadoc-enabled: true # Soporte nativo para Markdown en Javadoc (Java 25)
+
+# LOGS
+logging:
+  level:
+    org.springframework.security: INFO
+    com.slotify.backend: DEBUG
