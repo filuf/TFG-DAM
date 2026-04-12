@@ -475,3 +475,106 @@ kubectl logs -f -l app=traefik
 | `403 Forbidden` en `/admin` | Tu IP no está en la whitelist del middleware. Comprueba la configuración de `sourceRange`. |
 | Traefik no detecta nuevas IngressRoutes | Verifica que el RBAC tenga permisos para leer `ingressroutes`: `kubectl describe clusterrole traefik-ingress-controller`. |
 | DNS no resuelve `*.127.0.0.1.nip.io` | Asegúrate de que nip.io está disponible. Alternativa: configura `/etc/hosts` o `C:\Windows\System32\drivers\etc\hosts` manualmente. |
+
+---
+
+## Spring Backend en Kubernetes
+
+### Requisitos previos
+
+⚠️ **Los siguientes servicios deben estar levantados y funcionando** antes de desplegar Spring:
+- PostgreSQL (base de datos)
+- Redis (caché)
+- Keycloak (autenticación)
+- Elasticsearch + Kibana (búsqueda y logs)
+- Ollama (modelos de IA)
+
+### 1) Construir la imagen Docker del backend Spring
+
+Desde la raíz del proyecto, ejecuta:
+
+```bash
+docker build -t slotify-backend:latest -f ./backend/slotify/Dockerfile .
+```
+
+- Construye una imagen Docker con el tag `slotify-backend:latest`.
+- El Dockerfile se encuentra en `./backend/slotify/Dockerfile`.
+- Esta imagen contiene la aplicación Spring compilada y lista para ejecutarse en un contenedor.
+
+### 2) Aplicar manifiestos de Spring en Kubernetes
+
+```bash
+kubectl apply -f .\k8s\
+```
+
+- Aplica todos los manifiestos en la carpeta `k8s`, incluyendo:
+  - `Deployment` de Spring que usa la imagen `slotify-backend:latest`
+  - `Service` de tipo `ClusterIP` para exponer el backend dentro del clúster
+  - `IngressRoute` de Traefik para enrutar `api.127.0.0.1.nip.io` hacia Spring
+  - `ConfigMaps` y `Secrets` con variables de entorno necesarias (credenciales de BD, Keycloak, Redis)
+
+### 3) Verificar estado de pods de Spring
+
+```bash
+kubectl get pods -l app=spring
+```
+
+- Espera a que el pod de Spring esté en estado `1/1` y `Running`.
+- Si hay problemas, usa:
+  - `kubectl describe pod <nombre> -l app=spring`
+  - `kubectl logs <nombre> -l app=spring`
+
+### 4) Ver servicios creados
+
+```bash
+kubectl get svc | grep spring
+```
+
+- Busca el servicio `spring` de tipo `ClusterIP`.
+- Verifica que el puerto sea el correcto (por defecto `8080`).
+
+### 5) Acceder a la API de Spring
+
+Con Traefik levantado:
+
+```
+http://api.127.0.0.1.nip.io
+```
+
+- Acceso a la API del backend directamente a través del dominio de Traefik.
+
+Sin Traefik levantado:
+
+```bash
+kubectl port-forward service/spring 8080:8080
+```
+
+- Abre un túnel local a `http://localhost:8080`.
+
+### 6) Verificar logs de Spring
+
+```bash
+kubectl logs -l app=spring
+```
+
+- Muestra los logs de Spring Boot, incluyendo:
+  - Inicialización de la aplicación
+  - Conexiones a bases de datos
+  - Errores de autenticación o integración
+
+Seguir logs en tiempo real:
+
+```bash
+kubectl logs -f -l app=spring
+```
+
+### 7) Troubleshooting común
+
+| Problema | Solución |
+|----------|----------|
+| `Connection refused` a PostgreSQL | Verifica que PostgreSQL esté en estado `Running`: `kubectl get pods -l app=postgres`. |
+| `Connection refused` a Redis | Verifica que Redis esté en estado `Running`: `kubectl get pods -l app=redis`. |
+| Error de autenticación con Keycloak | Verifica que Keycloak esté levantado y que las credenciales en el ConfigMap de Spring sean correctas. |
+| `ImagePullBackOff` | La imagen `slotify-backend:latest` no se encontró. Reconstruye la imagen con el comando: `docker build -t slotify-backend:latest -f ./backend/slotify/Dockerfile .` |
+| Spring no se conecta a la BD | Verifica el `Secret` y `ConfigMap` con las credenciales de PostgreSQL: `kubectl get secret` y `kubectl get configmap`. |
+| `503 Service Unavailable` en Traefik | Verifica que el selector de labels en el `IngressRoute` coincida con las etiquetas del pod de Spring: `kubectl describe pod <nombre> \| grep Labels`. |
