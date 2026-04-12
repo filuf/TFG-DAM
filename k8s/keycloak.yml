@@ -1,0 +1,142 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+        - name: keycloak
+          image: quay.io/keycloak/keycloak:24.0
+          args:
+            - start
+            - --import-realm
+
+          env:
+
+            - name: KC_HTTP_ENABLED
+              value: "true"
+
+            - name: KC_HEALTH_ENABLED
+              value: "true"
+            - name: KC_METRICS_ENABLED
+              value: "true"
+
+            - name: KC_HOSTNAME_STRICT
+              value: "false" # por nip.io
+            - name: KC_HOSTNAME_STRICT_HTTPS
+              value: "false"
+
+            - name: KEYCLOAK_ADMIN
+              value: admin
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              value: admin
+
+            - name: KC_DB
+              value: postgres
+
+            - name: KC_DB_URL
+              value: jdbc:postgresql://postgres:5432/keycloak
+
+            - name: KC_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-db-secret
+                  key: username
+
+            - name: KC_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-db-secret
+                  key: password
+
+            - name: KC_HOSTNAME
+              value: auth.127.0.0.1.nip.io
+
+            - name: KC_PROXY
+              value: passthrough
+
+            - name: KC_FEATURES
+              value: token-exchange
+
+          volumeMounts:
+            - name: realm-config
+              mountPath: /opt/keycloak/data/import
+
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: 8080
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 8080
+      volumes:
+        - name: realm-config
+          configMap:
+            name: keycloak-realm
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak
+spec:
+  selector:
+    app: keycloak
+  ports:
+    - port: 80
+      targetPort: 8080
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-realm
+data:
+  realm.json: |
+    {
+      "realm": "slotify",
+      "enabled": true,
+
+      "registrationAllowed": true,
+      "resetPasswordAllowed": true,
+      "loginWithEmailAllowed": true,
+
+      "clients": [
+        {
+          "clientId": "frontend",
+          "enabled": true,
+          "publicClient": true,
+          "directAccessGrantsEnabled": true,
+          "redirectUris": [
+            "http://app.127.0.0.1.nip.io/*"
+          ],
+          "webOrigins": ["*"],
+          "protocol": "openid-connect",
+
+          "protocolMappers": [
+            {
+              "name": "account-type",
+              "protocol": "openid-connect",
+              "protocolMapper": "oidc-usermodel-attribute-mapper",
+              "config": {
+                "user.attribute": "account_type",
+                "claim.name": "account_type",
+                "jsonType.label": "String",
+                "access.token.claim": "true",
+                "id.token.claim": "true",
+                "userinfo.token.claim": "true"
+              }
+            }
+          ]
+        }
+      ]
+    }
