@@ -16,9 +16,10 @@ END $$;
 
 CREATE TABLE IF NOT EXISTS reserves.users (
   user_id UUID NOT NULL,
+  username VARCHAR(70) NOT NULL,
   s3_image_key VARCHAR(200),
   phone_number VARCHAR(15),
-  email_address VARCHAR(320),
+  email_address VARCHAR(320) UNIQUE,
   created_at TIMESTAMP NOT NULL,
   created_by_company_id UUID,
   PRIMARY KEY (user_id)
@@ -29,7 +30,7 @@ CREATE TABLE IF NOT EXISTS reserves.companies (
   default_max_concurrent_services INT NOT NULL,
   company_name VARCHAR(200) NOT NULL,
   phone_number VARCHAR(15),
-  email_address VARCHAR(320) NOT NULL,
+  email_address VARCHAR(320) NOT NULL UNIQUE,
   physical_address VARCHAR(300) NOT NULL,
   s3_image_key VARCHAR(200),
   description TEXT,

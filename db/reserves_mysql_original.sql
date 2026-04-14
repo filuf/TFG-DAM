@@ -22,9 +22,10 @@ USE `reserves` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `reserves`.`users` (
   `user_id` CHAR(36) NOT NULL,
+  `username` VARCHAR(70) NOT NULL,
   `s3_image_key` VARCHAR(200) NULL,
   `phone_number` VARCHAR(15) NULL,
-  `email_address` VARCHAR(320) NULL,
+  `email_address` VARCHAR(320) NULL UNIQUE,
   `created_at` TIMESTAMP NOT NULL,
   `created_by_company_id` CHAR(36) NULL,
   PRIMARY KEY (`user_id`))
@@ -39,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `reserves`.`companies` (
   `default_max_concurrent_services` INT NOT NULL,
   `company_name` VARCHAR(200) NOT NULL,
   `phone_number` VARCHAR(15) NULL,
-  `email_address` VARCHAR(320) NOT NULL,
+  `email_address` VARCHAR(320) NOT NULL UNIQUE,
   `physical_address` VARCHAR(300) NOT NULL,
   `s3_image_key` VARCHAR(200) NULL,
   `description` TEXT NULL,
