@@ -36,6 +36,7 @@ Ubicado en ``app/src/main/AndroidManifest.xml``
 
 # Configuración básica
 ## 1. Clases
+Las clases empleadas son las siguientes:
 - ``Response`` respuesta de la petición.
 - ``SongResponse`` modelo propio a emplear.
 - ``Retrofit`` objeto para crear la instancia que conectará con nuestra API REST.
@@ -85,7 +86,7 @@ private val retrofit: Retrofit = Retrofit.Builder()
 ```kotlin
 private val service = retrofit.create(APIService::class.java)
 ```
-Ejemplo práctico de un fragmento del ViewModel en el que se hace un POST manejando errores en la petición:
+Ejemplo práctico de un fragmento del ViewModel en el que se hace un GET manejando errores en la petición:
 ```kotlin
 private val _songs = MutableLiveData<List<SongResponse?>>()
 val songs: LiveData<List<SongResponse?>> = _songs
