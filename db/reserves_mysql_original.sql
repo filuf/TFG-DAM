@@ -59,6 +59,7 @@ CREATE TABLE IF NOT EXISTS `reserves`.`services` (
   `service_minutes_duration` INT NOT NULL,
   `s3_image_key` VARCHAR(200) NULL,
   `service_price_cent` INT NOT NULL,
+  `description` TEXT NULL,
   PRIMARY KEY (`service_id`),
   INDEX `company_id_idx` (`company_id` ASC),
   CONSTRAINT `company_id`
