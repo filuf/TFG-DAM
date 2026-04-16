@@ -2,6 +2,7 @@ package com.slotify.backend.spring.auth.dtos;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ public class RegisterUserRequest {
 
     @Email
     @Size(max = 320)
+    @NotNull
     private String emailAddress;
 
 }

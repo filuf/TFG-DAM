@@ -19,9 +19,11 @@ public class RegisterCompanyRequest {
 
     @Email
     @Size(max = 320)
+    @NotNull
     private String emailAddress;
 
     @Min(1)
+    @NotNull
     private Integer defaultMaxConcurrentServices;
 
     @NotBlank

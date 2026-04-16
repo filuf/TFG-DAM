@@ -1,9 +1,6 @@
 package com.slotify.backend.spring.service.dtos;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,10 +16,12 @@ public class CreateServiceRequest {
 
     @Min(5)
     @Max(480)
+    @NotNull
     private Integer minutesDuration;
 
     @Min(100)
     @Max(1000000)
+    @NotNull
     private Integer priceCent;
 
     private String description;
