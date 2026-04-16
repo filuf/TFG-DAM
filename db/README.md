@@ -47,6 +47,7 @@ Este directorio contiene los scripts y el modelo de la base de datos del proyect
    - `service_minutes_duration` INT
    - `s3_image_key` VARCHAR(200)
    - `service_price_cent` INT
+   - `description` TEXT
 
 4. `reserves`
    - `reserve_id` UUID PK

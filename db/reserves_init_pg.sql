@@ -45,6 +45,7 @@ CREATE TABLE IF NOT EXISTS reserves.services (
   service_minutes_duration INT NOT NULL,
   s3_image_key VARCHAR(200),
   service_price_cent INT NOT NULL,
+  description TEXT,
   PRIMARY KEY (service_id),
   CONSTRAINT company_id_fk FOREIGN KEY (company_id)
     REFERENCES reserves.companies (user_id)
