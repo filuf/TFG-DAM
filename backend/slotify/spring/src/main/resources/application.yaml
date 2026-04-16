@@ -9,7 +9,7 @@ spring:
 
   # POSTGRE
   datasource:
-    url: jdbc:postgresql://${POSTGRES_HOST:postgres}:${POSTGRES_PORT:5432}/${POSTGRES_DB:slotify}
+    url: jdbc:postgresql://${POSTGRES_HOST:postgres}:${POSTGRES_PORT:5432}/appdb?currentSchema=reserves
     username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
@@ -40,7 +40,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://${KEYCLOAK_HOST:keycloak}:80/realms/${KEYCLOAK_REALM:slotify}
+          issuer-uri: http://auth.127.0.0.1.nip.io/realms/slotify
+          jwk-set-uri: http://${KEYCLOAK_HOST:keycloak}:80/realms/${KEYCLOAK_REALM:slotify}/protocol/openid-connect/certs
 
   # OLLAMA
   ai:
@@ -61,3 +62,8 @@ logging:
   level:
     org.springframework.security: INFO
     com.slotify.backend: DEBUG
+
+# PROPIEDAD REUTILIZABLE
+keycloak:
+  server-url: http://${KEYCLOAK_HOST:keycloak}:80
+  realm: ${KEYCLOAK_REALM:slotify}

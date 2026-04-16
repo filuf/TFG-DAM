@@ -299,7 +299,51 @@ http://auth.127.0.0.1.nip.io
 - Usuario: `admin`
 - Contraseña: `admin`
 
-### 7) Primeras acciones recomendadas
+⚠️ **Importante**: Antes de realizar los pasos 7 y 8, asegúrate de seleccionar el realm correcto. En la esquina superior izquierda, en el desplegable de realms, selecciona **slotify**. Todos los pasos posteriores se ejecutarán dentro de este realm.
+
+### 7) Crear atributo personalizado `account-type` en el perfil de usuario
+
+Para crear un atributo personalizado que identifique el tipo de usuario:
+
+1. En el panel de administración, ve a **Realm settings** (esquina superior izquierda, en el desplegable del realm).
+2. Selecciona la pestaña **User profile**.
+3. Haz clic en **Create attribute**.
+4. Completa los campos:
+   - **Attribute name**: `account-type`
+   - **Display name**: Account Type (opcional, para una etiqueta más legible)
+5. Guarda los cambios.
+
+Este atributo será usado para almacenar el tipo de cuenta del usuario (`USER`, `COMPANY`) y será incluido en los tokens JWT generados por Keycloak.
+
+### 8) Agregar mapper de atributo al cliente Android
+
+Para que el atributo `account-type` se incluya en los tokens JWT y sea accesible en tu cliente Android:
+
+1. Ve a **Clients** en el panel izquierdo.
+2. Selecciona el cliente **slotify-android**.
+3. Abre la pestaña **Client scopes**.
+4. Busca o selecciona el scope **slotify-android-dedicated**.
+5. Haz clic en **Add Mapper** → **By Configuration**.
+6. Selecciona **User Attribute** como mapper type.
+7. Completa los campos con los siguientes valores:
+
+| Campo | Valor |
+|-------|-------|
+| **Name** | `account_type` o similar, identificativo para el display |
+| **User Attribute** | `account-type` |
+| **Token Claim Name** | `account-type` |
+| **Claim JSON Type** | `String` |
+| **Add to ID token** | `On` |
+| **Add to access token** | `On` |
+| **Add to lightweight access token** | `Off` |
+| **Add to userinfo** | `On` |
+| **Add to token introspection** | `On` |
+
+8. Guarda los cambios.
+
+Ahora, cuando un usuario inicie sesión a través del cliente Android, el atributo `account_type` se incluirá automáticamente en los tokens JWT (ID token, access token, userinfo), permitiendo que las aplicaciones identifique el tipo de usuario.
+
+### 9) Primeras acciones recomendadas
 
 Una vez logueado en el panel de administración:
 
