@@ -5,16 +5,15 @@ import com.slotify.backend.spring.service.dtos.CreateServiceResponse;
 import com.slotify.backend.spring.service.models.ServiceEntity;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
-
 @Component
 public class ServiceMapper {
-    public ServiceEntity toEntity(CompanyEntity company, String serviceName, Integer minutesDuration, Integer priceCent) {
+    public ServiceEntity toEntity(CompanyEntity company, String serviceName, Integer minutesDuration, Integer priceCent, String description) {
         return ServiceEntity.builder()
                 .company(company)
                 .serviceName(serviceName)
                 .serviceMinutesDuration(minutesDuration)
                 .servicePriceCent(priceCent)
+                .description(description)
                 .build();
     }
 
@@ -24,6 +23,7 @@ public class ServiceMapper {
                 .serviceName(serviceEntity.getServiceName())
                 .minutesDuration(serviceEntity.getServiceMinutesDuration())
                 .priceCent(serviceEntity.getServicePriceCent())
+                .description(serviceEntity.getDescription())
                 .build();
     }
 }

@@ -33,7 +33,8 @@ public class ServiceController {
                 UUID.fromString(jwt.getSubject()),
                 createServiceRequest.getServiceName(),
                 createServiceRequest.getMinutesDuration(),
-                createServiceRequest.getPriceCent()
+                createServiceRequest.getPriceCent(),
+                createServiceRequest.getDescription()
         );
 
         return ResponseEntity.created(URI.create("/service/" + createServiceResponse.getServiceId()))

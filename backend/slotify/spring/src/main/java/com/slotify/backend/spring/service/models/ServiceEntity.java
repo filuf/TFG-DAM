@@ -33,6 +33,9 @@ public class ServiceEntity {
     @Column(name = "s3_image_key", length = 200)
     private String s3ImageKey;
 
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", nullable = false)
     private CompanyEntity company;

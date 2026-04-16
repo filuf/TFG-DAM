@@ -24,4 +24,6 @@ public class CreateServiceRequest {
     @Min(100)
     @Max(1000000)
     private Integer priceCent;
+
+    private String description;
 }

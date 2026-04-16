@@ -13,4 +13,5 @@ public class CreateServiceResponse {
     private String serviceName;
     private int minutesDuration;
     private int priceCent;
+    private String description;
 }
