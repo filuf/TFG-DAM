@@ -70,6 +70,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 
+    @ExceptionHandler(ScheduleValidationException.class)
+    public ResponseEntity<Map<String, Object>> handleScheduleValidationException(ScheduleValidationException exc) {
+        Map<String, Object> error = new HashMap<>();
+        error.put("error", "Conflicto en horario");
+        error.put("mensaje", exc.getMessage());
+        if (!exc.getOverlaps().isEmpty()) {
+            error.put("overlaps", exc.getOverlaps());
+        }
+
+        return ResponseEntity.status(exc.getHttpStatus()).body(error);
+    }
+
     @ExceptionHandler(AuthorizationDeniedException.class)
     public ResponseEntity<Map<String, String>> handleAuthorizationDeniedException(AuthorizationDeniedException ex) {
         log.warn("Intento de acceso no autorizado: {}", ex.getMessage());
