@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @RequiredArgsConstructor
 @Service
 @Slf4j
@@ -16,5 +19,10 @@ public class ServiceServiceImpl implements ServiceService {
     public ServiceEntity saveService(ServiceEntity serviceEntity) {
         log.info("Creando servicio. serviceEntity: {}", serviceEntity);
         return this.serviceRepository.save(serviceEntity);
+    }
+
+    @Override
+    public Optional<ServiceEntity> findServiceById(UUID serviceId) {
+        return this.serviceRepository.findById(serviceId);
     }
 }
