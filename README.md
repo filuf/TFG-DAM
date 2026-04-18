@@ -34,7 +34,9 @@ Ubicado en ``app/src/main/AndroidManifest.xml``
 </manifest>
 ```
 
-# Configuración básica
+---
+
+# 2. Componentes y conceptos básicos
 ## 1. Clases
 Las clases empleadas son las siguientes:
 - ``Response`` respuesta de la petición.
@@ -105,6 +107,8 @@ fun getSongs() {
     }
 }
 ```
+
+---
 
 # Código de ejemplo por si quereis probarlo vosotros mismos
 El mío está comentado por si nos os fiáis de Gemini :)
