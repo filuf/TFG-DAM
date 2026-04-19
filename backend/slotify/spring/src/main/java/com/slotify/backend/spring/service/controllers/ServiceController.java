@@ -18,7 +18,7 @@ import java.net.URI;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/service")
+@RequestMapping("/services")
 @RequiredArgsConstructor
 public class ServiceController {
 
@@ -45,7 +45,7 @@ public class ServiceController {
 
 
     @PreAuthorize("hasRole('COMPANY')")
-    @PostMapping("/{serviceId}/schedule")
+    @PostMapping("/{serviceId}/schedules")
     public ResponseEntity<CreateServiceScheduleResponse> createServiceSchedule(
             @AuthenticationPrincipal Jwt jwt,
             @PathVariable UUID serviceId,
