@@ -3,6 +3,7 @@ package com.slotify.backend.spring.service.models;
 import com.slotify.backend.spring.company.models.CompanyEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,5 +44,7 @@ public class ServiceEntity {
     private CompanyEntity company;
 
     @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("dayOfWeek asc, startTime asc")
+    @BatchSize(size = 30)
     private List<ServiceScheduleEntity> schedules = new ArrayList<>();
 }
