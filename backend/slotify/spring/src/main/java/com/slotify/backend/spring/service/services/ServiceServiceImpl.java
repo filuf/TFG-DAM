@@ -4,6 +4,8 @@ import com.slotify.backend.spring.service.models.ServiceEntity;
 import com.slotify.backend.spring.service.repositories.ServiceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -24,5 +26,10 @@ public class ServiceServiceImpl implements ServiceService {
     @Override
     public Optional<ServiceEntity> findServiceById(UUID serviceId) {
         return this.serviceRepository.findById(serviceId);
+    }
+
+    @Override
+    public Page<ServiceEntity> findServicesByCompanyId(UUID companyId, Pageable pageable) {
+        return this.serviceRepository.findByCompany_UserId(companyId, pageable);
     }
 }
