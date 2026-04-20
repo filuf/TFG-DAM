@@ -1,6 +1,7 @@
 package com.slotify.backend.spring.service.mappers;
 
 import com.slotify.backend.spring.service.dtos.CreateServiceScheduleResponse;
+import com.slotify.backend.spring.service.dtos.ScheduleSummary;
 import com.slotify.backend.spring.service.models.ServiceEntity;
 import com.slotify.backend.spring.service.models.ServiceScheduleEntity;
 import com.slotify.backend.spring.service.util.ScheduleFormatter;
@@ -31,6 +32,15 @@ public class ServiceScheduleMapper {
                 .dayOfWeek(dayOfWeek.getValue())
                 .serviceName(serviceEntity.getServiceName())
                 .interval(ScheduleFormatter.format(scheduleEntity))
+                .build();
+    }
+
+    public ScheduleSummary toScheduleSummary(ServiceScheduleEntity scheduleEntity) {
+        return ScheduleSummary.builder()
+                .id(scheduleEntity.getId())
+                .dayOfWeek(scheduleEntity.getDayOfWeek())
+                .startTime(scheduleEntity.getStartTime())
+                .endTime(scheduleEntity.getEndTime())
                 .build();
     }
 }
