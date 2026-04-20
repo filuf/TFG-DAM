@@ -14,7 +14,7 @@ spec:
         - name: keycloak
           port: 80
 
-    - match: Host(`auth.127.0.0.1.nip.io`)
+    - match: Host(`auth.127.0.0.1.nip.io`) || Host(`auth.10.0.2.2.nip.io`)
       kind: Rule
       services:
         - name: keycloak
