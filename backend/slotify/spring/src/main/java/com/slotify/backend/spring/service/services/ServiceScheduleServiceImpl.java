@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -22,5 +24,10 @@ public class ServiceScheduleServiceImpl implements ServiceScheduleService {
     @Override
     public ServiceScheduleEntity saveSchedule(ServiceScheduleEntity scheduleEntity) {
         return this.serviceScheduleRepository.save(scheduleEntity);
+    }
+
+    @Override
+    public Optional<ServiceScheduleEntity> findById(UUID scheduleId) {
+        return this.serviceScheduleRepository.findById(scheduleId);
     }
 }
