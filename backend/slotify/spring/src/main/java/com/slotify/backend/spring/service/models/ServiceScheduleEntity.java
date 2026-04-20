@@ -15,6 +15,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(exclude = {"service"})
 public class ServiceScheduleEntity {
 
     @Id

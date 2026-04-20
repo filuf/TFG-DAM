@@ -3,6 +3,7 @@ package com.slotify.backend.spring.company.dtos;
 import com.slotify.backend.spring.service.dtos.ScheduleSummary;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.UUID;
 
 @Builder
 @Getter
+@ToString
 public class GetServicesResponse {
 
     private UUID serviceId;

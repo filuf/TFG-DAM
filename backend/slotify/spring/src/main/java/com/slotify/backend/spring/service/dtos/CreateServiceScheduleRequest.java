@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -13,6 +14,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class CreateServiceScheduleRequest {
 
     @NotNull
