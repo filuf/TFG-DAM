@@ -18,58 +18,46 @@ spec:
           args:
             - start
             - --import-realm
-
           env:
-
+            - name: KC_HOSTNAME_BACKCHANNEL_DYNAMIC
+              value: "true"
             - name: KC_HTTP_ENABLED
               value: "true"
-
             - name: KC_HEALTH_ENABLED
               value: "true"
             - name: KC_METRICS_ENABLED
               value: "true"
-
+            # IMPORTANTE: Permitir que Keycloak responda por cualquier nombre (IP o Dominio)
             - name: KC_HOSTNAME_STRICT
-              value: "false" # por nip.io
+              value: "false"
             - name: KC_HOSTNAME_STRICT_HTTPS
               value: "false"
-
+            # Eliminado KC_HOSTNAME para que no fuerce la redirección a nip.io
+            - name: KC_PROXY
+              value: edge # Ajustado para trabajar correctamente detrás de Traefik
             - name: KEYCLOAK_ADMIN
               value: admin
             - name: KEYCLOAK_ADMIN_PASSWORD
               value: admin
-
             - name: KC_DB
               value: postgres
-
             - name: KC_DB_URL
               value: jdbc:postgresql://postgres:5432/keycloak
-
             - name: KC_DB_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: keycloak-db-secret
                   key: username
-
             - name: KC_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: keycloak-db-secret
                   key: password
-
-            - name: KC_HOSTNAME
-              value: auth.127.0.0.1.nip.io
-
-            - name: KC_PROXY
-              value: passthrough
-
             - name: KC_FEATURES
               value: token-exchange
-
           volumeMounts:
             - name: realm-config
               mountPath: /opt/keycloak/data/import
-
           ports:
             - containerPort: 8080
           livenessProbe:
@@ -105,23 +93,21 @@ data:
     {
       "realm": "slotify",
       "enabled": true,
-
       "registrationAllowed": true,
       "resetPasswordAllowed": true,
       "loginWithEmailAllowed": true,
-
       "clients": [
         {
-          "clientId": "frontend",
+          "clientId": "android-app-client",
           "enabled": true,
           "publicClient": true,
           "directAccessGrantsEnabled": true,
           "redirectUris": [
-            "http://app.127.0.0.1.nip.io/*"
+            "http://app.127.0.0.1.nip.io/*",
+            "com.example.aplicacionpruebapaginaweb://oauth2redirect"
           ],
           "webOrigins": ["*"],
           "protocol": "openid-connect",
-
           "protocolMappers": [
             {
               "name": "account-type",
