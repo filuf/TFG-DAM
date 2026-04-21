@@ -74,7 +74,7 @@ spec:
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: spring
+  name: spring-api
 spec:
   entryPoints:
     - web
@@ -82,7 +82,7 @@ spec:
     - match: Host(`api.127.0.0.1.nip.io`)
       kind: Rule
       services:
-        - name: spring
+        - name: spring-api
           port: 80       
 ---
 apiVersion: v1
