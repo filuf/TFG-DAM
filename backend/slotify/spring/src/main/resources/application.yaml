@@ -40,7 +40,6 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://auth.127.0.0.1.nip.io/realms/slotify
           jwk-set-uri: http://${KEYCLOAK_HOST:keycloak}:80/realms/${KEYCLOAK_REALM:slotify}/protocol/openid-connect/certs
 
   # OLLAMA
