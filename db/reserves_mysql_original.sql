@@ -145,6 +145,7 @@ CREATE TABLE IF NOT EXISTS `reserves`.`notifications` (
   `notification_sender` ENUM("USER", "COMPANY") NOT NULL,
   `text_content` TEXT NOT NULL,
   `created_at` TIMESTAMP NOT NULL,
+  `is_read` TINYINT NOT NULL,
   PRIMARY KEY (`notification_id`),
   INDEX `fk_notifications_companies1_idx` (`companies_id` ASC),
   INDEX `fk_notifications_users1_idx` (`user_id` ASC),

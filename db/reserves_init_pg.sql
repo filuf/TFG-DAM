@@ -104,6 +104,7 @@ CREATE TABLE IF NOT EXISTS reserves.notifications (
   notification_sender reserves.notification_sender NOT NULL,
   text_content TEXT NOT NULL,
   created_at TIMESTAMP NOT NULL,
+  is_read BOOLEAN NOT NULL,
   PRIMARY KEY (notification_id),
   CONSTRAINT fk_notifications_companies1 FOREIGN KEY (companies_id)
     REFERENCES reserves.companies (user_id),
