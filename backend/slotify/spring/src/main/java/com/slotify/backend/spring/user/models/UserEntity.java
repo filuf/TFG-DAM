@@ -24,21 +24,21 @@ public class UserEntity {
     @EqualsAndHashCode.Include
     private UUID userId;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "username", nullable = false, length = 70)
     private String username;
 
-    @Column(name = "s3_image_key")
+    @Column(name = "s3_image_key", length = 200)
     private String s3ImageKey;
 
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", length = 15)
     private String phoneNumber;
 
-    @Column(name = "email_address")
+    @Column(name = "email_address", length = 320)
     private String emailAddress;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "created_by_company")
+    @Column(name = "created_by_company_id")
     private UUID createdByCompany;
 }

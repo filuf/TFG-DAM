@@ -23,19 +23,19 @@ public class CompanyEntity {
     @Column(name = "default_max_concurrent_services", nullable = false)
     private Integer defaultMaxConcurrentServices;
 
-    @Column(name = "company_name", nullable = false)
+    @Column(name = "company_name", nullable = false, length = 200)
     private String companyName;
 
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", length = 15)
     private String phoneNumber;
 
-    @Column(name = "email_address", nullable = false)
+    @Column(name = "email_address", nullable = false, length = 320)
     private String emailAddress;
 
-    @Column(name = "physical_address", nullable = false)
+    @Column(name = "physical_address", nullable = false, length = 300)
     private String physicalAddress;
 
-    @Column(name = "s3_image_key")
+    @Column(name = "s3_image_key", length = 200)
     private String s3ImageKey;
 
     @Lob
