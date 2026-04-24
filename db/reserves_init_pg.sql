@@ -10,7 +10,7 @@ BEGIN
     END IF;
     
     IF NOT EXISTS (SELECT 1 FROM pg_type t JOIN pg_namespace n ON n.oid = t.typnamespace WHERE t.typname = 'notification_sender' AND n.nspname = 'reserves') THEN
-        CREATE TYPE reserves.notification_sender AS ENUM ('USER', 'COMPANY');
+        CREATE TYPE reserves.notification_sender AS ENUM ('USER', 'COMPANY', 'SYSTEM');
     END IF;
 END $$;
 
