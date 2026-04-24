@@ -79,6 +79,7 @@ Este directorio contiene los scripts y el modelo de la base de datos del proyect
    - `notification_sender` `notification_sender`
    - `text_content` TEXT
    - `created_at` TIMESTAMP
+   - `is_read` BOOLEAN
 
 8. `max_concurrent_services_interval`
    - `interval_id` UUID PK
