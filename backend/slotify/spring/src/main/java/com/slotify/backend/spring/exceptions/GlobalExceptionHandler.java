@@ -40,7 +40,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         Map<String, String> error = new HashMap<>();
         error.put("error", "Cuerpo de petición inválido");
-        error.put("mensaje", "El body es obligatorio. Asegúrate de enviar un JSON válido.");
+        error.put("message", "El body es obligatorio. Asegúrate de enviar un JSON válido.");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
     @Override
@@ -58,14 +58,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UnrecognizedPropertyException.class)
     public ResponseEntity<String> handleUnrecognizedPropertyException(UnrecognizedPropertyException exc) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("mensaje: La propiedad " + exc.getPropertyName() + " no está permitida");
+                .body("message: La propiedad " + exc.getPropertyName() + " no está permitida");
     }
 
     @ExceptionHandler(AlreadyExistsException.class)
     public ResponseEntity<Map<String, String>> handleAlreadyExistsException(AlreadyExistsException exc) {
         Map<String, String> error = new HashMap<>();
         error.put("error", "Conflicto de recursos");
-        error.put("mensaje", exc.getMessage());
+        error.put("message", exc.getMessage());
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
@@ -74,7 +74,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleScheduleValidationException(ScheduleValidationException exc) {
         Map<String, Object> error = new HashMap<>();
         error.put("error", "Conflicto en horario");
-        error.put("mensaje", exc.getMessage());
+        error.put("message", exc.getMessage());
         if (!exc.getOverlaps().isEmpty()) {
             error.put("overlaps", exc.getOverlaps());
         }
@@ -88,7 +88,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         Map<String, String> error = new HashMap<>();
         error.put("error", "Prohibido");
-        error.put("mensaje", "No tienes los permisos necesarios (Rol insuficiente)");
+        error.put("message", "No tienes los permisos necesarios (Rol insuficiente)");
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
