@@ -82,6 +82,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(exc.getHttpStatus()).body(error);
     }
 
+    @ExceptionHandler(IntervalValidationException.class)
+    public ResponseEntity<Map<String, Object>> handleIntervalValidationException(IntervalValidationException exc) {
+        Map<String, Object> error = new HashMap<>();
+        error.put("error", "Conflicto en intervalo");
+        error.put("message", exc.getMessage());
+        exc.getOptOverlap()
+                .ifPresent(overlap -> error.put("overlap", overlap));
+
+        return ResponseEntity.status(exc.getHttpStatus()).body(error);
+    }
+
     @ExceptionHandler(AuthorizationDeniedException.class)
     public ResponseEntity<Map<String, String>> handleAuthorizationDeniedException(AuthorizationDeniedException ex) {
         log.warn("Intento de acceso no autorizado: {}", ex.getMessage());
