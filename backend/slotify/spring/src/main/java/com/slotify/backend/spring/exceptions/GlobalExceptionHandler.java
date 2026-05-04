@@ -93,6 +93,25 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(exc.getHttpStatus()).body(error);
     }
 
+    @ExceptionHandler(ReservationBadRequestException.class)
+    public ResponseEntity<Map<String, Object>> handleReservationBadRequestException(ReservationBadRequestException exc) {
+        Map<String, Object> error = new HashMap<>();
+        error.put("error", "error en los datos en reserva");
+        error.put("message", exc.getMessage());
+
+        return ResponseEntity.status(exc.getHttpStatus()).body(error);
+    }
+    @ExceptionHandler(ReservationConflictException.class)
+    public ResponseEntity<Map<String, Object>> handleReservationConflictException(ReservationConflictException exc) {
+        Map<String, Object> error = new HashMap<>();
+        error.put("error", "Conflicto en reserva");
+        error.put("message", exc.getMessage());
+        exc.getReserveId()
+                .ifPresent(reserveId -> error.put("reserveId", reserveId));
+
+        return ResponseEntity.status(exc.getHttpStatus()).body(error);
+    }
+
     @ExceptionHandler(AuthorizationDeniedException.class)
     public ResponseEntity<Map<String, String>> handleAuthorizationDeniedException(AuthorizationDeniedException ex) {
         log.warn("Intento de acceso no autorizado: {}", ex.getMessage());
