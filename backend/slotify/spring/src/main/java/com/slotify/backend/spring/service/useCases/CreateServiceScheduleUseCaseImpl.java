@@ -54,7 +54,7 @@ public class CreateServiceScheduleUseCaseImpl implements CreateServiceScheduleUs
                 dayOfWeek.getValue(),
                 dayOfWeek.plus(1).getValue()
         );
-        List<ServiceScheduleEntity> schedules = this.serviceScheduleService.findByServiceAndDayOfWeekIn(serviceEntity, days);
+        List<ServiceScheduleEntity> schedules = this.serviceScheduleService.findAllByServiceAndDayOfWeekIn(serviceEntity, days);
 
         List<ServiceScheduleEntity> overlaps = schedules.stream()
                 .filter(schedule -> scheduleOverlapValidator.overlaps(
