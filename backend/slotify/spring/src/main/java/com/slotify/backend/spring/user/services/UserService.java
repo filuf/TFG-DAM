@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface UserService {
 
-    public UserEntity saveUser(UserEntity userEntity);
+    UserEntity saveUser(UserEntity userEntity);
 
     Optional<UserEntity> findUserById(UUID userId);
 }

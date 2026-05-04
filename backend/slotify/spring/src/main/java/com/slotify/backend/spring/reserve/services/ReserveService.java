@@ -4,7 +4,6 @@ import com.slotify.backend.spring.reserve.models.ReserveEntity;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface ReserveService {
