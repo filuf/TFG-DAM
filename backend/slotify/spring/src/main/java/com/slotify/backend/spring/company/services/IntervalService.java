@@ -12,6 +12,7 @@ public interface IntervalService {
 
     List<CompanyIntervalEntity> findIntervalsByCompanyId(UUID companyId);
 
+    Optional<CompanyIntervalEntity> findIntervalById(UUID intervalId);
     Optional<CompanyIntervalEntity> findIntervalByCompanyIdAndStartDateTime(UUID companyId, LocalDateTime dateTime);
 
     List<CompanyIntervalEntity> findIntervalByCompanyIdAndBetweenDatesTime(UUID companyId, LocalDateTime reserveStartDateTime, LocalDateTime reserveEndDateTime);
