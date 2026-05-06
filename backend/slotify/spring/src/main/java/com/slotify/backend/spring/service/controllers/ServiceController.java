@@ -29,7 +29,7 @@ public class ServiceController {
     @PreAuthorize("hasRole('COMPANY')")
     public ResponseEntity<CreateServiceResponse> createService(
             @AuthenticationPrincipal Jwt jwt,
-            @Valid CreateServiceRequest createServiceRequest
+            @Valid @RequestBody CreateServiceRequest createServiceRequest
     ) {
         CreateServiceResponse createServiceResponse = this.createServiceUseCase.createService(
                 UUID.fromString(jwt.getSubject()),

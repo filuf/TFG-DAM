@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ServiceScheduleService {
-    List<ServiceScheduleEntity> findByServiceAndDayOfWeekIn(ServiceEntity serviceEntity, List<Integer> days);
+    List<ServiceScheduleEntity> findAllByServiceAndDayOfWeekIn(ServiceEntity serviceEntity, List<Integer> days);
 
     ServiceScheduleEntity saveSchedule(ServiceScheduleEntity scheduleEntity);
 
