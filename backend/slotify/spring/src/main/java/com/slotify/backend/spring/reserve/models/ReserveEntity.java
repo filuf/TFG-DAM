@@ -40,4 +40,12 @@ public class ReserveEntity {
 
     @Column(name = "is_canceled", nullable = false)
     private boolean isCanceled;
+
+    public void cancelReserve() {
+
+        if (isCanceled) {
+            throw new IllegalStateException("No se puede cancelar una reserva ya cancelada");
+        }
+        isCanceled = true;
+    }
 }

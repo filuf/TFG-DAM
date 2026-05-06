@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -18,6 +19,11 @@ public class ReserveServiceImpl implements ReserveService {
     @Override
     public ReserveEntity saveReserve(ReserveEntity reserve) {
         return this.reserveRepository.save(reserve);
+    }
+
+    @Override
+    public Optional<ReserveEntity> findReserveById(UUID reserveId) {
+        return this.reserveRepository.findById(reserveId);
     }
 
     @Override
