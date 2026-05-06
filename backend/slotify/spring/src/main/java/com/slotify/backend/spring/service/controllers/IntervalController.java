@@ -1,6 +1,6 @@
 package com.slotify.backend.spring.service.controllers;
 
-import com.slotify.backend.spring.service.useCases.DeleteIntervalUseCase;
+import com.slotify.backend.spring.service.usecases.DeleteIntervalUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/intervals")
+@RequiredArgsConstructor
 public class IntervalController {
 
     private final DeleteIntervalUseCase deleteIntervalUseCase;
@@ -21,10 +21,13 @@ public class IntervalController {
     @PreAuthorize("hasRole('COMPANY')")
     public ResponseEntity<Void> deleteInterval(
             @PathVariable UUID intervalId,
-            @AuthenticationPrincipal Jwt jwt) {
+            @AuthenticationPrincipal Jwt jwt
+    ) {
+        this.deleteIntervalUseCase.deleteInterval(
+                UUID.fromString(jwt.getSubject()),
+                intervalId
+        );
 
-        UUID companyId = UUID.fromString(jwt.getSubject());
-        deleteIntervalUseCase.deleteInterval(companyId, intervalId);
         return ResponseEntity.noContent().build();
     }
 }

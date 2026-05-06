@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -22,5 +23,10 @@ public class IntervalServiceImpl implements IntervalService {
     @Override
     public List<CompanyIntervalEntity> findIntervalsByCompanyId(UUID companyId) {
         return this.intervalRepository.findByCompany_UserId(companyId);
+    }
+
+    @Override
+    public Optional<CompanyIntervalEntity> findIntervalById(UUID intervalId) {
+        return this.intervalRepository.findById(intervalId);
     }
 }
