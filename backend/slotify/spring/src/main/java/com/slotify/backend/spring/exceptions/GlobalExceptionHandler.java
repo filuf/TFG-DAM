@@ -2,6 +2,7 @@ package com.slotify.backend.spring.exceptions;
 
 
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
@@ -59,6 +60,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<String> handleUnrecognizedPropertyException(UnrecognizedPropertyException exc) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("message: La propiedad " + exc.getPropertyName() + " no está permitida");
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleEntityNotFoundException(EntityNotFoundException exc) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", "La entidad no existe");
+        error.put("message", exc.getMessage());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
     @ExceptionHandler(AlreadyExistsException.class)
