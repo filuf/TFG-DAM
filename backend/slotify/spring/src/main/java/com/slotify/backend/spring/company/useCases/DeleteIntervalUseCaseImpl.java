@@ -28,5 +28,7 @@ public class DeleteIntervalUseCaseImpl implements DeleteIntervalUseCase {
         CompanyEntity companyEntity = intervalEntity.getCompany();
 
         this.companyOwnershipValidator.verify(companyId, companyEntity);
+
+        this.intervalService.deleteInterval(intervalEntity);
     }
 }

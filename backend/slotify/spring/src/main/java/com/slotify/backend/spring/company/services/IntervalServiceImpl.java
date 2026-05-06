@@ -32,6 +32,14 @@ public class IntervalServiceImpl implements IntervalService {
     @Override
     public Optional<CompanyIntervalEntity> findIntervalById(UUID intervalId) {
         return this.intervalRepository.findById(intervalId);
+    }
+
+    @Override
+    public void deleteInterval(CompanyIntervalEntity intervalEntity) {
+        this.intervalRepository.delete(intervalEntity);
+    }
+
+    @Override
     public Optional<CompanyIntervalEntity> findIntervalByCompanyIdAndStartDateTime(UUID companyId, LocalDateTime dateTime) {
         return intervalRepository.findOne( (root, query, criteriaBuilder) -> {
 
