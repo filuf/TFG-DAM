@@ -12,14 +12,17 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class UserCancelationReserveValidator implements ReserveCancelationValidator {
+public class CompanyCancelationReserveValidator implements ReserveCancelationValidator {
 
     private final CommonValidatorCancelation commonValidatorCancelation;
-    private static final Integer MINIMUM_MINUTES_TO_CANCEL = 120;
+    private static final Integer MINIMUM_MINUTES_TO_CANCEL = 480;
+
     @Override
     public void validate(ReserveEntity reserve, UUID accountId) {
 
-        if (!reserve.getUser().getUserId().equals(accountId)) {
+        UUID companyId = reserve.getService().getCompany().getUserId();
+
+        if (!companyId.equals(accountId)) {
             throw new AccessDeniedException("No posees los permisos necesarios para modificar este recurso");
         }
 
