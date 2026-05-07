@@ -3,10 +3,17 @@ package com.slotify.backend.spring.reserve.controllers;
 import com.slotify.backend.spring.auth.enums.AccountType;
 import com.slotify.backend.spring.reserve.dtos.CreateReserveRequest;
 import com.slotify.backend.spring.reserve.dtos.CreateReserveResponse;
+import com.slotify.backend.spring.reserve.dtos.ReserveSummary;
+import com.slotify.backend.spring.reserve.enums.ReserveFetchType;
 import com.slotify.backend.spring.reserve.useCases.CancelReserveUseCase;
 import com.slotify.backend.spring.reserve.useCases.CreateReserveUseCase;
+import com.slotify.backend.spring.reserve.useCases.GetReservesUseCase;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,6 +30,28 @@ public class ReserveController {
 
     private final CreateReserveUseCase createReserveUseCase;
     private final CancelReserveUseCase cancelReserveUseCase;
+    private final GetReservesUseCase getReservesUseCase;
+
+    @GetMapping()
+    @PreAuthorize("hasAnyRole('USER','COMPANY')")
+    public ResponseEntity<Page<ReserveSummary>> getReserves(
+            @AuthenticationPrincipal Jwt jwt,
+            @PageableDefault(size = 20, sort = "serviceTime", direction = Sort.Direction.ASC) Pageable pageable,
+            @RequestParam(defaultValue = "PRESENT") ReserveFetchType fetchType
+    ) {
+        AccountType accountType = AccountType.fromType(jwt.getClaim("account-type"));
+
+        Page<ReserveSummary> reserves = this.getReservesUseCase.getReserves(
+                UUID.fromString(jwt.getSubject()),
+                accountType,
+                fetchType,
+                pageable
+        );
+
+        return ResponseEntity.ok(reserves);
+    }
+
+
     @PostMapping()
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<CreateReserveResponse> createReserve(
