@@ -1,7 +1,6 @@
 package com.slotify.backend.spring.reserve.components.cancelation.impl;
 
 import com.slotify.backend.spring.exceptions.ReservationBadRequestException;
-import com.slotify.backend.spring.reserve.components.cancelation.CommonValidatorCancelation;
 import com.slotify.backend.spring.reserve.components.cancelation.ReserveCancelationValidator;
 import com.slotify.backend.spring.reserve.models.ReserveEntity;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +26,7 @@ public class UserCancelationReserveValidator implements ReserveCancelationValida
         this.commonValidatorCancelation.validate(reserve, accountId);
 
         if (reserve.getServiceTime().minusMinutes(MINIMUM_MINUTES_TO_CANCEL).isBefore(LocalDateTime.now())) {
-            throw new ReservationBadRequestException("No se puede cancelar la reserva con menos de 2 horas de margen");
+            throw new ReservationBadRequestException("No se puede cancelar la reserva con menos de " + MINIMUM_MINUTES_TO_CANCEL  / 60 + " horas de margen");
         }
     }
 }
