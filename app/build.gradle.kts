@@ -1,3 +1,10 @@
+import java.util.Properties
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
+}
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -16,11 +23,20 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        manifestPlaceholders["appAuthRedirectScheme"] = "com.example.aplicacionpruebapaginaweb"
+        manifestPlaceholders["appAuthRedirectScheme"] = "com.raj.slotify"
+
+        buildConfigField("Boolean", "DEBUG_MODE", "false")
+
+        buildConfigField("String", "SPRING_BASE_URL", "\"http://api.127.0.0.1.nip.io/\"")
+        buildConfigField("String", "SPRING_TEST_URL", "\"http://10.0.2.2:8080/\"")
+
+        val mapsKey = localProperties.getProperty("GOOGLE_MAPS_KEY") ?: ""
+        manifestPlaceholders["GOOGLE_MAPS_KEY"] = mapsKey
     }
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 
     buildTypes {
