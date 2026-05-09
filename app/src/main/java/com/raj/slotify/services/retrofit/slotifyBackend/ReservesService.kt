@@ -14,8 +14,8 @@ interface ReservesService {
     suspend fun getReserves(
         @Header("Authorization") authHeader: String,
 
-        @Query("page") page: Integer,
-        @Query("size") size: Integer,
+        @Query("page") page: Int,
+        @Query("size") size: Int,
         @Query("sort") sort: String?,
 
         @Query("fetchType") fetchType: String = "PRESENT"
