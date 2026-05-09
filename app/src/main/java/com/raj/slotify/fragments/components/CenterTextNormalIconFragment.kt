@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import com.raj.slotify.databinding.FragmentCenterTextNormalIconBinding
-import com.raj.slotify.viewModels.MainViewModel
+import com.raj.slotify.viewModels.frontend.MainViewModel
 
 class CenterTextNormalIconFragment : Fragment() {
 

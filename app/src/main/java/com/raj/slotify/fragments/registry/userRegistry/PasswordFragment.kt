@@ -13,9 +13,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentPasswordBinding
-import com.raj.slotify.viewModels.LayoutViewModel
-import com.raj.slotify.viewModels.MainViewModel
-import com.raj.slotify.viewModels.UserDataViewModel
+import com.raj.slotify.viewModels.frontend.LayoutViewModel
+import com.raj.slotify.viewModels.frontend.MainViewModel
+import com.raj.slotify.viewModels.frontend.UserDataViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch

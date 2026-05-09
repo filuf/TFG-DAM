@@ -14,7 +14,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentLanguageBinding
-import com.raj.slotify.viewModels.MainViewModel
+import com.raj.slotify.viewModels.frontend.MainViewModel
 
 class LanguageFragment : Fragment() {
 

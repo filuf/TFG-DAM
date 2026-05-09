@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import com.raj.slotify.databinding.FragmentLeftBigIconBinding
-import com.raj.slotify.viewModels.MainViewModel
+import com.raj.slotify.viewModels.frontend.MainViewModel
 
 class LeftBigIconFragment : Fragment() {
     private lateinit var binding: FragmentLeftBigIconBinding

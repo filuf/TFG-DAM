@@ -9,8 +9,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import com.raj.slotify.databinding.FragmentUpBinding
-import com.raj.slotify.viewModels.LayoutViewModel
-import com.raj.slotify.viewModels.MainViewModel
+import com.raj.slotify.viewModels.frontend.LayoutViewModel
+import com.raj.slotify.viewModels.frontend.MainViewModel
 
 class UpFragment : Fragment() {
 

@@ -10,9 +10,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentSelectConcurrentServicesBinding
-import com.raj.slotify.viewModels.EnterpriseRegistryViewModel
-import com.raj.slotify.viewModels.LayoutViewModel
-import com.raj.slotify.viewModels.MainViewModel
+import com.raj.slotify.viewModels.frontend.EnterpriseRegistryViewModel
+import com.raj.slotify.viewModels.frontend.LayoutViewModel
+import com.raj.slotify.viewModels.frontend.MainViewModel
 import kotlinx.coroutines.launch
 import kotlin.getValue
 

@@ -10,9 +10,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentSelectUserTypeBinding
-import com.raj.slotify.viewModels.LayoutViewModel
-import com.raj.slotify.viewModels.MainViewModel
-import com.raj.slotify.viewModels.UserDataViewModel
+import com.raj.slotify.viewModels.frontend.LayoutViewModel
+import com.raj.slotify.viewModels.frontend.MainViewModel
+import com.raj.slotify.viewModels.frontend.UserDataViewModel
 
 class SelectUserTypeFragment : Fragment() {
 

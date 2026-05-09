@@ -20,11 +20,11 @@ import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentSelectPhysicalDirectionBinding
 import com.raj.slotify.dtos.maps.PlaceSuggestion
 import com.raj.slotify.fragments.mapsFragment.SuggestionAdapter
-import com.raj.slotify.viewModels.EnterpriseRegistryViewModel
-import com.raj.slotify.viewModels.LayoutViewModel
-import com.raj.slotify.viewModels.MainViewModel
-import com.raj.slotify.viewModels.MapViewModel
-import com.raj.slotify.viewModels.UserDataViewModel
+import com.raj.slotify.viewModels.frontend.EnterpriseRegistryViewModel
+import com.raj.slotify.viewModels.frontend.LayoutViewModel
+import com.raj.slotify.viewModels.frontend.MainViewModel
+import com.raj.slotify.viewModels.frontend.MapViewModel
+import com.raj.slotify.viewModels.frontend.UserDataViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
