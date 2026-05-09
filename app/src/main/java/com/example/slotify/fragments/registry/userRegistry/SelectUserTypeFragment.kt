@@ -1,0 +1,63 @@
+package com.example.slotify.fragments.registry.userRegistry
+
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import androidx.cardview.widget.CardView
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
+import com.example.slotify.R
+import com.example.slotify.databinding.FragmentSelectUserTypeBinding
+import com.example.slotify.viewModels.LayoutViewModel
+import com.example.slotify.viewModels.MainViewModel
+import com.example.slotify.viewModels.UserDataViewModel
+
+class SelectUserTypeFragment : Fragment() {
+
+    private val viewModel: MainViewModel by activityViewModels()
+    private val layoutViewModel: LayoutViewModel by activityViewModels()
+    private val userDataViewModel: UserDataViewModel by activityViewModels()
+    private lateinit var binding: FragmentSelectUserTypeBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentSelectUserTypeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.setNewTitle(R.string.selectUserType)
+
+        layoutViewModel.setBackButtonVisibility(View.VISIBLE)
+        layoutViewModel.setNextButtonVisibility(View.GONE)
+        layoutViewModel.setCancelButtonVisibility(View.GONE)
+        layoutViewModel.setConfirmButtonVisibility(View.GONE)
+
+        val cardViewClient: CardView = binding.cardViewClient
+        val cardViewEnterprise: CardView = binding.cardViewEnterprise
+
+        viewModel.setOldTitle(viewModel.newTitle.value?: R.string.welcome)
+
+        cardViewClient.setOnClickListener {
+            userDataViewModel.setUserType("client")
+            view.findNavController().navigate(R.id.action_selectUserTypeFragment_to_clientRegistryPhoneEmailFragment)
+        }
+
+        cardViewEnterprise.setOnClickListener {
+            userDataViewModel.setUserType("company")
+            view.findNavController().navigate(R.id.action_selectUserTypeFragment_to_clientRegistryPhoneEmailFragment)
+        }
+
+    }
+}
