@@ -11,7 +11,7 @@ interface CompanyService {
     suspend fun getServicesByCompanyId(
         @Path("companyId") companyId: UUID,
         @Query("fetchMode") place: String,
-        @Query("page") format: String,
+        @Query("page") page: Integer,
         @Query("sortBy") sortBy: String,
         @Query("order") order: String
     ): Response<List<PlaceSuggestion>>
