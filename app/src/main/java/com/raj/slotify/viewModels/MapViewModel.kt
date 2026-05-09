@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.slotify.fragments.mapsFragment.PlaceSuggestion
+import com.example.slotify.dtos.maps.PlaceSuggestion
 import com.example.slotify.services.retrofit.GoogleMapsApiService
 import com.example.slotify.services.retrofit.RetrofitInstance
 import kotlinx.coroutines.Dispatchers

@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.slotify.R
 import com.example.slotify.databinding.FragmentSelectPhysicalDirectionBinding
-import com.example.slotify.fragments.mapsFragment.PlaceSuggestion
+import com.example.slotify.dtos.maps.PlaceSuggestion
 import com.example.slotify.fragments.mapsFragment.SuggestionAdapter
 import com.example.slotify.viewModels.EnterpriseRegistryViewModel
 import com.example.slotify.viewModels.LayoutViewModel

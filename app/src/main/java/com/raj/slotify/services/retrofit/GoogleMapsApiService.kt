@@ -1,6 +1,6 @@
 package com.example.slotify.services.retrofit
 
-import com.example.slotify.fragments.mapsFragment.PlaceSuggestion
+import com.example.slotify.dtos.maps.PlaceSuggestion
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header

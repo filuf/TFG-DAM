@@ -1,6 +1,5 @@
-package com.example.slotify.models.company
+package com.example.slotify.dtos.company
 
-// DATA CLASS WITH NULLABLE PROPERTIES TO SIMULATE NO ARGS CONSTRUCTOR
 data class RegisterCompanyRequest(
     var companyName: String? = null,
     var password: String? = null,

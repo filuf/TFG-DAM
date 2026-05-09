@@ -3,7 +3,7 @@ package com.example.slotify.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.slotify.fragments.mapsFragment.PlaceSuggestion
+import com.example.slotify.dtos.maps.PlaceSuggestion
 
 class EnterpriseRegistryViewModel: ViewModel() {
 

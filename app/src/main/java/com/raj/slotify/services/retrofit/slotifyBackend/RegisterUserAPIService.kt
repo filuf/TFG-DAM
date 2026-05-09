@@ -1,10 +1,9 @@
 package com.example.slotify.services.retrofit.slotifyBackend
 
-import com.example.slotify.fragments.mapsFragment.PlaceSuggestion
-import com.example.slotify.models.client.RegisterUserRequest
-import com.example.slotify.models.client.RegisterUserResponse
-import com.example.slotify.models.company.RegisterCompanyRequest
-import com.example.slotify.models.company.RegisterCompanyResponse
+import com.example.slotify.dtos.client.RegisterUserRequest
+import com.example.slotify.dtos.client.RegisterUserResponse
+import com.example.slotify.dtos.company.RegisterCompanyRequest
+import com.example.slotify.dtos.company.RegisterCompanyResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
