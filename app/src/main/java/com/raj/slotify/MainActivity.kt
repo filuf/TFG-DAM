@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.raj.slotify.databinding.ActivityMainBinding
-import com.raj.slotify.viewModels.MainViewModel
+import com.raj.slotify.viewModels.frontend.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 
