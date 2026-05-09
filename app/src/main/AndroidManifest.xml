@@ -22,7 +22,7 @@
         android:usesCleartextTraffic="true">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAL3pf190P8MFOME41a9Md6wDC3WtYGrq0" />
+            android:value="${GOOGLE_MAPS_KEY}" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
