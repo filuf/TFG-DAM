@@ -1,6 +1,7 @@
 package com.raj.slotify.models.company
 
 data class CompanyData (
+
     var defaultMaxCurrentServices: Int,
     var companyName: String,
     var phoneNumber: Int,
@@ -9,4 +10,5 @@ data class CompanyData (
     var s3ImageKey: String,
     var description: String,
     var rattingAVG: Float
+
 )
