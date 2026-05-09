@@ -3,6 +3,7 @@ package com.raj.slotify.dtos.maps
 import com.google.gson.annotations.SerializedName
 
 data class PlaceSuggestion(
+
     @SerializedName("display_name")
     val displayName: String,
 
@@ -11,4 +12,5 @@ data class PlaceSuggestion(
 
     @SerializedName("lon")
     val lon: Double
+
 )
