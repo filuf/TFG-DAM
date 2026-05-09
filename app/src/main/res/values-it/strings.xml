@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Slotify</string>
+    <string name="account_question">Hai già un account?</string>
+    <string name="welcome">Benvenuto nella nostra applicazione!</string>
+    <string name="or_word">oppure</string>
+    <string name="logon_button">Registrati</string>
+    <string name="login_button">Accedi</string>
+    <string name="hello_blank_fragment">Ciao, frammento vuoto</string>
+    <string name="change_language">Cambia lingua</string>
+    <string name="return_to_setup">&lt; Torna alla pagina principale</string>
+    <string name="system_language">Linguaggio di sistema</string>
+</resources>
