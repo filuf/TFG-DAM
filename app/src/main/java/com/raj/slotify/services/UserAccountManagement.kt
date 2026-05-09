@@ -1,7 +1,7 @@
-package com.example.slotify.services
+package com.raj.slotify.services
 
-import com.example.slotify.MainActivity
-import com.example.slotify.models.UserRegistryData
+import com.raj.slotify.MainActivity
+import com.raj.slotify.models.UserRegistryData
 
 class UserAccountManagement {
 

@@ -1,4 +1,4 @@
-package com.example.slotify.dtos.company
+package com.raj.slotify.dtos.company
 
 import com.google.gson.annotations.SerializedName
 import java.util.UUID

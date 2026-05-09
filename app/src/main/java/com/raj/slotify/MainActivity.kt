@@ -1,4 +1,4 @@
-package com.example.slotify
+package com.raj.slotify
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -6,8 +6,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.slotify.databinding.ActivityMainBinding
-import com.example.slotify.viewModels.MainViewModel
+import com.raj.slotify.databinding.ActivityMainBinding
+import com.raj.slotify.viewModels.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 

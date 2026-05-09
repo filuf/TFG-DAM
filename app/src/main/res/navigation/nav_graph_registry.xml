@@ -6,7 +6,7 @@
     app:startDestination="@id/selectUserTypeFragment">
     <fragment
         android:id="@+id/selectUserTypeFragment"
-        android:name="com.example.slotify.fragments.registry.userRegistry.SelectUserTypeFragment"
+        android:name="com.raj.slotify.fragments.registry.userRegistry.SelectUserTypeFragment"
         android:label="fragment_select_user_type"
         tools:layout="@layout/fragment_select_user_type" >
         <action
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/registryPhoneEmailFragment"
-        android:name="com.example.slotify.fragments.registry.userRegistry.RegistryPhoneEmailFragment"
+        android:name="com.raj.slotify.fragments.registry.userRegistry.RegistryPhoneEmailFragment"
         android:label="fragment_registry_phone_email"
         tools:layout="@layout/fragment_registry_phone_email">
         <action
@@ -24,7 +24,7 @@
     </fragment>
     <fragment
         android:id="@+id/passwordFragment"
-        android:name="com.example.slotify.fragments.registry.userRegistry.PasswordFragment"
+        android:name="com.raj.slotify.fragments.registry.userRegistry.PasswordFragment"
         android:label="fragment_password"
         tools:layout="@layout/fragment_password" >
         <action
@@ -36,12 +36,12 @@
     </fragment>
     <fragment
         android:id="@+id/endRegistryFragment"
-        android:name="com.example.slotify.fragments.registry.userRegistry.EndRegistryFragment"
+        android:name="com.raj.slotify.fragments.registry.userRegistry.EndRegistryFragment"
         android:label="fragment_end_registry"
         tools:layout="@layout/fragment_end_registry" />
     <fragment
         android:id="@+id/selectPhysicalDirectionFragment"
-        android:name="com.example.slotify.fragments.registry.enterpriseRegistry.SelectPhysicalDirectionFragment"
+        android:name="com.raj.slotify.fragments.registry.enterpriseRegistry.SelectPhysicalDirectionFragment"
         android:label="fragment_select_physical_direction"
         tools:layout="@layout/fragment_select_physical_direction" >
         <action
@@ -50,7 +50,7 @@
     </fragment>
     <fragment
         android:id="@+id/selectConcurrentServicesFragment"
-        android:name="com.example.slotify.fragments.registry.enterpriseRegistry.SelectConcurrentServicesFragment"
+        android:name="com.raj.slotify.fragments.registry.enterpriseRegistry.SelectConcurrentServicesFragment"
         android:label="fragment_select_concurrent_services"
         tools:layout="@layout/fragment_select_concurrent_services" >
         <action

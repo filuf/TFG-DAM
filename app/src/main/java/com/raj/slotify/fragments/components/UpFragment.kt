@@ -1,4 +1,4 @@
-package com.example.slotify.fragments.components
+package com.raj.slotify.fragments.components
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
-import com.example.slotify.databinding.FragmentUpBinding
-import com.example.slotify.viewModels.LayoutViewModel
-import com.example.slotify.viewModels.MainViewModel
+import com.raj.slotify.databinding.FragmentUpBinding
+import com.raj.slotify.viewModels.LayoutViewModel
+import com.raj.slotify.viewModels.MainViewModel
 
 class UpFragment : Fragment() {
 

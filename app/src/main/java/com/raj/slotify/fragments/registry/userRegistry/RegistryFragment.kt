@@ -1,4 +1,4 @@
-package com.example.slotify.fragments.registry.userRegistry
+package com.raj.slotify.fragments.registry.userRegistry
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,11 +11,11 @@ import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import com.example.slotify.R
-import com.example.slotify.databinding.FragmentRegistryBinding
-import com.example.slotify.viewModels.EnterpriseRegistryViewModel
-import com.example.slotify.viewModels.LayoutViewModel
-import com.example.slotify.viewModels.MainViewModel
+import com.raj.slotify.R
+import com.raj.slotify.databinding.FragmentRegistryBinding
+import com.raj.slotify.viewModels.EnterpriseRegistryViewModel
+import com.raj.slotify.viewModels.LayoutViewModel
+import com.raj.slotify.viewModels.MainViewModel
 
 class RegistryFragment : Fragment() {
 

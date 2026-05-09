@@ -1,8 +1,7 @@
-package com.example.slotify.services.retrofit
+package com.raj.slotify.services.retrofit
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import kotlin.reflect.KClass
 
 class RetrofitInstance {
     companion object {

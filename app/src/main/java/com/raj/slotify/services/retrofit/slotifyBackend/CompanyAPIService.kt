@@ -1,6 +1,6 @@
-package com.example.slotify.services.retrofit.slotifyBackend
+package com.raj.slotify.services.retrofit.slotifyBackend
 
-import com.example.slotify.dtos.maps.PlaceSuggestion
+import com.raj.slotify.dtos.maps.PlaceSuggestion
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

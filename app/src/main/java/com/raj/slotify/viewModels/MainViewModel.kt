@@ -1,4 +1,4 @@
-package com.example.slotify.viewModels
+package com.raj.slotify.viewModels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

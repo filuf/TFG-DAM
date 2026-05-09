@@ -13,7 +13,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragmentContainerView5"
-            android:name="com.example.slotify.fragments.components.TextNormalIconFragment"
+            android:name="com.raj.slotify.fragments.components.TextNormalIconFragment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="100dp"

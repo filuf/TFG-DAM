@@ -1,4 +1,4 @@
-package com.example.slotify.fragments.general
+package com.raj.slotify.fragments.general
 
 import android.os.Build
 import android.os.Bundle
@@ -12,9 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
-import com.example.slotify.R
-import com.example.slotify.databinding.FragmentLanguageBinding
-import com.example.slotify.viewModels.MainViewModel
+import com.raj.slotify.R
+import com.raj.slotify.databinding.FragmentLanguageBinding
+import com.raj.slotify.viewModels.MainViewModel
 
 class LanguageFragment : Fragment() {
 

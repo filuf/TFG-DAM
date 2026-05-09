@@ -1,4 +1,4 @@
-package com.example.slotify.fragments.registry.userRegistry
+package com.raj.slotify.fragments.registry.userRegistry
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,11 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
-import com.example.slotify.R
-import com.example.slotify.databinding.FragmentRegistryPhoneEmailBinding
-import com.example.slotify.viewModels.LayoutViewModel
-import com.example.slotify.viewModels.MainViewModel
-import com.example.slotify.viewModels.UserDataViewModel
+import com.raj.slotify.R
+import com.raj.slotify.databinding.FragmentRegistryPhoneEmailBinding
+import com.raj.slotify.viewModels.LayoutViewModel
+import com.raj.slotify.viewModels.MainViewModel
+import com.raj.slotify.viewModels.UserDataViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 

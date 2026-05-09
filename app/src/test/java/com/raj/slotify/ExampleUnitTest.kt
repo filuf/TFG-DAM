@@ -1,4 +1,4 @@
-package com.example.slotify
+package com.raj.slotify
 
 import org.junit.Test
 

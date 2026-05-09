@@ -1,9 +1,8 @@
-package com.example.slotify.viewModels
+package com.raj.slotify.viewModels
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.slotify.dtos.maps.PlaceSuggestion
+import com.raj.slotify.dtos.maps.PlaceSuggestion
 
 class EnterpriseRegistryViewModel: ViewModel() {
 

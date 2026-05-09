@@ -1,4 +1,4 @@
-package com.example.slotify.fragments.editUserData.client
+package com.raj.slotify.fragments.editUserData.client
 
 import android.app.Activity
 import android.content.Intent
@@ -14,11 +14,11 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.slotify.R
-import com.example.slotify.databinding.FragmentClientEditDataBinding
-import com.example.slotify.viewModels.LayoutViewModel
-import com.example.slotify.viewModels.MainViewModel
-import com.example.slotify.viewModels.UserDataViewModel
+import com.raj.slotify.R
+import com.raj.slotify.databinding.FragmentClientEditDataBinding
+import com.raj.slotify.viewModels.LayoutViewModel
+import com.raj.slotify.viewModels.MainViewModel
+import com.raj.slotify.viewModels.UserDataViewModel
 import kotlinx.coroutines.launch
 import java.io.File
 

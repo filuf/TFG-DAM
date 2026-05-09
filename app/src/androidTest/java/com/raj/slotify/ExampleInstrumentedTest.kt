@@ -1,4 +1,4 @@
-package com.example.slotify
+package com.raj.slotify
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

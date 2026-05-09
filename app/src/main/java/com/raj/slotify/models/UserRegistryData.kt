@@ -1,4 +1,4 @@
-package com.example.slotify.models
+package com.raj.slotify.models
 
 data class UserRegistryData(
     val userType: String,

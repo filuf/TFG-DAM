@@ -1,4 +1,4 @@
-package com.example.slotify.dtos.client
+package com.raj.slotify.dtos.client
 
 // COMPACT DATA CLASS FOR USER REGISTRATION REQUEST WITHOUT VALIDATIONS
 data class RegisterUserRequest(

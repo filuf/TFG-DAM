@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.slotify"
+    namespace = "com.raj.slotify"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.slotify"
+        applicationId = "com.raj.slotify"
         minSdk = 29
         targetSdk = 35
         versionCode = 1

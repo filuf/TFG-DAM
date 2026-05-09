@@ -1,4 +1,4 @@
-package com.example.slotify.dtos.company
+package com.raj.slotify.dtos.company
 
 data class RegisterCompanyRequest(
     var companyName: String? = null,

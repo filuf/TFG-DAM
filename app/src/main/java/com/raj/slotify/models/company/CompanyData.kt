@@ -1,4 +1,4 @@
-package com.example.slotify.models.company
+package com.raj.slotify.models.company
 
 data class CompanyData (
     var defaultMaxCurrentServices: Int,

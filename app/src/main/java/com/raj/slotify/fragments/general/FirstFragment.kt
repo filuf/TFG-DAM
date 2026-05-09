@@ -1,6 +1,5 @@
-package com.example.slotify.fragments.general
+package com.raj.slotify.fragments.general
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +10,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
-import com.example.slotify.R
-import com.example.slotify.databinding.FragmentFirstBinding
-import com.example.slotify.viewModels.LayoutViewModel
-import com.example.slotify.viewModels.MainViewModel
+import com.raj.slotify.R
+import com.raj.slotify.databinding.FragmentFirstBinding
+import com.raj.slotify.viewModels.LayoutViewModel
+import com.raj.slotify.viewModels.MainViewModel
 
 class FirstFragment : Fragment() {
 

@@ -1,13 +1,13 @@
-package com.example.slotify.viewModels
+package com.raj.slotify.viewModels
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.slotify.dtos.maps.PlaceSuggestion
-import com.example.slotify.services.retrofit.GoogleMapsApiService
-import com.example.slotify.services.retrofit.RetrofitInstance
+import com.raj.slotify.dtos.maps.PlaceSuggestion
+import com.raj.slotify.services.retrofit.GoogleMapsApiService
+import com.raj.slotify.services.retrofit.RetrofitInstance
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

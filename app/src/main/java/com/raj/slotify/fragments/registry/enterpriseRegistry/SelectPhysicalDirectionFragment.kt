@@ -1,4 +1,4 @@
-package com.example.slotify.fragments.registry.enterpriseRegistry
+package com.raj.slotify.fragments.registry.enterpriseRegistry
 
 import android.content.Intent
 import android.net.Uri
@@ -13,28 +13,24 @@ import androidx.core.net.toUri
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.slotify.R
-import com.example.slotify.databinding.FragmentSelectPhysicalDirectionBinding
-import com.example.slotify.dtos.maps.PlaceSuggestion
-import com.example.slotify.fragments.mapsFragment.SuggestionAdapter
-import com.example.slotify.viewModels.EnterpriseRegistryViewModel
-import com.example.slotify.viewModels.LayoutViewModel
-import com.example.slotify.viewModels.MainViewModel
-import com.example.slotify.viewModels.MapViewModel
-import com.example.slotify.viewModels.UserDataViewModel
+import com.raj.slotify.R
+import com.raj.slotify.databinding.FragmentSelectPhysicalDirectionBinding
+import com.raj.slotify.dtos.maps.PlaceSuggestion
+import com.raj.slotify.fragments.mapsFragment.SuggestionAdapter
+import com.raj.slotify.viewModels.EnterpriseRegistryViewModel
+import com.raj.slotify.viewModels.LayoutViewModel
+import com.raj.slotify.viewModels.MainViewModel
+import com.raj.slotify.viewModels.MapViewModel
+import com.raj.slotify.viewModels.UserDataViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SelectPhysicalDirectionFragment : Fragment(), OnMapReadyCallback {

@@ -1,4 +1,4 @@
-package com.example.slotify.models.client
+package com.raj.slotify.models.client
 
 data class ClientData (
     var userName: String,

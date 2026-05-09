@@ -1,20 +1,18 @@
-package com.example.slotify.fragments.registry.enterpriseRegistry
+package com.raj.slotify.fragments.registry.enterpriseRegistry
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.NumberPicker
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
-import com.example.slotify.R
-import com.example.slotify.databinding.FragmentSelectConcurrentServicesBinding
-import com.example.slotify.viewModels.EnterpriseRegistryViewModel
-import com.example.slotify.viewModels.LayoutViewModel
-import com.example.slotify.viewModels.MainViewModel
-import com.example.slotify.viewModels.UserDataViewModel
+import com.raj.slotify.R
+import com.raj.slotify.databinding.FragmentSelectConcurrentServicesBinding
+import com.raj.slotify.viewModels.EnterpriseRegistryViewModel
+import com.raj.slotify.viewModels.LayoutViewModel
+import com.raj.slotify.viewModels.MainViewModel
 import kotlinx.coroutines.launch
 import kotlin.getValue
 

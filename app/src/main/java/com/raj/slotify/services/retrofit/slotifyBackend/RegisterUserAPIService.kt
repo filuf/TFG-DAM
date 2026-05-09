@@ -1,9 +1,9 @@
-package com.example.slotify.services.retrofit.slotifyBackend
+package com.raj.slotify.services.retrofit.slotifyBackend
 
-import com.example.slotify.dtos.client.RegisterUserRequest
-import com.example.slotify.dtos.client.RegisterUserResponse
-import com.example.slotify.dtos.company.RegisterCompanyRequest
-import com.example.slotify.dtos.company.RegisterCompanyResponse
+import com.raj.slotify.dtos.client.RegisterUserRequest
+import com.raj.slotify.dtos.client.RegisterUserResponse
+import com.raj.slotify.dtos.company.RegisterCompanyRequest
+import com.raj.slotify.dtos.company.RegisterCompanyResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST

@@ -1,19 +1,18 @@
-package com.example.slotify.fragments.registry.userRegistry
+package com.raj.slotify.fragments.registry.userRegistry
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
-import com.example.slotify.R
-import com.example.slotify.databinding.FragmentSelectUserTypeBinding
-import com.example.slotify.viewModels.LayoutViewModel
-import com.example.slotify.viewModels.MainViewModel
-import com.example.slotify.viewModels.UserDataViewModel
+import com.raj.slotify.R
+import com.raj.slotify.databinding.FragmentSelectUserTypeBinding
+import com.raj.slotify.viewModels.LayoutViewModel
+import com.raj.slotify.viewModels.MainViewModel
+import com.raj.slotify.viewModels.UserDataViewModel
 
 class SelectUserTypeFragment : Fragment() {
 
