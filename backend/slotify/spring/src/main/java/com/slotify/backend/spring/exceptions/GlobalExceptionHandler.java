@@ -2,6 +2,7 @@ package com.slotify.backend.spring.exceptions;
 
 
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
@@ -61,6 +62,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .body("message: La propiedad " + exc.getPropertyName() + " no está permitida");
     }
 
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleEntityNotFoundException(EntityNotFoundException exc) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", "La entidad no existe");
+        error.put("message", exc.getMessage());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
     @ExceptionHandler(AlreadyExistsException.class)
     public ResponseEntity<Map<String, String>> handleAlreadyExistsException(AlreadyExistsException exc) {
         Map<String, String> error = new HashMap<>();
@@ -89,6 +99,25 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         error.put("message", exc.getMessage());
         exc.getOptOverlap()
                 .ifPresent(overlap -> error.put("overlap", overlap));
+
+        return ResponseEntity.status(exc.getHttpStatus()).body(error);
+    }
+
+    @ExceptionHandler(ReservationBadRequestException.class)
+    public ResponseEntity<Map<String, Object>> handleReservationBadRequestException(ReservationBadRequestException exc) {
+        Map<String, Object> error = new HashMap<>();
+        error.put("error", "error en los datos en reserva");
+        error.put("message", exc.getMessage());
+
+        return ResponseEntity.status(exc.getHttpStatus()).body(error);
+    }
+    @ExceptionHandler(ReservationConflictException.class)
+    public ResponseEntity<Map<String, Object>> handleReservationConflictException(ReservationConflictException exc) {
+        Map<String, Object> error = new HashMap<>();
+        error.put("error", "Conflicto en reserva");
+        error.put("message", exc.getMessage());
+        exc.getReserveId()
+                .ifPresent(reserveId -> error.put("reserveId", reserveId));
 
         return ResponseEntity.status(exc.getHttpStatus()).body(error);
     }

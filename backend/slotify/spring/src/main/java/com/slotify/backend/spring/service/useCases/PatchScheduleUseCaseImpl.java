@@ -68,7 +68,7 @@ public class PatchScheduleUseCaseImpl implements PatchScheduleUseCase {
                 day.getValue(),
                 day.plus(1).getValue()
         );
-        List<ServiceScheduleEntity> schedules = this.serviceScheduleService.findByServiceAndDayOfWeekIn(serviceEntity, days);
+        List<ServiceScheduleEntity> schedules = this.serviceScheduleService.findAllByServiceAndDayOfWeekIn(serviceEntity, days);
         schedules = schedules.stream().filter(schedule -> schedule.getId() != scheduleId).toList();
 
         List<ServiceScheduleEntity> overlaps = schedules.stream()

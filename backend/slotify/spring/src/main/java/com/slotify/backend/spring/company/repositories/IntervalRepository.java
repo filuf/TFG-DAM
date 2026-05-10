@@ -7,8 +7,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import java.util.List;
 import java.util.UUID;
 
-public interface IntervalRepository extends JpaRepository<CompanyIntervalEntity, UUID>,
-        JpaSpecificationExecutor<CompanyIntervalEntity> {
+public interface IntervalRepository extends JpaRepository<CompanyIntervalEntity, UUID>, JpaSpecificationExecutor<CompanyIntervalEntity> {
 
     List<CompanyIntervalEntity> findByCompany_UserId(UUID userId);
 }

@@ -13,7 +13,7 @@ public class CompanyOwnershipValidator {
 
     public void verify(UUID companyId, CompanyEntity companyEntity) {
         if (!companyEntity.getUserId().equals(companyId)) {
-            log.warn("Un usuario de otra empresa intenta creat un intervalo de forma ilegal, usuarioMalvado: {}, empresaAtacada: {}",
+            log.warn("Un usuario de otra empresa intenta crear un intervalo de forma ilegal, usuarioMalvado: {}, empresaAtacada: {}",
                     companyId, companyEntity.getCompanyName());
             throw new AccessDeniedException("No posees los permisos necesarios para modificar este recurso");
         }

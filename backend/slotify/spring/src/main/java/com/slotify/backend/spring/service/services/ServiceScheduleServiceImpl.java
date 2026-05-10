@@ -17,7 +17,7 @@ public class ServiceScheduleServiceImpl implements ServiceScheduleService {
     private final ServiceScheduleRepository serviceScheduleRepository;
 
     @Override
-    public List<ServiceScheduleEntity> findByServiceAndDayOfWeekIn(ServiceEntity serviceEntity, List<Integer> days) {
+    public List<ServiceScheduleEntity> findAllByServiceAndDayOfWeekIn(ServiceEntity serviceEntity, List<Integer> days) {
         return this.serviceScheduleRepository.findByServiceAndDayOfWeekIn(serviceEntity, days);
     }
 
