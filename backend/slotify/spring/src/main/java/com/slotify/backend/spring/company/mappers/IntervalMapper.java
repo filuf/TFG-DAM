@@ -1,9 +1,9 @@
 package com.slotify.backend.spring.company.mappers;
 
 import com.slotify.backend.spring.company.dtos.CreateIntervalResponse;
+import com.slotify.backend.spring.company.dtos.IntervalSummary;
 import com.slotify.backend.spring.company.models.CompanyEntity;
 import com.slotify.backend.spring.company.models.CompanyIntervalEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -28,5 +28,15 @@ public class IntervalMapper {
                 .startDatetime(intervalEntity.getStartDatetime())
                 .endDatetime(intervalEntity.getEndDatetime())
                 .build();
+    }
+
+    public IntervalSummary toIntervalSummary(CompanyIntervalEntity intervalEntity) {
+        IntervalSummary summary = new IntervalSummary();
+        summary.setIntervalId(intervalEntity.getIntervalId());
+        summary.setStartDateTime(intervalEntity.getStartDatetime());
+        summary.setEndDateTime(intervalEntity.getEndDatetime());
+        summary.setCreatedAt(intervalEntity.getCreatedAt());
+        summary.setMaxConcurrentServices(intervalEntity.getMaxConcurrentServices());
+        return summary;
     }
 }
