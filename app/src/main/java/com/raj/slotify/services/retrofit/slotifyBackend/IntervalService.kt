@@ -18,6 +18,6 @@ interface IntervalService {
     suspend fun deleteInterval(
         @Header("Authorization") authHeader: String,
         @Path("intervalId") intervalId: UUID
-    )
+    ): Response<Void>
 
 }
