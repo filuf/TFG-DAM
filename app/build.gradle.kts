@@ -23,7 +23,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        manifestPlaceholders["appAuthRedirectScheme"] = "com.raj.slotify"
+        manifestPlaceholders += mapOf(
+            "appAuthRedirectScheme" to "com.raj.slotify"
+        )
 
         buildConfigField("Boolean", "DEBUG_MODE", "false")
 
@@ -60,6 +62,8 @@ android {
 
 dependencies {
     // Core y UI base
+    implementation(libs.net.openid.appauth)
+
     implementation("androidx.core:core-ktx:1.15.0")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation(libs.material)

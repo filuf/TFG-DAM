@@ -1,46 +1,40 @@
 package com.raj.slotify.services
 
-import android.net.Uri
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.raj.slotify.R
-import net.openid.appauth.AppAuthConfiguration
-import net.openid.appauth.AuthState
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationRequest
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
 import net.openid.appauth.AuthorizationServiceConfiguration
 import net.openid.appauth.ResponseTypeValues
+import androidx.core.net.toUri
 import net.openid.appauth.connectivity.ConnectionBuilder
-import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
+import android.net.Uri
+import org.json.JSONObject
 import java.nio.charset.Charset
+import android.util.Base64
+import com.raj.slotify.R
 
 class MainActivity1 : AppCompatActivity() {
 
     private lateinit var authService: AuthorizationService
-    private var authState: AuthState = AuthState()
 
-    // 1. Definimos una configuración que permita HTTP
-    private val appAuthConfiguration = AppAuthConfiguration.Builder()
+    // 1. Definimos una configuración que permita HTTP (esto es lo que evita el Crash)
+    private val appAuthConfiguration = net.openid.appauth.AppAuthConfiguration.Builder()
         .setConnectionBuilder(HttpConnectionBuilder)
         .setSkipIssuerHttpsCheck(true)
         .build()
 
-    /**
-     * Obtiene el token de acceso y dependiendo de la respuesta de keycloak, accedes o no
-     */
     private val getAuthResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             result ->
         if (result.resultCode == RESULT_OK) {
@@ -55,6 +49,8 @@ class MainActivity1 : AppCompatActivity() {
             }
         }
     }
+
+
 
     /**
      * Esto cambia el código por un token temporal
@@ -109,13 +105,13 @@ class MainActivity1 : AppCompatActivity() {
             doLogin()
         }
     }
-    /**
-    Los primeros pasos son:
-    1.- Configurar endpoints
-    2.- Crear request
-    3.- Lanzar el navegador
-     */
     private fun doLogin() {
+        /*
+        Los primeros pasos son:
+        1.- Configurar endpoints
+        2.- Crear request
+        3.- Lanzar el navegador
+         */
         //Para saber de dónde salen las URLS, debemos dirigirnos a http://auth.127.0.0.1.nip.io/realms/master/.well-known/openid-configuration
         //Esto sirve para configurar los puertos de conexión (como el propio nombre indica)
         val serviceConfig = AuthorizationServiceConfiguration(
@@ -126,9 +122,9 @@ class MainActivity1 : AppCompatActivity() {
         //Creamos la petición
         val authRequest = AuthorizationRequest.Builder(
             serviceConfig,
-            "slotify-android",
+            "android-app-client",
             ResponseTypeValues.CODE,
-            "com.example.slotify://oauth2redirect".toUri()
+            "com.raj.slotify://oauth2redirect".toUri()
         ).build()
 
         val authIntent = authService.getAuthorizationRequestIntent(authRequest)
@@ -137,9 +133,6 @@ class MainActivity1 : AppCompatActivity() {
         Toast.makeText(this, "Abriendo Keycloak...", Toast.LENGTH_SHORT).show()
     }
 
-    /**
-     * Construye una conexión HTTP para poder conectarse a keycloak
-     */
     object HttpConnectionBuilder : ConnectionBuilder {
         override fun openConnection(uri: Uri): HttpURLConnection {
             val conn = URL(uri.toString()).openConnection() as HttpURLConnection
@@ -150,34 +143,4 @@ class MainActivity1 : AppCompatActivity() {
             return conn
         }
     }
-
-    /**
-     * Refresca el token automaticamente y ejecuta un callback al que le paso
-     * un access token
-     */
-    fun llamarABackend(callback: (String) -> Unit) {
-        authState.performActionWithFreshTokens(authService) { accessToken, idToken, ex ->
-            if (ex != null) {
-                Log.e("AUTH", "Error al refrescar token: ${ex.message}")
-                return@performActionWithFreshTokens
-            }
-
-            if (accessToken != null) {
-                callback(accessToken)
-            }
-        }
-    }
-    //Example de request a servidor
-    /*
-     private fun enviarTokenAlServidor(token: String) {
-        val cliente = OkHttpClient()
-        val request = Request.Builder()
-            .url("http://tu-api.com/datos")
-            .addHeader("Authorization", "Bearer $token") // <--- IMPORTANTE
-            .build()
-
-        // Ejecutar la llamada...
-    }
-     */
-
 }
