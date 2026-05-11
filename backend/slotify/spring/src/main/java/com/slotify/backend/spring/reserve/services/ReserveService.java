@@ -15,6 +15,9 @@ public interface ReserveService {
 
     ReserveEntity saveReserve(ReserveEntity reserve);
     Optional<ReserveEntity> findReserveById(UUID reserveId);
+
+    Optional<ReserveEntity> findReserveByIdAndAccountType(UUID reserveId, UUID accountId, AccountType accountType);
+
     List<ReserveEntity> findReservesByUserId(UUID userId);
     List<ReserveEntity> findAllReservesByUserIdBetweenDateTimes(UUID userId, LocalDateTime start, LocalDateTime end);
     List<ReserveEntity> findAllReservesByCompanyIdBetweenDateTimes(UUID companyId, LocalDateTime start, LocalDateTime end);

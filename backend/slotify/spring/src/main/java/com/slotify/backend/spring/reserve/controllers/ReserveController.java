@@ -7,6 +7,7 @@ import com.slotify.backend.spring.reserve.dtos.ReserveSummary;
 import com.slotify.backend.spring.reserve.enums.ReserveFetchType;
 import com.slotify.backend.spring.reserve.useCases.CancelReserveUseCase;
 import com.slotify.backend.spring.reserve.useCases.CreateReserveUseCase;
+import com.slotify.backend.spring.reserve.useCases.GetReserveByIdUseCase;
 import com.slotify.backend.spring.reserve.useCases.GetReservesUseCase;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,25 @@ public class ReserveController {
     private final CreateReserveUseCase createReserveUseCase;
     private final CancelReserveUseCase cancelReserveUseCase;
     private final GetReservesUseCase getReservesUseCase;
+    private final GetReserveByIdUseCase getReserveByIdUseCase;
+
+    @GetMapping("/{reserveId}")
+    @PreAuthorize("hasAnyRole('USER','COMPANY')")
+    public ResponseEntity<ReserveSummary> getReserve(
+            @PathVariable UUID reserveId,
+            @AuthenticationPrincipal Jwt jwt
+    ) {
+
+        AccountType accountType = AccountType.fromType(jwt.getClaim("account-type"));
+
+        ReserveSummary reserve = this.getReserveByIdUseCase.getReserve(
+                reserveId,
+                UUID.fromString(jwt.getSubject()),
+                accountType
+        );
+
+        return ResponseEntity.ok(reserve);
+    }
 
     @GetMapping()
     @PreAuthorize("hasAnyRole('USER','COMPANY')")
