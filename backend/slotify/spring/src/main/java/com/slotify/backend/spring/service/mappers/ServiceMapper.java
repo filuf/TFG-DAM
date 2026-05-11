@@ -4,6 +4,7 @@ import com.slotify.backend.spring.company.dtos.GetServicesResponse;
 import com.slotify.backend.spring.company.models.CompanyEntity;
 import com.slotify.backend.spring.service.dtos.CreateServiceResponse;
 import com.slotify.backend.spring.service.dtos.ScheduleSummary;
+import com.slotify.backend.spring.service.dtos.ServiceSummary;
 import com.slotify.backend.spring.service.enums.ServiceFetchMode;
 import com.slotify.backend.spring.service.models.ServiceEntity;
 import com.slotify.backend.spring.service.models.ServiceScheduleEntity;
@@ -61,6 +62,25 @@ public class ServiceMapper {
                 .dayOfWeek(scheduleEntity.getDayOfWeek())
                 .startTime(scheduleEntity.getStartTime())
                 .endTime(scheduleEntity.getEndTime())
+                .build();
+    }
+
+    public ServiceSummary toServiceSummary(ServiceEntity service) {
+        return ServiceSummary.builder()
+                .serviceId(service.getServiceId())
+                .serviceName(service.getServiceName())
+                .description(service.getDescription())
+                .serviceMinutesDuration(service.getServiceMinutesDuration())
+                .servicePriceCent(service.getServicePriceCent())
+                .s3ImageKey(service.getS3ImageKey())
+                .schedules(service.getSchedules().stream().map(
+                                schedule -> ScheduleSummary.builder()
+                                        .id(schedule.getId())
+                                        .dayOfWeek(schedule.getDayOfWeek())
+                                        .startTime(schedule.getStartTime())
+                                        .endTime(schedule.getEndTime())
+                                        .build())
+                        .toList())
                 .build();
     }
 }

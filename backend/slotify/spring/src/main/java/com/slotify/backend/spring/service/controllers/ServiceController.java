@@ -1,11 +1,9 @@
 package com.slotify.backend.spring.service.controllers;
 
-import com.slotify.backend.spring.service.dtos.CreateServiceRequest;
-import com.slotify.backend.spring.service.dtos.CreateServiceResponse;
-import com.slotify.backend.spring.service.dtos.CreateServiceScheduleRequest;
-import com.slotify.backend.spring.service.dtos.CreateServiceScheduleResponse;
+import com.slotify.backend.spring.service.dtos.*;
 import com.slotify.backend.spring.service.useCases.CreateServiceScheduleUseCase;
 import com.slotify.backend.spring.service.useCases.CreateServiceUseCase;
+import com.slotify.backend.spring.service.useCases.GetServiceSchedulesUseCase;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +22,7 @@ public class ServiceController {
 
     private final CreateServiceUseCase createServiceUseCase;
     private final CreateServiceScheduleUseCase createServiceScheduleUseCase;
+    private final GetServiceSchedulesUseCase getServiceSchedulesUseCase;
 
     @PostMapping()
     @PreAuthorize("hasRole('COMPANY')")
@@ -41,6 +40,17 @@ public class ServiceController {
 
         return ResponseEntity.created(URI.create("/service/" + createServiceResponse.getServiceId()))
                 .body(createServiceResponse);
+    }
+
+    @PreAuthorize("hasAnyRole('USER','COMPANY')")
+    @GetMapping("/{serviceId}/schedules")
+    public ResponseEntity<ServiceSummary> getServiceSchedules(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable UUID serviceId
+    ) {
+        ServiceSummary serviceSummary = this.getServiceSchedulesUseCase.getServiceSummary(serviceId);
+
+        return ResponseEntity.ok(serviceSummary);
     }
 
 
