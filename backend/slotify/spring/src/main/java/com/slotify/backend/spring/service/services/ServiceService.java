@@ -24,4 +24,6 @@ public interface ServiceService {
     List<Integer> findAllMinuteDurationServicesByCompanyIdOrderAsc(UUID companyId);
 
     List<ServiceScheduleDTO> findServicesWithSchedulesByCompanyIdAndDays(UUID companyId, List<Integer> days);
+
+    Optional<ServiceEntity> findServiceWithSchedulesById(UUID serviceId);
 }

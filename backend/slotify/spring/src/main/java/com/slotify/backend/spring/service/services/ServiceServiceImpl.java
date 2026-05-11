@@ -60,4 +60,9 @@ public class ServiceServiceImpl implements ServiceService {
     public List<ServiceScheduleDTO> findServicesWithSchedulesByCompanyIdAndDays(UUID companyId, List<Integer> days) {
         return this.serviceRepository.findServiceSchedulesDTOByCompanyIdAndDays(companyId, days);
     }
+
+    @Override
+    public Optional<ServiceEntity> findServiceWithSchedulesById(UUID serviceId) {
+        return this.serviceRepository.findWithSchedulesByServiceId(serviceId);
+    }
 }
