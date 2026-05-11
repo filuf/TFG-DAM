@@ -1,5 +1,6 @@
 package com.slotify.backend.spring.reserve.components.fetch;
 
+import com.slotify.backend.spring.auth.enums.AccountType;
 import com.slotify.backend.spring.reserve.dtos.ReserveSummary;
 import com.slotify.backend.spring.reserve.enums.ReserveFetchType;
 import org.springframework.data.domain.Page;
@@ -11,4 +12,6 @@ public interface ReserveFetcher<T extends ReserveSummary> {
 
 
     Page<T> fetch(UUID accountId, ReserveFetchType reserveFetchType, Pageable pageable);
+
+    T fetchById(UUID reserveId, UUID accountId, AccountType accountType);
 }
