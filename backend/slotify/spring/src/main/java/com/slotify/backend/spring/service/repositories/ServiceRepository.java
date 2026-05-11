@@ -53,4 +53,7 @@ public interface ServiceRepository extends JpaRepository<ServiceEntity, UUID> {
             @Param("companyId") UUID companyId,
             @Param("days") List<Integer> days
     );
+
+    @EntityGraph(attributePaths = {"schedules"})
+    Optional<ServiceEntity> findWithSchedulesByServiceId(UUID serviceId);
 }
