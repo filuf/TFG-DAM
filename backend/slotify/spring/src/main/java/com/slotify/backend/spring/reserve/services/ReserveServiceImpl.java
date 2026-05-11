@@ -33,6 +33,30 @@ public class ReserveServiceImpl implements ReserveService {
     }
 
     @Override
+    public Optional<ReserveEntity> findReserveByIdAndAccountType(UUID reserveId, UUID accountId, AccountType accountType) {
+
+        Specification<ReserveEntity> spec = ((root, query, cb) -> {
+
+            Predicate reservePred = cb.equal(root.get("reserveId"), reserveId);
+
+            Predicate userPred = switch (accountType) {
+                case USER -> {
+                    root.fetch("service").fetch("company");
+                    yield cb.equal(root.get("user").get("userId"), accountId);
+                }
+                case COMPANY -> {
+                    root.fetch("user");
+                    root.fetch("service");
+                    yield cb.equal(root.get("service").get("company").get("userId"), accountId);
+                }
+            };
+
+            return cb.and(reservePred, userPred);
+        });
+        return this.reserveRepository.findOne(spec);
+    }
+
+    @Override
     public List<ReserveEntity> findReservesByUserId(UUID userId) {
         return this.reserveRepository.findByUser_UserId(userId);
     }
