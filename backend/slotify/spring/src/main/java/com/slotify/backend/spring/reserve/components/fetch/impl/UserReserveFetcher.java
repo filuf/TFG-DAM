@@ -6,6 +6,7 @@ import com.slotify.backend.spring.reserve.components.fetch.ReserveFetcher;
 import com.slotify.backend.spring.reserve.dtos.ReserveSummary;
 import com.slotify.backend.spring.reserve.dtos.UserReserveSummary;
 import com.slotify.backend.spring.reserve.enums.ReserveFetchType;
+import com.slotify.backend.spring.reserve.mappers.ReserveMapper;
 import com.slotify.backend.spring.reserve.models.ReserveEntity;
 import com.slotify.backend.spring.reserve.services.ReserveService;
 import com.slotify.backend.spring.service.models.ServiceEntity;
@@ -21,6 +22,7 @@ import java.util.UUID;
 public class UserReserveFetcher implements ReserveFetcher<UserReserveSummary> {
 
     private final ReserveService reserveService;
+    private final ReserveMapper reserveMapper;
 
     @Override
     public Page<UserReserveSummary> fetch(UUID accountId, ReserveFetchType reserveFetchType, Pageable pageable) {
@@ -31,25 +33,6 @@ public class UserReserveFetcher implements ReserveFetcher<UserReserveSummary> {
                 pageable
         );
 
-        return reserves.map(entity -> {
-
-            ServiceEntity service = entity.getService();
-            CompanyEntity company = service.getCompany();
-
-            return UserReserveSummary.builder()
-                    .reserveId(entity.getReserveId())
-                    .serviceId(service.getServiceId())
-                    .companyId(company.getUserId())
-                    .companyName(company.getCompanyName())
-                    .companyPhisicalAddress(company.getPhysicalAddress())
-                    .companyImageUrl(company.getS3ImageKey()) // todo: modificar
-                    .startDateTime(entity.getServiceTime())
-                    .endDateTime(entity.getServiceTime().plusMinutes(service.getServiceMinutesDuration()))
-                    .minutesDuration(service.getServiceMinutesDuration())
-                    .serviceName(service.getServiceName())
-                    .servicePriceCent(service.getServicePriceCent())
-                    .isCanceled(entity.isCanceled())
-                    .build();
-        });
+        return reserves.map(this.reserveMapper::getUserReserveSummary);
     }
 }

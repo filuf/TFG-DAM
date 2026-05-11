@@ -4,6 +4,7 @@ import com.slotify.backend.spring.auth.enums.AccountType;
 import com.slotify.backend.spring.reserve.components.fetch.ReserveFetcher;
 import com.slotify.backend.spring.reserve.dtos.CompanyReserveSummary;
 import com.slotify.backend.spring.reserve.enums.ReserveFetchType;
+import com.slotify.backend.spring.reserve.mappers.ReserveMapper;
 import com.slotify.backend.spring.reserve.models.ReserveEntity;
 import com.slotify.backend.spring.reserve.services.ReserveService;
 import com.slotify.backend.spring.service.models.ServiceEntity;
@@ -20,33 +21,17 @@ import java.util.UUID;
 public class CompanyReserveFetcher implements ReserveFetcher<CompanyReserveSummary> {
 
     private final ReserveService reserveService;
+    private final ReserveMapper reserveMapper;
 
     @Override
     public Page<CompanyReserveSummary> fetch(UUID accountId, ReserveFetchType reserveFetchType, Pageable pageable) {
-        Page<ReserveEntity> allReservesByAccountIdAndAccountTypeAndFetchType = this.reserveService.findAllReservesByAccountIdAndAccountTypeAndFetchType(
+        Page<ReserveEntity> reserves = this.reserveService.findAllReservesByAccountIdAndAccountTypeAndFetchType(
                 accountId,
                 AccountType.COMPANY,
                 reserveFetchType,
                 pageable
         );
 
-        return allReservesByAccountIdAndAccountTypeAndFetchType.map(entity -> {
-            UserEntity user = entity.getUser();
-            ServiceEntity service = entity.getService();
-
-            return CompanyReserveSummary.builder()
-                    .reserveId(entity.getReserveId())
-                    .serviceId(service.getServiceId())
-                    .userId(user.getUserId())
-                    .userName(user.getUsername())
-                    .userImageUrl(user.getS3ImageKey()) // todo: cambiar
-                    .startDateTime(entity.getServiceTime())
-                    .endDateTime(entity.getServiceTime().plusMinutes(service.getServiceMinutesDuration()))
-                    .minutesDuration(service.getServiceMinutesDuration())
-                    .serviceName(service.getServiceName())
-                    .servicePriceCent(service.getServicePriceCent())
-                    .isCanceled(entity.isCanceled())
-                    .build();
-        });
+        return reserves.map(this.reserveMapper::getCompanyReserveSummary);
     }
 }
