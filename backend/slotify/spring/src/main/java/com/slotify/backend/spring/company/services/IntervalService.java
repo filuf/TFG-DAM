@@ -1,5 +1,6 @@
 package com.slotify.backend.spring.company.services;
 
+import com.slotify.backend.spring.company.enums.IntervalFetchMode;
 import com.slotify.backend.spring.company.models.CompanyIntervalEntity;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,10 @@ public interface IntervalService {
 
 
     List<CompanyIntervalEntity> findIntervalsByCompanyId(UUID companyId);
+
+    List<CompanyIntervalEntity> findIntervalsByCompanyId(UUID companyId, IntervalFetchMode fetchMode);
+
+    void deleteInterval(UUID intervalId);
 
     Optional<CompanyIntervalEntity> findIntervalById(UUID intervalId);
 
