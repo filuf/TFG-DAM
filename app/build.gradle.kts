@@ -8,6 +8,7 @@ if (localPropertiesFile.exists()) {
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("com.google.devtools.ksp")// Habilitar KSP
 }
 
 android {
@@ -77,6 +78,8 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:1.8.5")
     implementation(libs.androidx.recyclerview)
     implementation(libs.play.services.maps)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.fragment)
 
     // Ciclo de vida (ViewModel y LiveData)
     val lifecycleVersion = "2.8.7"
@@ -108,4 +111,12 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+
+    // Room
+    val room_version = "2.8.4"
+
+    implementation("androidx.room:room-runtime:$room_version")
+    ksp(libs.androidx.room.compiler)
+// optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:${room_version}")
 }
