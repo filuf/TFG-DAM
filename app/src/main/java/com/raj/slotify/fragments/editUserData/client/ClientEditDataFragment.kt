@@ -14,6 +14,8 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentClientEditDataBinding
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
@@ -127,15 +129,55 @@ class ClientEditDataFragment : Fragment() {
             openImagePicker()
         }
 
+        val ccp = binding.ccp
+        val phoneInput = binding.phoneInput
+        ccp.registerCarrierNumberEditText(phoneInput)
+
         viewLifecycleOwner.lifecycleScope.launch {
             layoutViewModel.nextButtonClicked.collect {
 
                 val userName: String = binding.userNameText.text.toString()
-                viewModelData.setName(userName)
+                val phone: String = ccp.fullNumberWithPlus
+                val isValid = ccp.isValidFullNumber
+                val email: String = binding.emailInput.text.toString()
 
-                // TODO: HACER ALGO CON EL USERNAME
+                if (email.isEmpty() ||
+                    phone.isEmpty() ||
+                    userName.isEmpty()) {
 
-                imageUri?.let { viewModelData.setImageUri(it) }
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle(getString(R.string.email_phone_empty_title))
+                        .setMessage(getString(R.string.email_phone_empty_camps))
+                        .setPositiveButton(getString(R.string.dialog_retry), null)
+                        .show()
+                }
+                else if (!isValid) {
+
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle(getString(R.string.phone_invalid_title))
+                        .setMessage(getString(R.string.phone_invalid_message))
+                        .setPositiveButton(getString(R.string.dialog_retry), null)
+                        .show()
+
+                } else {
+                    // TODO: CONECTAR A BASE DE DATOS Y VERIFICAR QUE EXISTA UN USUARIO CON ESE EMAIL O TELÉFONO
+
+                    var phoneNumberExists = false
+                    var emailExists = false
+
+                    if (phoneNumberExists || emailExists) {
+                        // TODO: REDIRIGIR AL USUARIO A LA PANTALLA DE INICIO
+                    }
+
+                    viewModelData.setPhone(phone)
+                    viewModelData.setEmail(email)
+                    viewModelData.setName(userName)
+
+                    imageUri?.let { viewModelData.setImageUri(it) }
+
+                    view.findNavController()
+                        .navigate(R.id.action_clientRegistryPhoneEmailFragment2_to_passwordFragment)
+                }
             }
         }
     }

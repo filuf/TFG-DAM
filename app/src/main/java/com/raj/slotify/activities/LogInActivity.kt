@@ -1,61 +1,52 @@
-package com.raj.slotify.services
+package com.raj.slotify.activities
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
-import android.widget.Button
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.core.net.toUri
+import com.raj.slotify.MainActivity
+import net.openid.appauth.AppAuthConfiguration
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationRequest
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
 import net.openid.appauth.AuthorizationServiceConfiguration
 import net.openid.appauth.ResponseTypeValues
-import androidx.core.net.toUri
 import net.openid.appauth.connectivity.ConnectionBuilder
+import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
-import android.net.Uri
-import org.json.JSONObject
 import java.nio.charset.Charset
-import android.util.Base64
-import com.raj.slotify.R
+import java.util.Optional
 
-class MainActivity1 : AppCompatActivity() {
+class LogInActivity : AppCompatActivity() {
 
     private lateinit var authService: AuthorizationService
 
     // 1. Definimos una configuración que permita HTTP (esto es lo que evita el Crash)
-    private val appAuthConfiguration = net.openid.appauth.AppAuthConfiguration.Builder()
+    private val appAuthConfiguration = AppAuthConfiguration.Builder()
         .setConnectionBuilder(HttpConnectionBuilder)
         .setSkipIssuerHttpsCheck(true)
         .build()
 
-    private val getAuthResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            result ->
-        if (result.resultCode == RESULT_OK) {
-            val data = result.data
-            val response = AuthorizationResponse.fromIntent(data!!)
-            val error = AuthorizationException.fromIntent(data)
-
-            if(response != null) {
-                exchangeCodeForToken(response)
-            } else {
-                Log.e("AUTH", "Error en el login: ${error?.message}")
-            }
-        }
+    private fun goToHomePage(jsonObject: JSONObject) {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("jsonObject", jsonObject.toString())
+        startActivity(intent)
+        finish()
     }
-
-
 
     /**
      * Esto cambia el código por un token temporal
      */
-    private fun exchangeCodeForToken(response: AuthorizationResponse) {
+    private fun exchangeCodeForToken(response: AuthorizationResponse): Optional<JSONObject> {
+        var objectToReturn = Optional.empty<JSONObject>()
         authService.performTokenRequest(
             response.createTokenExchangeRequest()
         ) { tokenResponse, exception ->
@@ -77,6 +68,7 @@ class MainActivity1 : AppCompatActivity() {
 
                             Log.i("AUTH", "Tipo de cuenta: $accountType")
                             Toast.makeText(this, "Eres un: $accountType", Toast.LENGTH_SHORT).show()
+                            objectToReturn = Optional.of(jsonObject)
                         }
                     } catch (e: Exception) {
                         Log.e("AUTH", "Error al decodificar el token: ${e.message}")
@@ -86,25 +78,29 @@ class MainActivity1 : AppCompatActivity() {
                 Log.e("AUTH", "Fallo al obtener el token: ${exception?.message}")
             }
         }
+        return objectToReturn
     }
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_main1)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main2)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
-        authService = AuthorizationService(this, appAuthConfiguration)
+    private val getAuthResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            result ->
+        if (result.resultCode == RESULT_OK) {
+            val data = result.data
+            val response = AuthorizationResponse.fromIntent(data!!)
+            val error = AuthorizationException.fromIntent(data)
 
-        val btnLogin = findViewById<Button>(R.id.btn_login)
-
-        btnLogin.setOnClickListener {
-            doLogin()
+            if(response != null) {
+                val jsonOptional = exchangeCodeForToken(response)
+                if (!jsonOptional.isEmpty) {
+                    goToHomePage(jsonOptional.get())
+                } else {
+                    Log.e("AUTH", "No se ha podido obtener el token")
+                }
+            } else {
+                Log.e("AUTH", "Error en el login: ${error?.message}")
+            }
         }
     }
+
     private fun doLogin() {
         /*
         Los primeros pasos son:
@@ -143,4 +139,14 @@ class MainActivity1 : AppCompatActivity() {
             return conn
         }
     }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+
+        authService = AuthorizationService(this, appAuthConfiguration)
+
+        doLogin()
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.raj.slotify.fragments.general
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.raj.slotify.R
+import com.raj.slotify.activities.LogInActivity
+import com.raj.slotify.activities.RegistryActivity
 import com.raj.slotify.databinding.FragmentFirstBinding
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
@@ -61,9 +64,13 @@ class FirstFragment : Fragment() {
         }
 
         logOnButton.setOnClickListener {
-            view.findNavController().navigate(R.id.action_firstFragment_to_registryFragment2)
+            val intent = Intent(requireContext(), RegistryActivity::class.java)
+            startActivity(intent)
+        }
 
-            viewModel.setOldTitle(viewModel.newTitle.value ?: R.string.welcome)
+        logInButton.setOnClickListener {
+            val intent = Intent(requireContext(), LogInActivity::class.java)
+            startActivity(intent)
         }
 
     }
