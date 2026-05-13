@@ -141,7 +141,25 @@ class PasswordFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             layoutViewModel.nextButtonClicked.collect {
-                if (passwordLevel == "low") {
+                val passwordTextContent: String = passwordEditText.text.toString().trim()
+                val confirmPasswordTextContent = confirmPasswordText.text.toString().trim()
+
+                if (passwordTextContent.isEmpty() ||
+                    confirmPasswordTextContent.isEmpty()) {
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle(getString(R.string.validation_error_title))
+                        .setMessage(getString(R.string.enter_password))
+                        .setPositiveButton(getString(R.string.dialog_ok), null)
+                        .show()
+
+                } else if (passwordTextContent.length < 10 || passwordTextContent.length > 16) {
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle(getString(R.string.validation_error_title))
+                        .setMessage(getString(R.string.password_short))
+                        .setPositiveButton(getString(R.string.dialog_ok), null)
+                        .show()
+
+                } else if (passwordLevel == "low") {
                     // PASSWORD IS NOT STRONG
                     MaterialAlertDialogBuilder(requireContext())
                         .setTitle(getString(R.string.security_error_title))
@@ -149,7 +167,7 @@ class PasswordFragment : Fragment() {
                         .setPositiveButton(getString(R.string.dialog_ok), null)
                         .show()
 
-                } else if (passwordEditText.text.toString() != confirmPasswordText.text.toString()) {
+                } else if (passwordTextContent != confirmPasswordTextContent) {
                     // ALERT: PASSWORDS DO NOT MATCH
                     MaterialAlertDialogBuilder(requireContext())
                         .setTitle(getString(R.string.validation_error_title))

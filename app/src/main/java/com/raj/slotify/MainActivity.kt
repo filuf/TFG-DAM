@@ -3,6 +3,7 @@ package com.raj.slotify
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -29,6 +30,11 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        AlertDialog.Builder(
+            this,
+            android.R.style.Theme_Material_Dialog_Alert
+        ).setTitle("Hola, estas en main").setPositiveButton("OK", null).show()
 
     }
 }

@@ -30,6 +30,10 @@ class RegistryFragment : Fragment() {
 
         layoutViewModel.setSuperiorFragmentVisibility(View.VISIBLE)
         layoutViewModel.setInferiorFragmentVisibility(View.VISIBLE)
+
+        layoutViewModel.setExplicationVisibility(View.GONE)
+        layoutViewModel.setDescriptionVisibility(View.GONE)
+        layoutViewModel.setImageVisibility(View.VISIBLE)
     }
 
     override fun onCreateView(

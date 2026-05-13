@@ -1,5 +1,6 @@
 package com.raj.slotify.fragments.registry.userRegistry
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,7 +11,9 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.raj.slotify.MainActivity
 import com.raj.slotify.R
+import com.raj.slotify.activities.LogInActivity
 import com.raj.slotify.databinding.FragmentEndRegistryBinding
 import com.raj.slotify.dtos.registry.client.RegisterUserRequest
 import com.raj.slotify.dtos.registry.company.RegisterCompanyRequest
@@ -66,10 +69,19 @@ class EndRegistryFragment : Fragment() {
         val userType: String = userDataViewModel.userType.value?: "USER"
 
         if (userType == "USER") {
+            Log.i(userType, "Registrando cliente")
             registerClient()
         } else if (userType == "COMPANY") {
+            Log.i(userType, "Registrando empresa")
             registerCompany()
         }
+
+        binding.logInAccountCreatedButton.setOnClickListener {
+            val intent = Intent(requireContext(), LogInActivity::class.java)
+            startActivity(intent)
+            requireActivity().finish()
+        }
+
     }
 
     private fun performClientRegistry() {
@@ -79,6 +91,7 @@ class EndRegistryFragment : Fragment() {
             userDataViewModel.email.value
         )
         registerUserViewModel.registerClient(registerClientRequest)
+        Log.i("CLIENT", "Petición de registro hecha")
     }
 
     private fun performCompanyRegistry() {
@@ -90,6 +103,7 @@ class EndRegistryFragment : Fragment() {
             enterpriseViewModel.ubicationPlaceSuggestion.value?.displayName
         )
         registerUserViewModel.registerCompany(registerCompanyRequest)
+        Log.i("COMPANY", "Petición de registro hecha")
     }
 
     private fun exitWithoutRegistry() {
@@ -105,16 +119,16 @@ class EndRegistryFragment : Fragment() {
 
     private fun successfulRegistryConfirmation() {
         viewModel.setNewTitle(R.string.succesful_account_creation)
-        viewModel.setNewExplication(R.string.account_creation_confirmation)
+        layoutViewModel.setExplicationVisibility(View.GONE)
         layoutViewModel.setInferiorFragmentVisibility(View.VISIBLE)
     }
 
     private fun registerClient() {
         registerUserViewModel.clientRegistered.observe(viewLifecycleOwner) { clientRegistered ->
-
+            Log.i("Client registered", clientRegistered?.toString()?: "null")
             if (clientRegistered != null) {
                 if (clientRegistered.isSuccessful) {
-                    Log.i("Registered", "Cliente registrado correctamente: ${clientRegistered.body()}")
+                    Log.w("Registered", "Cliente registrado correctamente: ${clientRegistered.body()}")
                     successfulRegistryConfirmation()
 
                 } else if (clientRegistered.code() == 409) {
@@ -140,17 +154,16 @@ class EndRegistryFragment : Fragment() {
                         .show()
                 }
             }
-            performClientRegistry()
-
         }
+        performClientRegistry()
     }
 
     private fun registerCompany() {
         registerUserViewModel.companyRegistered.observe(viewLifecycleOwner) { companyRegistered ->
-
+            Log.i("Client registered", companyRegistered?.toString()?: "null")
             if (companyRegistered != null) {
                 if (companyRegistered.isSuccessful) {
-                    Log.i("Registered", "Empresa registrada correctamente")
+                    Log.w("Registered", "Empresa registrada correctamente")
                     successfulRegistryConfirmation()
 
                 } else if (companyRegistered.code() == 409) {
@@ -175,9 +188,8 @@ class EndRegistryFragment : Fragment() {
                         .show()
                 }
             }
-            performCompanyRegistry()
-
         }
+        performCompanyRegistry()
     }
 
 }

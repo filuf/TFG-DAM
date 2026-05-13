@@ -18,7 +18,7 @@ import retrofit2.Response
 
 class RegisterUserViewModel: ViewModel() {
 
-    val appInDebug: Boolean = BuildConfig.DEBUG
+    val appInDebug: Boolean = BuildConfig.DEBUG_MODE
     val baseUrl: String = if (appInDebug) BuildConfig.SPRING_TEST_URL else BuildConfig.SPRING_BASE_URL
 
     val endpoint: String = baseUrl + "auth/"
@@ -32,11 +32,13 @@ class RegisterUserViewModel: ViewModel() {
 
     fun registerClient(registerUserRequest: RegisterUserRequest) {
         viewModelScope.launch(Dispatchers.IO) {
+            Log.w("RegisterUserViewModel", "Intentando registrar cliente")
             val response = service.registerClient(registerUserRequest)
+            Log.w("${response.code()}", "Petición de registro hecha: ${response.body()}")
             if (!response.isSuccessful) {
                 Log.e(
                     "Error en RegisterUserViewModel",
-                    "Error intentando registrar cliente: ${response.code()}: ${response.message()}"
+                    "Error intentando registrar cliente: ${response.code()}: ${response.body()}"
                 )
             }
             _clientRegistered.postValue(response)
@@ -45,11 +47,13 @@ class RegisterUserViewModel: ViewModel() {
 
     fun registerCompany(registerCompanyRequest: RegisterCompanyRequest) {
         viewModelScope.launch(Dispatchers.IO) {
+            Log.w("RegisterUserViewModel", "Intentando registrar empresa")
             val response = service.registerCompany(registerCompanyRequest)
+            Log.w("${response.code()}", "Petición de registro hecha: ${response.body()}")
             if (!response.isSuccessful) {
                 Log.e(
                     "Error en RegisterUserViewModel",
-                    "Error intentando registrar empresa: ${response.code()}: ${response.message()}"
+                    "Error intentando registrar empresa: ${response.code()}: ${response.body()}"
                 )
             }
             _companyRegistered.postValue(response)

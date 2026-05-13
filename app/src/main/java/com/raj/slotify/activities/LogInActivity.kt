@@ -10,6 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.raj.slotify.MainActivity
 import net.openid.appauth.AppAuthConfiguration
 import net.openid.appauth.AuthorizationException
@@ -36,8 +37,16 @@ class LogInActivity : AppCompatActivity() {
         .build()
 
     private fun goToHomePage(jsonObject: JSONObject) {
+        Log.i("AUTH", "Intentando abrir HomePage")
         val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("jsonObject", jsonObject.toString())
+        startActivity(intent)
+        finish()
+    }
+
+    private fun goToFirstFragment() {
+        Log.i("AUTH", "Intentando abrir FirstFragment")
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }
@@ -94,6 +103,18 @@ class LogInActivity : AppCompatActivity() {
                     goToHomePage(jsonOptional.get())
                 } else {
                     Log.e("AUTH", "No se ha podido obtener el token")
+                    MaterialAlertDialogBuilder(
+                        this,
+                        android.R.style.Theme_Material_Dialog_Alert
+                    )
+                    .setTitle("No se ha obtenido el token").setMessage(
+                        "TODO: hay que validar el token de room en la bd antes de iniciar el first fragment\n" +
+                                "> Configurar el nav graph")
+                    .setPositiveButton("OK", { _, _ ->
+                        goToFirstFragment()
+                    }
+                    ).show()
+
                 }
             } else {
                 Log.e("AUTH", "Error en el login: ${error?.message}")
