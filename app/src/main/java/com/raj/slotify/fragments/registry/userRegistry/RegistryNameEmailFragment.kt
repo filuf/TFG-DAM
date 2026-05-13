@@ -9,29 +9,31 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.raj.slotify.R
-import com.raj.slotify.databinding.FragmentRegistryPhoneEmailBinding
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
 import com.raj.slotify.viewModels.frontend.UserDataViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.raj.slotify.databinding.FragmentRegistryNameEmailBinding
+import com.raj.slotify.viewModels.apiRest.RegisterUserViewModel
 import kotlinx.coroutines.launch
 
-class RegistryPhoneEmailFragment : Fragment() {
+class RegistryNameEmailFragment : Fragment() {
 
     private val viewModel: MainViewModel by activityViewModels()
     private val viewModelData: UserDataViewModel by activityViewModels()
     private val layoutViewModel: LayoutViewModel by activityViewModels()
+    private val registerUserViewModel: RegisterUserViewModel by activityViewModels()
     private var isClient: Boolean = false
-    private lateinit var binding: FragmentRegistryPhoneEmailBinding
+    private lateinit var binding: FragmentRegistryNameEmailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val currentUserType: String = viewModelData.userType.value ?: "client"
+        val currentUserType: String = viewModelData.userType.value ?: "USER"
 
-        if (currentUserType == "client") {
+        if (currentUserType == "USER") {
             isClient = true
-        } else if (currentUserType == "company") {
+        } else if (currentUserType == "COMPANY") {
             isClient = false
         }
     }
@@ -40,7 +42,7 @@ class RegistryPhoneEmailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentRegistryPhoneEmailBinding.inflate(inflater, container, false)
+        binding = FragmentRegistryNameEmailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -52,40 +54,23 @@ class RegistryPhoneEmailFragment : Fragment() {
         if (isClient) {
             viewModel.setNewTitle(R.string.enter_user_data)
             binding.inputLayoutUserName.hint = getString(R.string.enter_user_name)
-            binding.contactDataText.text = getString(R.string.user_data)
         } else {
             viewModel.setNewTitle(R.string.enter_organitation_data)
             binding.inputLayoutUserName.hint = getString(R.string.company_name)
-            binding.contactDataText.text = getString(R.string.contact_data)
         }
-
-        val ccp = binding.ccp
-        val phoneInput = binding.phoneInput
-        ccp.registerCarrierNumberEditText(phoneInput)
 
         viewLifecycleOwner.lifecycleScope.launch {
             layoutViewModel.nextButtonClicked.collect {
 
                 val userName: String = binding.userNameText.text.toString()
-                val phone: String = ccp.fullNumberWithPlus
-                val isValid = ccp.isValidFullNumber
                 val email: String = binding.emailInput.text.toString()
 
                 if (email.isEmpty() ||
-                    phone.isEmpty() ||
                     userName.isEmpty()) {
 
                     MaterialAlertDialogBuilder(requireContext())
                         .setTitle(getString(R.string.email_phone_empty_title))
                         .setMessage(getString(R.string.email_phone_empty_camps))
-                        .setPositiveButton(getString(R.string.dialog_retry), null)
-                        .show()
-                }
-                else if (!isValid) {
-
-                    MaterialAlertDialogBuilder(requireContext())
-                        .setTitle(getString(R.string.phone_invalid_title))
-                        .setMessage(getString(R.string.phone_invalid_message))
                         .setPositiveButton(getString(R.string.dialog_retry), null)
                         .show()
 
@@ -99,7 +84,6 @@ class RegistryPhoneEmailFragment : Fragment() {
                         // TODO: REDIRIGIR AL USUARIO A LA PANTALLA DE INICIO
                     }
 
-                    viewModelData.setPhone(phone)
                     viewModelData.setEmail(email)
                     viewModelData.setName(userName)
 

@@ -87,6 +87,13 @@ class SelectPhysicalDirectionFragment : Fragment(), OnMapReadyCallback {
         // LISTEN TEX OF DIRECTION INPUT AND DO THE PETITION TO DIRECTION VERIFICATION API TO SEARCH CORDS
         val textUbication = binding.textInputUbication
 
+        // SET THE TEXT OF THE VIEWMODEL IF EXITS
+        val textUbicationViewModel: String? = enterpriseViewModel.ubicationPlaceSuggestion.value?.displayName
+
+        if (textUbicationViewModel != null) {
+            textUbication.setText(textUbicationViewModel)
+        }
+
         textUbication.doOnTextChanged { text, _, _, _ ->
             val textQuery = text.toString().trim()
 

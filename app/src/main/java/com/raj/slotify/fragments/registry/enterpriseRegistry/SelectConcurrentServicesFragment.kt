@@ -47,6 +47,13 @@ class SelectConcurrentServicesFragment : Fragment() {
         // FIND THE NUMBER PICKER VIEW BY ITS ID
         val numberPicker = binding.numberPicker
 
+        // SET THE NUMBER OF VIEWMODEL IF EXISTS
+        val numberPickerViewModel: Int? = enterpriseViewModel.concurrentServices.value
+
+        if (numberPickerViewModel != null) {
+            numberPicker.value = numberPickerViewModel
+        }
+
         // SET THE MINIMUM AND MAXIMUM VALUES FOR THE PICKER
         numberPicker.minValue = 1
         numberPicker.maxValue = 100

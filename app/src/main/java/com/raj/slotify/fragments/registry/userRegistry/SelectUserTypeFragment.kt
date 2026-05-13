@@ -49,12 +49,12 @@ class SelectUserTypeFragment : Fragment() {
         viewModel.setOldTitle(viewModel.newTitle.value?: R.string.welcome)
 
         cardViewClient.setOnClickListener {
-            userDataViewModel.setUserType("client")
+            userDataViewModel.setUserType("USER")
             view.findNavController().navigate(R.id.action_selectUserTypeFragment_to_clientRegistryPhoneEmailFragment)
         }
 
         cardViewEnterprise.setOnClickListener {
-            userDataViewModel.setUserType("company")
+            userDataViewModel.setUserType("COMPANY")
             view.findNavController().navigate(R.id.action_selectUserTypeFragment_to_clientRegistryPhoneEmailFragment)
         }
 

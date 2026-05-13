@@ -33,11 +33,11 @@ class PasswordFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val currentUserType: String = viewModelData.userType.value ?: "client"
+        val currentUserType: String = viewModelData.userType.value ?: "USER"
 
-        if (currentUserType == "client") {
+        if (currentUserType == "USER") {
             isClient = true
-        } else if (currentUserType == "company") {
+        } else if (currentUserType == "COMPANY") {
             isClient = false
         }
     }
@@ -60,6 +60,14 @@ class PasswordFragment : Fragment() {
 
         val passwordEditText: TextInputEditText = binding.inputPassword
         val confirmPasswordText: TextInputEditText = binding.confirmPassword
+
+        // SET THE PASSWORDS OF THE VIEWMODEL IF EXISTS
+        val passwordViewModel: String? = viewModelData.password.value
+
+        if (passwordViewModel != null) {
+            passwordEditText.setText(passwordViewModel)
+            confirmPasswordText.setText(passwordViewModel)
+        }
 
         val securityText = binding.securityLevel
         val labelBase = getString(R.string.security_level)

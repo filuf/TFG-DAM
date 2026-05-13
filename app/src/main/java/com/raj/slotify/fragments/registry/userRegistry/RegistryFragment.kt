@@ -104,6 +104,7 @@ class RegistryFragment : Fragment() {
                         findNavController().popBackStack()
                     }
                 }
-            })
+            }
+        )
     }
 }
