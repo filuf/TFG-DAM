@@ -180,4 +180,8 @@
     <string name="company_direction">Direction of your company</string>
     <string name="maybe_yo_want_to_write">Maybe you want to write:</string>
     <string name="establish_enterprise_ubication">Establish the company location</string>
+    <string name="account_no_created">Account creation error</string>
+    <string name="cancel_registry_confirmation">You are sure about cancel the registry?</string>
+    <string name="cancel_registry_explication">We redirect you to the previus window to edit your data if you want.</string>
+    <string name="account_already_exists">The user already exists in the identity system. Enter another email.</string>
 </resources>

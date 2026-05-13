@@ -15,9 +15,9 @@
     </fragment>
     <fragment
         android:id="@+id/registryPhoneEmailFragment"
-        android:name="com.raj.slotify.fragments.registry.userRegistry.RegistryPhoneEmailFragment"
+        android:name="com.raj.slotify.fragments.registry.userRegistry.RegistryNameEmailFragment"
         android:label="fragment_registry_phone_email"
-        tools:layout="@layout/fragment_registry_phone_email">
+        tools:layout="@layout/fragment_registry_name_email">
         <action
             android:id="@+id/action_clientRegistryPhoneEmailFragment2_to_passwordFragment"
             app:destination="@id/passwordFragment" />
@@ -38,7 +38,11 @@
         android:id="@+id/endRegistryFragment"
         android:name="com.raj.slotify.fragments.registry.userRegistry.EndRegistryFragment"
         android:label="fragment_end_registry"
-        tools:layout="@layout/fragment_end_registry" />
+        tools:layout="@layout/fragment_end_registry" >
+        <action
+            android:id="@+id/action_endRegistryFragment_to_registryPhoneEmailFragment2"
+            app:destination="@id/registryPhoneEmailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/selectPhysicalDirectionFragment"
         android:name="com.raj.slotify.fragments.registry.enterpriseRegistry.SelectPhysicalDirectionFragment"

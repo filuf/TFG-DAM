@@ -175,4 +175,8 @@
     <string name="company_direction">Dirección de su empresa</string>
     <string name="maybe_yo_want_to_write">Quizás has querido escribir:</string>
     <string name="establish_enterprise_ubication">Establezca la ubicación de la empresa</string>
+    <string name="account_no_created">Error en la creación de su cuenta</string>
+    <string name="cancel_registry_confirmation">¿Estas seguro de cancelar el registro?</string>
+    <string name="cancel_registry_explication">Le redirigiremos a la ventana anterior para que pueda editar sus datos.</string>
+    <string name="account_already_exists">El usuario existe actualmente en el sistema de identidad. Ingresa otro correo electrónico.</string>
 </resources>
