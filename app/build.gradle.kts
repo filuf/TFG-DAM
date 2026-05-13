@@ -30,7 +30,7 @@ android {
 
         buildConfigField("Boolean", "DEBUG_MODE", "false")
 
-        buildConfigField("String", "SPRING_BASE_URL", "\"http://api.127.0.0.1.nip.io/\"")
+        buildConfigField("String", "SPRING_BASE_URL", "\"http://api.10.0.2.2.nip.io/\"")
         buildConfigField("String", "SPRING_TEST_URL", "\"http://10.0.2.2:8080/\"")
 
         val mapsKey = localProperties.getProperty("GOOGLE_MAPS_KEY") ?: ""
@@ -62,61 +62,51 @@ android {
 }
 
 dependencies {
-    // Core y UI base
-    implementation(libs.net.openid.appauth)
-
+    // --- LIBRERÍAS DE INTERFAZ Y CORE ---
     implementation("androidx.core:core-ktx:1.15.0")
     implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation(libs.material)
+    implementation(libs.material) // Mantén la referencia a tu catálogo si existe
     implementation("androidx.constraintlayout:constraintlayout:2.2.0")
+    implementation("androidx.recyclerview:recyclerview:1.4.0")
+    implementation("androidx.cardview:cardview:1.0.0")
 
-    // Country code picker
-    implementation("com.hbb20:ccp:2.7.2")
-
-    // Activity y Fragment (Ktx para usar 'by activityViewModels()')
+    // --- ACTIVIDAD Y FRAGMENT (FUNDAMENTAL PARA 'by activityViewModels()') ---
     implementation("androidx.activity:activity-ktx:1.9.3")
     implementation("androidx.fragment:fragment-ktx:1.8.5")
-    implementation(libs.androidx.recyclerview)
-    implementation(libs.play.services.maps)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.fragment)
 
-    // Ciclo de vida (ViewModel y LiveData)
+    // --- CICLO DE VIDA (VIEWMODEL Y LIVEDATA) ---
     val lifecycleVersion = "2.8.7"
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
 
-    // Navegación (Jetpack Navigation)
+    // --- NAVEGACIÓN ---
     val navVersion = "2.8.4"
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
 
-    // Retrofit y JSON (Versiones estables 2.x - Recomendado para estabilidad)
+    // --- RED: RETROFIT Y GSON ---
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
-
-    // Corrutinas
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
 
-    // Otras librerías
-    implementation("androidx.preference:preference-ktx:1.2.1")
-    implementation("androidx.cardview:cardview:1.0.0")
+    // --- BASE DE DATOS: ROOM (Versión estable 2.6.1) ---
+    val roomVersion = "2.8.1"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
+
+    // --- SEGURIDAD Y AUTH (APPAUTH) ---
+    // Eliminamos la duplicidad, dejamos solo una
     implementation("net.openid:appauth:0.11.1")
 
-    // Soporte para legado (opcional, si lo usas)
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    // --- OTROS SERVICIOS ---
+    implementation("com.google.android.gms:play-services-maps:19.0.0")
+    implementation("com.hbb20:ccp:2.7.2") // Country Code Picker
+    implementation("androidx.preference:preference-ktx:1.2.1")
 
-    // Testing
+    // --- TESTING ---
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-
-    // Room
-    val room_version = "2.8.4"
-
-    implementation("androidx.room:room-runtime:$room_version")
-    ksp(libs.androidx.room.compiler)
-// optional - Kotlin Extensions and Coroutines support for Room
-    implementation("androidx.room:room-ktx:${room_version}")
 }

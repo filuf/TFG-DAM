@@ -179,4 +179,5 @@
     <string name="cancel_registry_confirmation">¿Estas seguro de cancelar el registro?</string>
     <string name="cancel_registry_explication">Le redirigiremos a la ventana anterior para que pueda editar sus datos.</string>
     <string name="account_already_exists">El usuario existe actualmente en el sistema de identidad. Ingresa otro correo electrónico.</string>
+    <string name="password_short">La contraseña introducida es corta. La longitud debe ser de entre 10 y 16 caracteres</string>
 </resources>
