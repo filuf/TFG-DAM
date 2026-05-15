@@ -62,51 +62,50 @@ android {
 }
 
 dependencies {
-    // --- LIBRERÍAS DE INTERFAZ Y CORE ---
-    implementation("androidx.core:core-ktx:1.15.0")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation(libs.material) // Mantén la referencia a tu catálogo si existe
-    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
-    implementation("androidx.recyclerview:recyclerview:1.4.0")
-    implementation("androidx.cardview:cardview:1.0.0")
-
-    // --- ACTIVIDAD Y FRAGMENT (FUNDAMENTAL PARA 'by activityViewModels()') ---
-    implementation("androidx.activity:activity-ktx:1.9.3")
-    implementation("androidx.fragment:fragment-ktx:1.8.5")
-
-    // --- CICLO DE VIDA (VIEWMODEL Y LIVEDATA) ---
-    val lifecycleVersion = "2.8.7"
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
-
-    // --- NAVEGACIÓN ---
-    val navVersion = "2.8.4"
-    implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
-    implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
-
-    // --- RED: RETROFIT Y GSON ---
-    implementation("com.squareup.retrofit2:retrofit:2.11.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
-
-    // --- BASE DE DATOS: ROOM (Versión estable 2.6.1) ---
-    val roomVersion = "2.8.1"
-    implementation("androidx.room:room-runtime:$roomVersion")
-    implementation("androidx.room:room-ktx:$roomVersion")
-    ksp("androidx.room:room-compiler:$roomVersion")
-
-    // --- SEGURIDAD Y AUTH (APPAUTH) ---
-    // Eliminamos la duplicidad, dejamos solo una
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.hbb20:ccp:2.7.3") // Asegúrate de que esta línea esté presente
     implementation("net.openid:appauth:0.11.1")
+    implementation("com.google.code.gson:gson:2.10.1")
+    // Opcional pero recomendada para trabajar con LocalTime
+    implementation("com.fatboyindustrial.gson-javatime-serialisers:gson-javatime-serialisers:1.1.2")
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.fragment)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.cardview)
 
-    // --- OTROS SERVICIOS ---
-    implementation("com.google.android.gms:play-services-maps:19.0.0")
-    implementation("com.hbb20:ccp:2.7.2") // Country Code Picker
-    implementation("androidx.preference:preference-ktx:1.2.1")
 
-    // --- TESTING ---
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    // RETROFIT
+    val retrofit_version = "2.9.0"
+    implementation("com.squareup.retrofit2:retrofit:$retrofit_version")
+
+    // CONVERTIDOR GSON (Para que Retrofit entienda tus DTOs)
+    implementation("com.squareup.retrofit2:converter-gson:$retrofit_version")
+
+    // OKHTTP (Opcional pero muy recomendado para ver logs de las peticiones)
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
+    // --- NAVEGACIÓN (Componente fundamental) ---
+    val nav_version = "2.7.7"
+    implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
+    implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
+
+    // --- FRAGMENT & ACTIVITY (Para usar 'by viewModels()' y childFragmentManager) ---
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
+    implementation("androidx.activity:activity-ktx:1.8.2")
+
+    // --- SPLASH SCREEN (Para evitar el salto visual al inicio) ---
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
+    // --- ROOM (Base de datos asíncrona) ---
+    val room_version = "2.8.1"
+    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+    ksp("androidx.room:room-compiler:$room_version") // Si usas Kotlin, asegúrate de tener el plugin kapt
+
+    // --- MATERIAL DESIGN (Para DrawerLayout, BottomNavigationView y Toolbar) ---
+    implementation("com.google.android.material:material:1.11.0")
+
+    // --- VIEWMODEL & LIVEDATA ---
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
 }
