@@ -11,7 +11,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.raj.slotify.MainActivity
+import com.raj.slotify.activities.MainActivity
 import com.raj.slotify.R
 import com.raj.slotify.activities.LogInActivity
 import com.raj.slotify.databinding.FragmentEndRegistryBinding
@@ -41,7 +41,7 @@ class EndRegistryFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         layoutViewModel.setInferiorFragmentVisibility(View.GONE)
         layoutViewModel.setExplicationVisibility(View.VISIBLE)
 
@@ -100,7 +100,7 @@ class EndRegistryFragment : Fragment() {
             userDataViewModel.password.value,
             userDataViewModel.email.value,
             enterpriseViewModel.concurrentServices.value,
-            enterpriseViewModel.ubicationPlaceSuggestion.value?.displayName
+            enterpriseViewModel.ubicationPlaceSuggestion.value?.displayName?:"empty"
         )
         registerUserViewModel.registerCompany(registerCompanyRequest)
         Log.i("COMPANY", "Petición de registro hecha")
@@ -111,6 +111,7 @@ class EndRegistryFragment : Fragment() {
             .setTitle(getString(R.string.cancel_registry_confirmation))
             .setMessage(R.string.cancel_registry_explication)
             .setPositiveButton(getString(R.string.dialog_ok)) { _, _ ->
+                layoutViewModel.setInferiorFragmentVisibility(View.VISIBLE)
                 view?.findNavController()?.popBackStack()
             }
             .setNegativeButton(getString(R.string.cancel), null)
