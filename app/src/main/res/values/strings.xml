@@ -185,4 +185,6 @@
     <string name="cancel_registry_explication">We redirect you to the previus window to edit your data if you want.</string>
     <string name="account_already_exists">The user already exists in the identity system. Enter another email.</string>
     <string name="password_short">The entered password is short. The length must be between 10 and 16 characters</string>
+    <string name="open_drawer">Open drawer</string>
+    <string name="close_drawer">Close drawer</string>
 </resources>

@@ -155,4 +155,6 @@
     <string name="sunday_word">Sunday</string>
     <string name="phone_prefix">Prefix</string>
     <string name="enter_user_data">Enter your user data</string>
+    <string name="open_drawer">Open drawer</string>
+    <string name="close_drawer">Close drawer</string>
 </resources>

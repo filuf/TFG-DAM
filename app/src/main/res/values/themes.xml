@@ -3,6 +3,18 @@
     <style name="Base.Theme.Slotify" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- 1. Hace la barra totalmente transparente -->
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+
+        <!-- 2. Permite que el contenido se dibuje detrás de las barras -->
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+
+        <!-- 3. Quita la protección de contraste (la línea/sombra gris) en Android 10+ -->
+        <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
+        <item name="android:enforceStatusBarContrast" tools:targetApi="q">false</item>
+
     </style>
 
     <style name="Theme.Slotify" parent="Base.Theme.Slotify" />
@@ -12,5 +24,4 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="cornerRadius">20dp</item>
     </style>
-
 </resources>
