@@ -1,5 +1,6 @@
 package com.slotify.backend.spring.notification.models;
 
+import com.slotify.backend.spring.auth.enums.AccountType;
 import com.slotify.backend.spring.company.models.CompanyEntity;
 import com.slotify.backend.spring.user.models.UserEntity;
 import jakarta.persistence.*;
@@ -48,4 +49,21 @@ public class NotificationEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
+
+    public void markReadIfPossible(AccountType accountType) {
+
+        if (wasSentBy(accountType)) {
+            return;
+        }
+
+        if (isRead) {
+            return;
+        }
+
+        isRead = true;
+    }
+
+    private boolean wasSentBy(AccountType accountType) {
+        return accountType.matches(this.notificationSender);
+    }
 }
