@@ -43,7 +43,7 @@ public class CompanyReserveFetcher implements ReserveFetcher<CompanyReserveSumma
                 .orElseThrow( () -> new EntityNotFoundException("No existe en la base de datos una reserva con el id: " + reserveId));
 
         if (!reserve.getService().getCompany().getUserId().equals(accountId)) {
-            throw new AccessDeniedException("No posees los permisos necesarios para modificar ver este recurso");
+            throw new AccessDeniedException("No posees los permisos necesarios para ver este recurso");
         }
 
         return this.reserveMapper.getCompanyReserveSummary(reserve);
