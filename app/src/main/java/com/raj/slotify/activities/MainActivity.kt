@@ -11,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.NavHostFragment
 import com.raj.slotify.databinding.ActivityMainBinding
+import com.raj.slotify.viewModels.apiRest.ReservesViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
 import com.raj.slotify.viewModels.frontend.UserDataViewModel
 import com.raj.slotify.viewModels.room.TokenViewModel
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
     private val userDataViewModel: UserDataViewModel by viewModels()
     private val tokenViewModel: TokenViewModel by viewModels()
+    private val reservesViewModel: ReservesViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,6 +100,21 @@ class MainActivity : AppCompatActivity() {
                 userDataViewModel.setName(username)
                 userDataViewModel.setAccessToken(accessToken)
                 userDataViewModel.setUuid(UUID.fromString(sub))
+
+                reservesViewModel.getReserves("Bearer $accessToken", null, null, null, null)
+                reservesViewModel.reservesSummary.observe(this) { response ->
+                    if (response != null) {
+                        if (response.isSuccessful) {
+                            val reserves = response.body()?.content
+                            if (reserves != null) {
+                                userDataViewModel.setReserves(reserves.toMutableList())
+                            }
+                        } else {
+                            Log.e("ERROR", "Error al obtener reservas: ${response.code()}: ${response.body()}")
+                        }
+                    }
+                }
+
             }
         } catch (e: Exception) {
             Log.e("ERROR", "Error al decodificar el token: ${e.message}")

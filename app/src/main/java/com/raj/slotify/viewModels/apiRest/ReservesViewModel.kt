@@ -28,19 +28,35 @@ class ReservesViewModel: ViewModel() {
     private val _reservesSummary = MutableLiveData<Response<PageResponse<ReserveSummary>>?>()
     var reservesSummary: LiveData<Response<PageResponse<ReserveSummary>>?> = _reservesSummary
 
-    private val _reserveCreated = MutableLiveData<Response<CreateReserveResponse>?>()
-    var reserveCrated: LiveData<Response<CreateReserveResponse>?> = _reserveCreated
+    private val _reserveCreate = MutableLiveData<Response<CreateReserveResponse>?>()
+    var reserveCrated: LiveData<Response<CreateReserveResponse>?> = _reserveCreate
+
+    private val _reserveSearched = MutableLiveData<Response<ReserveSummary>?>()
+    var reserveSearched: LiveData<Response<ReserveSummary>?> = _reserveSearched
 
     private val _reserveCanceledResponse = MutableLiveData<Response<Void>?>()
     var reserveCanceledResponse: LiveData<Response<Void>?> = _reserveCanceledResponse
 
-    fun getReserves(authHeader: String, page: Int, size: Int, sort: String?, fetchType: String) {
+    fun getReserveById(reserveId: UUID, authHeader: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = service.getReserve(reserveId, authHeader)
+            if (!response.isSuccessful) {
+                Log.e(
+                    "Error en ReservesViewModel",
+                    "Error intentando obtener reserva: ${response.code()}: ${response.message()} - ${response.body()}"
+                )
+            }
+            _reserveSearched.postValue(response)
+        }
+    }
+
+    fun getReserves(authHeader: String, page: Int?, size: Int?, sort: String?, fetchType: String?) {
         viewModelScope.launch(Dispatchers.IO) {
             val response = service.getReserves(authHeader, page, size, sort, fetchType)
             if (!response.isSuccessful) {
                 Log.e(
                     "Error en ReservesViewModel",
-                    "Error intentando obtener reservas: ${response.code()}: ${response.message()}"
+                    "Error intentando obtener reservas: ${response.code()}: ${response.message()} - ${response.body()}"
                 )
             }
             _reservesSummary.postValue(response)
@@ -53,10 +69,10 @@ class ReservesViewModel: ViewModel() {
             if (!response.isSuccessful) {
                 Log.e(
                     "Error en ReservesViewModel",
-                    "Error intentando crear reserva: ${response.code()}: ${response.message()}"
+                    "Error intentando crear reserva: ${response.code()}: ${response.message()} - ${response.body()}"
                 )
             }
-            _reserveCreated.postValue(response)
+            _reserveCreate.postValue(response)
         }
     }
 
@@ -66,7 +82,7 @@ class ReservesViewModel: ViewModel() {
             if (!response.isSuccessful) {
                 Log.e(
                     "Error en ReservesViewModel",
-                    "Error intentando cancelar reserva: ${response.code()}: ${response.message()}"
+                    "Error intentando cancelar reserva: ${response.code()}: ${response.message()} - ${response.body()}"
                 )
             }
             _reserveCanceledResponse.postValue(response)

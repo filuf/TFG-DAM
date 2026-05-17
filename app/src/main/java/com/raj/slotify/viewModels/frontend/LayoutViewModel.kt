@@ -19,6 +19,8 @@ class LayoutViewModel: ViewModel() {
     private val _imageVisibility = MutableLiveData<Int>()
     private val _superiorFragmentVisibility = MutableLiveData<Int>()
     private val _inferiorFragmentVisibility = MutableLiveData<Int>()
+
+    private val _centerIconTitle = MutableLiveData<Boolean>()
     
     val nextButtonVisibility: LiveData<Int> = _nextButtonVisibility
     val backButtonVisibility: LiveData<Int> = _backButtonVisibility
@@ -29,6 +31,7 @@ class LayoutViewModel: ViewModel() {
     val imageVisibility: LiveData<Int> = _imageVisibility
     val superiorFragmentVisibility: LiveData<Int> = _superiorFragmentVisibility
     val inferiorFragmentVisibility: LiveData<Int> = _inferiorFragmentVisibility
+    val centerIconTitle: LiveData<Boolean> = _centerIconTitle
 
     fun setNextButtonVisibility(visibility: Int) {
         _nextButtonVisibility.postValue(visibility)
@@ -64,6 +67,10 @@ class LayoutViewModel: ViewModel() {
 
     fun setInferiorFragmentVisibility(visibility: Int) {
         _inferiorFragmentVisibility.postValue(visibility)
+    }
+
+    fun setCenterIconTitle(centerIconTitle: Boolean) {
+        _centerIconTitle.postValue(centerIconTitle)
     }
 
     private val _nextButtonClicked = MutableSharedFlow<Unit>(replay = 0)

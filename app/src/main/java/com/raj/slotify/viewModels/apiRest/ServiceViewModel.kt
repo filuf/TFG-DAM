@@ -12,9 +12,11 @@ import com.raj.slotify.dtos.service.CreateServiceRequest
 import com.raj.slotify.dtos.service.CreateServiceResponse
 import com.raj.slotify.dtos.service.CreateServiceScheduleRequest
 import com.raj.slotify.dtos.service.CreateServiceScheduleResponse
+import com.raj.slotify.dtos.service.ServiceSummary
 import com.raj.slotify.services.retrofit.RetrofitInstance
 import com.raj.slotify.services.retrofit.slotifyBackend.ServiceService
 import retrofit2.Response
+import java.util.UUID
 
 class ServiceViewModel: ViewModel() {
 
@@ -26,6 +28,9 @@ class ServiceViewModel: ViewModel() {
 
     private val _serviceCreated = MutableLiveData<Response<CreateServiceResponse>?>()
     var serviceCreated: LiveData<Response<CreateServiceResponse>?> = _serviceCreated
+
+    private val _serviceWithSchedules = MutableLiveData<Response<ServiceSummary>?>()
+    var serviceWithSchedules: LiveData<Response<ServiceSummary>?> = _serviceWithSchedules
 
     private val _serviceScheduleCreated = MutableLiveData<Response<CreateServiceScheduleResponse>?>()
     var serviceScheduleCreated: LiveData<Response<CreateServiceScheduleResponse>?> = _serviceScheduleCreated
@@ -40,6 +45,20 @@ class ServiceViewModel: ViewModel() {
                 )
             }
             _serviceCreated.postValue(response)
+        }
+    }
+
+    fun getServiceWithSchedules(serviceId: UUID, authHeader: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = service.getServiceSchedules(serviceId.toString(), authHeader)
+            if (!response.isSuccessful) {
+                Log.e(
+                    "Error en ServiceViewModel",
+                    "Error intentando obtener el horario del servicio: ${response.code()}: ${response.message()}"
+                )
+                _serviceWithSchedules.postValue(null)
+            }
+            _serviceWithSchedules.postValue(response)
         }
     }
 

@@ -1,8 +1,11 @@
 package com.raj.slotify.viewModels.frontend
 
 import android.net.Uri
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.raj.slotify.dtos.reserves.ReserveSummary
+import com.raj.slotify.models.ReserveEntity
 import java.util.UUID
 
 class UserDataViewModel: ViewModel() {
@@ -16,16 +19,18 @@ class UserDataViewModel: ViewModel() {
     private val _password = MutableLiveData<String>()
     private val _imageUri = MutableLiveData<Uri>()
     private val _userType = MutableLiveData<String>()
+    private val _reserves = MutableLiveData<MutableList<ReserveSummary>>()
 
-    val accessToken: MutableLiveData<String> = _accessToken
-    val uuid: MutableLiveData<UUID> = _uuid
-    val name: MutableLiveData<String> = _name
-    val lastName: MutableLiveData<String> = _lastName
-    val email: MutableLiveData<String> = _email
-    val phone: MutableLiveData<String> = _phone
-    val password: MutableLiveData<String> = _password
-    val imageUri: MutableLiveData<Uri> = _imageUri
-    val userType: MutableLiveData<String> = _userType
+    val accessToken: LiveData<String> = _accessToken
+    val uuid: LiveData<UUID> = _uuid
+    val name: LiveData<String> = _name
+    val lastName: LiveData<String> = _lastName
+    val email: LiveData<String> = _email
+    val phone: LiveData<String> = _phone
+    val password: LiveData<String> = _password
+    val imageUri: LiveData<Uri> = _imageUri
+    val userType: LiveData<String> = _userType
+    val reserves: LiveData<MutableList<ReserveSummary>> = _reserves
 
     fun setAccessToken(accessToken: String) {
         _accessToken.postValue(accessToken)
@@ -57,6 +62,10 @@ class UserDataViewModel: ViewModel() {
 
     fun setUserType(userType: String) {
         _userType.postValue(userType)
+    }
+
+    fun setReserves(reserves: MutableList<ReserveSummary>) {
+        _reserves.postValue(reserves)
     }
 
 }
