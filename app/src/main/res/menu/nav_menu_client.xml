@@ -17,4 +17,7 @@
     <item
         android:id="@+id/inqueriesChat"
         android:title="@string/chat_for_inquiries" />
+    <item
+        android:id="@+id/closeSesion"
+        android:title="@string/close_sesion" />
 </menu>

@@ -157,4 +157,5 @@
     <string name="enter_user_data">Enter your user data</string>
     <string name="open_drawer">Open drawer</string>
     <string name="close_drawer">Close drawer</string>
+    <string name="already_started">In course</string>
 </resources>

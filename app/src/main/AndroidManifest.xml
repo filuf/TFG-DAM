@@ -22,7 +22,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Slotify"
         android:usesCleartextTraffic="true">
-
+        <activity
+            android:name=".activities.LogOutActivity"
+            android:exported="false" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 

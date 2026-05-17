@@ -185,4 +185,10 @@
     <string name="days_word">días</string>
     <string name="hours_word">horas</string>
     <string name="minutes_word">minutes</string>
+    <string name="already_started">In course</string>
+    <string name="day_word">día</string>
+    <string name="hour_word">hora</string>
+    <string name="minute_word">segundo</string>
+    <string name="cant_close_session_title">Error cerrando la sesión</string>
+    <string name="cant_close_sesion_message">No ha sido posible cerrar su sesión. Inténtalo más tarde.</string>
 </resources>

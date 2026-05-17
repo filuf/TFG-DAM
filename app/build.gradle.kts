@@ -10,12 +10,11 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("com.google.devtools.ksp")
     alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
-    // Habilitar KSP
 }
 
 android {
     namespace = "com.raj.slotify"
-    compileSdk = 35
+    compileSdk = 36 // Actualizado a 36 para soportar las nuevas versiones de androidx.activity
 
     defaultConfig {
         applicationId = "com.raj.slotify"
@@ -31,7 +30,6 @@ android {
         )
 
         buildConfigField("Boolean", "DEBUG_MODE", "false")
-
         buildConfigField("String", "SPRING_BASE_URL", "\"http://api.10.0.2.2.nip.io/\"")
         buildConfigField("String", "SPRING_TEST_URL", "\"http://10.0.2.2:8080/\"")
 
@@ -54,7 +52,6 @@ android {
         }
     }
     compileOptions {
-        // Necesario para librerías modernas y Retrofit
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
@@ -65,50 +62,44 @@ android {
 
 dependencies {
     implementation("com.google.android.gms:play-services-maps:18.2.0")
-    implementation("com.hbb20:ccp:2.7.3") // Asegúrate de que esta línea esté presente
+    implementation("com.hbb20:ccp:2.7.3")
     implementation("net.openid:appauth:0.11.1")
     implementation("com.google.code.gson:gson:2.10.1")
-    // Opcional pero recomendada para trabajar con LocalTime
     implementation("com.fatboyindustrial.gson-javatime-serialisers:gson-javatime-serialisers:1.1.2")
+    
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.fragment)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.cardview)
     implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.activity)
 
-
-    // RETROFIT
+    // Retrofit
     val retrofit_version = "2.9.0"
     implementation("com.squareup.retrofit2:retrofit:$retrofit_version")
-
-    // CONVERTIDOR GSON (Para que Retrofit entienda tus DTOs)
     implementation("com.squareup.retrofit2:converter-gson:$retrofit_version")
-
-    // OKHTTP (Opcional pero muy recomendado para ver logs de las peticiones)
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
-    // --- NAVEGACIÓN (Componente fundamental) ---
+    // Navigation
     val nav_version = "2.7.7"
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
 
-    // --- FRAGMENT & ACTIVITY (Para usar 'by viewModels()' y childFragmentManager) ---
+    // Lifecycle & KTX
     implementation("androidx.fragment:fragment-ktx:1.6.2")
     implementation("androidx.activity:activity-ktx:1.8.2")
-
-    // --- SPLASH SCREEN (Para evitar el salto visual al inicio) ---
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
     implementation("androidx.core:core-splashscreen:1.0.1")
 
-    // --- ROOM (Base de datos asíncrona) ---
+    // Room
     val room_version = "2.8.1"
     implementation("androidx.room:room-runtime:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
-    ksp("androidx.room:room-compiler:$room_version") // Si usas Kotlin, asegúrate de tener el plugin kapt
+    ksp("androidx.room:room-compiler:$room_version")
 
-    // --- MATERIAL DESIGN (Para DrawerLayout, BottomNavigationView y Toolbar) ---
+    // Material & UI
     implementation("com.google.android.material:material:1.11.0")
-
-    // --- VIEWMODEL & LIVEDATA ---
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+    implementation("io.coil-kt:coil:2.6.0")
+    implementation("com.google.android.flexbox:flexbox:3.0.0") // Corregido: no es androidx
 }
