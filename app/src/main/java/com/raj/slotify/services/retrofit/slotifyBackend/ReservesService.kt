@@ -10,15 +10,21 @@ import java.util.UUID
 
 interface ReservesService {
 
+    @GET("{reserveId}")
+    suspend fun getReserve(
+        @Path("reserveId") reserveId: UUID,
+        @Header("Authorization") authHeader: String
+    ): Response<ReserveSummary>
+
     @GET(".")
     suspend fun getReserves(
         @Header("Authorization") authHeader: String,
 
-        @Query("page") page: Int,
-        @Query("size") size: Int,
+        @Query("page") page: Int?,
+        @Query("size") size: Int?,
         @Query("sort") sort: String?,
 
-        @Query("fetchType") fetchType: String = "PRESENT"
+        @Query("fetchType") fetchType: String? = "PRESENT"
     ): Response<PageResponse<ReserveSummary>>
 
     @POST(".")
