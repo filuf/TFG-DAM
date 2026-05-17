@@ -1,9 +1,11 @@
 package com.raj.slotify.activities
 
+import android.R
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Base64
+import android.util.JsonToken
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -39,10 +41,10 @@ class LogInActivity : AppCompatActivity() {
         .setSkipIssuerHttpsCheck(true)
         .build()
 
-    private fun goToHomePage(accessToken: String) {
-        Log.i("AUTH", "Intentando abrir HomePage")
+    private fun goToHomePage(token: String) {
+        Log.i("AUTH", "Intentando abrir HomePage, token: $token")
         val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("accessToken", accessToken)
+        intent.putExtra("AUTH_TOKEN_ENTITY", token)
         startActivity(intent)
         finish()
     }
@@ -56,20 +58,24 @@ class LogInActivity : AppCompatActivity() {
 
     private fun completeLogIn(tokenResponse: TokenResponse?) {
         if (tokenResponse != null) {
-            goToHomePage(tokenResponse.accessToken!!)
             Log.i("AUTH", "Token obtenido correctamente: ${tokenResponse.accessToken!!}")
 
             tokenViewModel.deleteAllTokens()
-            tokenViewModel.insertToken(TokenEntity(
+            val tokenEntity = TokenEntity(
                 0,
-                tokenResponse.accessToken!!,
-                tokenResponse.refreshToken!!,
-                tokenResponse.tokenType!!,
-                tokenResponse.accessTokenExpirationTime!!
-            ))
+                tokenResponse.accessToken ?: "",
+                tokenResponse.refreshToken ?: "",
+                tokenResponse.tokenType ?: "Bearer",
+                tokenResponse.accessTokenExpirationTime ?: 0L,
+                tokenResponse.idToken ?: "",
+                tokenResponse.scope ?: "",
+            )
+            tokenViewModel.insertToken(tokenEntity)
+            goToHomePage(tokenResponse.jsonSerializeString())
 
         } else {
             Log.e("AUTH", "No se ha podido obtener el token")
+            goToFirstFragment()
         }
     }
 
@@ -103,11 +109,13 @@ class LogInActivity : AppCompatActivity() {
                             completeLogIn(tokenResponse)
                         }
                     } catch (e: Exception) {
-                        Log.e("AUTH", "Error al decodificar el token: ${e.message}")
+                        Log.e("AUTH", "Error al decodificar el token: ${e.toString()}")
+                        e.printStackTrace()
                     }
                 }
             } else {
                 Log.e("AUTH", "Fallo al obtener el token: ${exception?.message}")
+                exception?.printStackTrace()
             }
         }
     }

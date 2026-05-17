@@ -9,11 +9,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import com.raj.slotify.databinding.FragmentCenterTextNormalIconBinding
+import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
 
 class CenterTextNormalIconFragment : Fragment() {
 
     private val viewModel: MainViewModel by activityViewModels()
+    private val layoutViewModel: LayoutViewModel by activityViewModels()
     private lateinit var binding: FragmentCenterTextNormalIconBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,9 +43,12 @@ class CenterTextNormalIconFragment : Fragment() {
         viewModel.newTitle.observe(viewLifecycleOwner) { title ->
             titleText.text = getString(title)
         }
-
         viewModel.secondTitle.observe(viewLifecycleOwner) { secondTitle ->
             secondText.text = secondTitle
+        }
+
+        layoutViewModel.secondTextVisibility.observe(viewLifecycleOwner) { visible ->
+            secondText.visibility = visible
         }
     }
 }

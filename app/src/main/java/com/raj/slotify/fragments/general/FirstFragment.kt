@@ -37,6 +37,7 @@ class FirstFragment : Fragment() {
         viewModel.setNewTitle(R.string.welcome)
         viewModel.setNewExplication(R.string.account_question)
 
+        layoutViewModel.setSecondTextVisibility(View.GONE)
         layoutViewModel.setExplicationVisibility(View.GONE)
         layoutViewModel.setDescriptionVisibility(View.GONE)
         layoutViewModel.setImageVisibility(View.VISIBLE)

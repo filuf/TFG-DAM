@@ -9,5 +9,7 @@ data class TokenEntity(
     val accessToken: String,
     val refreshToken: String,
     val tokenType: String,
-    val expiresIn: Long
+    val expiresIn: Long,
+    val idToken: String,
+    val scope: String
 )

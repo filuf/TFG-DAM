@@ -1,5 +1,6 @@
 package com.raj.slotify.fragments.general
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -18,7 +19,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.gson.Gson
 import com.raj.slotify.R
+import com.raj.slotify.activities.LogOutActivity
 import com.raj.slotify.databinding.FragmentMainBinding
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
@@ -54,6 +57,12 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.drawerLayout) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         // MANAGE THE UP FRAGMENT
         upNavFragment = childFragmentManager.findFragmentById(R.id.fragmentUp) as NavHostFragment
@@ -128,6 +137,28 @@ class MainFragment : Fragment() {
         val navController = navHostFragment.navController
 
         binding.navigationView.setupWithNavController(navController)
+
+        binding.navigationView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.closeSesion -> {
+                    val closeSessionIntent = Intent(requireContext(), LogOutActivity::class.java)
+
+                    val tokenEntity = userDataViewModel.userToken.value
+
+                    if (tokenEntity != null) {
+
+                        val idToken = tokenEntity.idToken
+                        closeSessionIntent.putExtra("ID_TOKEN", idToken)
+
+                        startActivity(closeSessionIntent)
+                    } else {
+                        Log.e("MainFragment", "No hay entidad de token disponible")
+                    }
+                    true
+                }
+                else -> true
+            }
+        }
 
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             Log.i("MainFragment", "Item selected: ${item.itemId}")

@@ -89,8 +89,7 @@ class RegistryFragment : Fragment() {
             } else {
                 // NO: We are in registry start, go back to FirstFragment
                 // Use normal findNavController()
-
-                findNavController().popBackStack()
+                requireActivity().finish()
             }
         }
 
@@ -105,7 +104,7 @@ class RegistryFragment : Fragment() {
                     if (innerNavController.previousBackStackEntry != null) {
                         innerNavController.popBackStack()
                     } else {
-                        findNavController().popBackStack()
+                        requireActivity().finish()
                     }
                 }
             }

@@ -19,7 +19,7 @@ import java.util.UUID
 
 class ReservesViewModel: ViewModel() {
 
-    val appInDebug: Boolean = BuildConfig.DEBUG
+    val appInDebug: Boolean = BuildConfig.DEBUG_MODE
     val baseUrl: String = if (appInDebug) BuildConfig.SPRING_TEST_URL else BuildConfig.SPRING_BASE_URL
 
     val endpoint: String = baseUrl + "reserves/"

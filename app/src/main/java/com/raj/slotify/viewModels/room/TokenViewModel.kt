@@ -13,11 +13,11 @@ class TokenViewModel: ViewModel() {
 
     var database = TokenApp.database
 
-    private val _token = MutableLiveData<TokenEntity>()
-    val token: MutableLiveData<TokenEntity> = _token
+    private val _token = MutableLiveData<TokenEntity?>()
+    val token: MutableLiveData<TokenEntity?> = _token
 
-    private val _tokens = MutableLiveData<List<TokenEntity>>()
-    val tokens: MutableLiveData<List<TokenEntity>> = _tokens
+    private val _tokens = MutableLiveData<List<TokenEntity?>>()
+    val tokens: MutableLiveData<List<TokenEntity?>> = _tokens
 
     fun insertToken(token: TokenEntity) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -36,6 +36,7 @@ class TokenViewModel: ViewModel() {
                 _tokens.postValue(database.tokenDao().getAllTokens())
             } catch (e: Exception) {
                 Log.e("Error en TokenViewModel", "Error al obtener todos los token: ${e.message}")
+                _tokens.postValue(emptyList())
             }
         }
     }
@@ -46,6 +47,7 @@ class TokenViewModel: ViewModel() {
                 _token.postValue(database.tokenDao().getTokenById(id))
             } catch (e: Exception) {
                 Log.e("Error en TokenViewModel", "Error al obtener token por ID ${id}: ${e.message}")
+                _token.postValue(null)
             }
         }
     }
@@ -56,6 +58,7 @@ class TokenViewModel: ViewModel() {
                 _token.postValue(database.tokenDao().getLastToken())
             } catch (e: Exception) {
                 Log.e("Error en TokenViewModel", "Error al obtener el último token: ${e.message}")
+                token.postValue(null)
             }
         }
     }

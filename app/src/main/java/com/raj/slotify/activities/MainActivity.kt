@@ -8,13 +8,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.NavHostFragment
 import com.raj.slotify.databinding.ActivityMainBinding
+import com.raj.slotify.room.database.TokenEntity
 import com.raj.slotify.viewModels.apiRest.ReservesViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
 import com.raj.slotify.viewModels.frontend.UserDataViewModel
 import com.raj.slotify.viewModels.room.TokenViewModel
+import net.openid.appauth.TokenResponse
 import org.json.JSONObject
 import java.nio.charset.Charset
 import java.util.UUID
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, 0, systemBars.right, 0)
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
@@ -49,13 +50,34 @@ class MainActivity : AppCompatActivity() {
         val navInflater = navController.navInflater
         val graph = navInflater.inflate(com.raj.slotify.R.navigation.nav_graph_main)
 
-        val accessToken = intent.getStringExtra("accessToken")
+        val authToken = intent.getStringExtra("TOKEN_ENTITY")
 
-        if (!accessToken.isNullOrEmpty()) {
+        if (!authToken.isNullOrEmpty()) {
             Log.i("MainActivity", "Token recibido por Intent")
-            extractAccessTokenComponents(accessToken)
-            graph.setStartDestination(com.raj.slotify.R.id.mainFragment)
-            navController.graph = graph
+
+            val tokenResponse = TokenResponse.jsonDeserialize(authToken)
+            val accessToken = tokenResponse.accessToken
+
+            if (accessToken != null) {
+                extractTokenComponents(accessToken)
+                uploadToken(
+                    TokenEntity(
+                        0,
+                        accessToken,
+                        tokenResponse.refreshToken?:"null",
+                        tokenResponse.tokenType?:"null",
+                        tokenResponse.accessTokenExpirationTime?:0,
+                        tokenResponse.idToken?:"null",
+                        tokenResponse.scope?:"null"
+                    )
+                )
+                Log.i("MainActivity", "Token obtenido por Intent: $accessToken")
+
+                graph.setStartDestination(com.raj.slotify.R.id.mainFragment)
+                navController.graph = graph
+            } else {
+                Log.e("MainActivity", "No se ha recibido el access token en el Intent")
+            }
 
         } else {
             Log.w("MainActivity", "No se ha recibido ningún token, intentando cogerlo de Room")
@@ -63,7 +85,8 @@ class MainActivity : AppCompatActivity() {
             tokenViewModel.token.observe(this) { token ->
                 if (token != null) {
                     Log.i("MainActivity", "Token obtenido de Room: ${token.accessToken}")
-                    extractAccessTokenComponents(token.accessToken)
+                    extractTokenComponents(token.accessToken)
+                    uploadToken(token)
                     graph.setStartDestination(com.raj.slotify.R.id.mainFragment)
                 } else {
                     graph.setStartDestination(com.raj.slotify.R.id.firstFragment)
@@ -73,7 +96,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun extractAccessTokenComponents(accessToken: String) {
+    fun uploadToken(tokenEntity: TokenEntity) {
+        userDataViewModel.setUserToken(tokenEntity)
+    }
+
+    fun extractTokenComponents(accessToken: String) {
         try {
             val parts = accessToken.split(".")
             if (parts.size == 3) {
@@ -98,7 +125,6 @@ class MainActivity : AppCompatActivity() {
                 userDataViewModel.setUserType(accountType)
                 userDataViewModel.setEmail(email)
                 userDataViewModel.setName(username)
-                userDataViewModel.setAccessToken(accessToken)
                 userDataViewModel.setUuid(UUID.fromString(sub))
 
                 reservesViewModel.getReserves("Bearer $accessToken", null, null, null, null)
