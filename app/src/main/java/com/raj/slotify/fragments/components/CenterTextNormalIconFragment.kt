@@ -31,15 +31,19 @@ class CenterTextNormalIconFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val text: TextView = binding.titleText
+        val titleText: TextView = binding.titleText
+        val secondText: TextView = binding.secondText
         val image: ImageView = binding.bigImage
 
         viewModel.newIcon.observe(viewLifecycleOwner) { icon ->
             image.setImageResource(icon)
         }
         viewModel.newTitle.observe(viewLifecycleOwner) { title ->
-            text.text = getString(title)
+            titleText.text = getString(title)
         }
 
+        viewModel.secondTitle.observe(viewLifecycleOwner) { secondTitle ->
+            secondText.text = secondTitle
+        }
     }
 }

@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentSelectPhysicalDirectionBinding
 import com.raj.slotify.dtos.maps.PlaceSuggestion
-import com.raj.slotify.fragments.mapsFragment.SuggestionAdapter
+import com.raj.slotify.adapters.SuggestionAdapter
 import com.raj.slotify.viewModels.frontend.EnterpriseRegistryViewModel
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
@@ -112,7 +112,6 @@ class SelectPhysicalDirectionFragment : Fragment(), OnMapReadyCallback {
         // RECYCLER WITH SUGGESTIONS, WITH A CLICK LISTENER THAT CHARGES THE GOOGLE MAP
         val recycler: RecyclerView = binding.suggestionFragment
         val suggestionAdapter = SuggestionAdapter { placeSuggestion: PlaceSuggestion? ->
-
             this.placeSuggestion = placeSuggestion
 
             textUbication.setText(placeSuggestion?.displayName)
@@ -135,7 +134,6 @@ class SelectPhysicalDirectionFragment : Fragment(), OnMapReadyCallback {
 
             imageSpin.visibility = View.GONE
             mapView.visibility = View.VISIBLE
-
         }
 
         recycler.adapter = suggestionAdapter

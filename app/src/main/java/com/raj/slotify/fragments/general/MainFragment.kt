@@ -15,22 +15,27 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModel
-import androidx.navigation.findNavController
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentMainBinding
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
+import com.raj.slotify.viewModels.frontend.MainViewModel
+import com.raj.slotify.viewModels.frontend.UserDataViewModel
 
 class MainFragment : Fragment() {
 
     private val layoutViewModel: LayoutViewModel by activityViewModels()
-    private val viewModel: ViewModel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels()
+    private val userDataViewModel: UserDataViewModel by activityViewModels()
 
     private lateinit var binding: FragmentMainBinding
     private lateinit var drawerToggle: ActionBarDrawerToggle
+
+    private lateinit var upNavFragment: NavHostFragment
+    private lateinit var upNavController: NavController
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +45,9 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        layoutViewModel.setDescriptionVisibility(View.GONE)
+        layoutViewModel.setExplicationVisibility(View.GONE)
+
         binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -47,12 +55,30 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // MANAGE THE UP FRAGMENT
+        upNavFragment = childFragmentManager.findFragmentById(R.id.fragmentUp) as NavHostFragment
+        upNavController = upNavFragment.navController
+
+        layoutViewModel.centerIconTitle.observe(viewLifecycleOwner) { centerIconTitle ->
+            val currentDestinationId = upNavController.currentDestination?.id
+
+            if (centerIconTitle) {
+                if (currentDestinationId == R.id.upFragment) {
+                    upNavController.navigate(R.id.action_upFragment_to_centerTextNormalIconFragment)
+                }
+            } else {
+                if (currentDestinationId == R.id.centerTextNormalIconFragment) {
+                    upNavController.navigate(R.id.action_centerTextNormalIconFragment_to_upFragment)
+                }
+            }
+        }
+
         val window = requireActivity().window
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
             window.isNavigationBarContrastEnforced = false
         }
 
-        // 2. Hacer que la BottomNavigationView se extienda debajo de la barra del sistema
+        // EXTEND BOTTOM NAVIGATION IN SYSTEM NAV BAR
         ViewCompat.setOnApplyWindowInsetsListener(binding.bottomNavigationView) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
 
@@ -144,6 +170,7 @@ class MainFragment : Fragment() {
                 return when (menuItem.itemId) {
                     R.id.settingsFragment -> {
                         navController.navigate(R.id.settingsFragment)
+                        upNavController.popBackStack()
                         true
                     }
                     else -> false

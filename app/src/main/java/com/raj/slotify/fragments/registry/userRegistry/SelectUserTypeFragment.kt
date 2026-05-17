@@ -46,8 +46,6 @@ class SelectUserTypeFragment : Fragment() {
         val cardViewClient: CardView = binding.cardViewClient
         val cardViewEnterprise: CardView = binding.cardViewEnterprise
 
-        viewModel.setOldTitle(viewModel.newTitle.value?: R.string.welcome)
-
         cardViewClient.setOnClickListener {
             userDataViewModel.setUserType("USER")
             view.findNavController().navigate(R.id.action_selectUserTypeFragment_to_clientRegistryPhoneEmailFragment)

@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.activityViewModels
 import com.raj.slotify.databinding.FragmentUpBinding
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
@@ -35,6 +37,7 @@ class UpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val image: ImageView = binding.bigImage
+        val cardIcon: CardView = binding.cardIcon
         val titleText: TextView = binding.titleText
         val descText: TextView = binding.textDesc
         val explicationText: TextView = binding.textExplication
@@ -51,6 +54,33 @@ class UpFragment : Fragment() {
 
         layoutViewModel.imageVisibility.observe(viewLifecycleOwner) { visibility ->
             image.visibility = visibility
+        }
+
+        layoutViewModel.centerIconTitle.observe(viewLifecycleOwner) { centerIconTitle ->
+            // CENTER IMAGE
+            val constraintSet = ConstraintSet()
+
+            constraintSet.clone(binding.upConstraitLayout) // clone constraint form fragment
+
+            if (centerIconTitle) {
+                constraintSet.connect(
+                    cardIcon.id,
+                    ConstraintSet.END,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.END
+                )
+            } else {
+                constraintSet.clear(cardIcon.id, ConstraintSet.END)
+            }
+            constraintSet.applyTo(binding.upConstraitLayout)
+
+            // CENTER TEXT
+            if (centerIconTitle) {
+                titleText.gravity = View.TEXT_ALIGNMENT_CENTER
+            } else {
+                titleText.gravity = View.TEXT_ALIGNMENT_TEXT_START
+            }
+
         }
 
         layoutViewModel.descriptionVisibility.observe(viewLifecycleOwner) { visibility ->

@@ -59,8 +59,6 @@ class FirstFragment : Fragment() {
 
         changeLanguageLayout.setOnClickListener {
             view.findNavController().navigate(R.id.action_firstFragment_to_languageFragment)
-
-            viewModel.setOldTitle(viewModel.newTitle.value ?: R.string.welcome)
         }
 
         logOnButton.setOnClickListener {
