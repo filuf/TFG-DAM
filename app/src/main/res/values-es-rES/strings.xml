@@ -182,4 +182,7 @@
     <string name="password_short">La contraseña introducida es corta. La longitud debe ser de entre 10 y 16 caracteres</string>
     <string name="open_drawer">Open drawer</string>
     <string name="close_drawer">Close drawer</string>
+    <string name="days_word">días</string>
+    <string name="hours_word">horas</string>
+    <string name="minutes_word">minutes</string>
 </resources>

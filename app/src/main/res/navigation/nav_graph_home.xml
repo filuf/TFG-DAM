@@ -9,7 +9,11 @@
         android:id="@+id/homeFragment"
         android:name="com.raj.slotify.fragments.general.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_reserveDetailsFragment"
+            app:destination="@id/reserveDetailsFragment3" />
+    </fragment>
     <fragment
         android:id="@+id/servicesFragment"
         android:name="com.raj.slotify.fragments.company.services.ServicesFragment"
@@ -29,7 +33,11 @@
         android:id="@+id/viewAllReservesFragment"
         android:name="com.raj.slotify.fragments.general.ViewAllReservesFragment"
         android:label="fragment_view_all_reserves"
-        tools:layout="@layout/fragment_view_all_reserves" />
+        tools:layout="@layout/fragment_view_all_reserves" >
+        <action
+            android:id="@+id/action_viewAllReservesFragment_to_reserveDetailsFragment"
+            app:destination="@id/reserveDetailsFragment3" />
+    </fragment>
     <fragment
         android:id="@+id/chatForInqueriesFragment"
         android:name="com.raj.slotify.fragments.client.ChatForInqueriesFragment"
@@ -40,4 +48,9 @@
         android:name="com.raj.slotify.fragments.general.LanguageFragment"
         android:label="fragment_language"
         tools:layout="@layout/fragment_language" />
+    <fragment
+        android:id="@+id/reserveDetailsFragment3"
+        android:name="com.raj.slotify.fragments.reserves.client.ReserveDetailsFragment"
+        android:label="fragment_reserve_details_client"
+        tools:layout="@layout/fragment_reserve_details_client" />
 </navigation>

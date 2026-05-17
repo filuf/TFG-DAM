@@ -58,17 +58,17 @@
     <string name="reserves_pending">reserves pending</string>
     <string name="left_after">left</string>
     <string name="see_more">See more</string>
-    <string name="shortcouts">Shortcouts</string>
+    <string name="shortcouts">Shortcuts</string>
     <string name="home">Home</string>
     <string name="calendar">Calendar</string>
     <string name="search_reserve">Search reserve</string>
     <string name="reserve_a_service">Reserve a service</string>
     <string name="chat_for_inquiries">Chat for inquiries</string>
-    <string name="close_sesion">Close sesion</string>
+    <string name="close_sesion">Close session</string>
     <string name="inquiries">Inquiries</string>
     <string name="appointments">Appointments</string>
     <string name="search_in_calendar">Search by reserve date or name</string>
-    <string name="appointment_cancell">Cancell appointment</string>
+    <string name="appointment_cancell">Cancel appointment</string>
     <string name="reserve_appointment">Reserve an appointment</string>
     <string name="service_to_reserve_question">What service you want to reserve?</string>
     <string name="select_cattegory_message">Select the relevant category or enter the desired service:</string>
@@ -182,9 +182,12 @@
     <string name="establish_enterprise_ubication">Establish the company location</string>
     <string name="account_no_created">Account creation error</string>
     <string name="cancel_registry_confirmation">You are sure about cancel the registry?</string>
-    <string name="cancel_registry_explication">We redirect you to the previus window to edit your data if you want.</string>
+    <string name="cancel_registry_explication">We redirect you to the previous window to edit your data if you want.</string>
     <string name="account_already_exists">The user already exists in the identity system. Enter another email.</string>
     <string name="password_short">The entered password is short. The length must be between 10 and 16 characters</string>
     <string name="open_drawer">Open drawer</string>
     <string name="close_drawer">Close drawer</string>
+    <string name="days_word">days</string>
+    <string name="hours_word">hours</string>
+    <string name="minutes_word">minutes</string>
 </resources>

@@ -31,13 +31,12 @@
             android:orientation="vertical">
 
             <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/fragmentUpMain2"
-                android:name="com.raj.slotify.fragments.components.UpFragment"
+                android:id="@+id/fragmentUp"
+                android:name="androidx.navigation.fragment.NavHostFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout="@layout/fragment_up" />
+                app:defaultNavHost="true"
+                app:navGraph="@navigation/nav_graph_home_welcome" />
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -49,8 +48,7 @@
 
                 <androidx.coordinatorlayout.widget.CoordinatorLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_height="match_parent">
 
                     <androidx.fragment.app.FragmentContainerView
                         android:id="@+id/navHostFragmentHome"
