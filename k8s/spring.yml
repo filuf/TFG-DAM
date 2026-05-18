@@ -40,7 +40,7 @@ spec:
             value: "slotify"
 
           - name: JAVA_TOOL_OPTIONS
-            value: "-XX:+UseZGC -XX:+ZGenerational" # ZGC Generacional
+            value: "-XX:MaxRAMPercentage=75.0"
         
         resources:
           requests:
