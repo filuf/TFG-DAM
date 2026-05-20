@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
-                android:text="&gt;"
+                android:text="&lt;"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -51,7 +51,6 @@
                     android:id="@+id/serviceNameText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
                     android:text="Nombre del servicio"
                     android:textSize="24sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -135,6 +134,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/gMapsFragment"
+                android:name="com.raj.slotify.fragments.reserves.MapsFragment"
+                android:layout_width="match_parent"
+                android:layout_height="254dp"
+                android:layout_weight="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardDirectionInfo"
                 android:layout_width="wrap_content"
@@ -197,15 +205,6 @@
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
-
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/gMapsFragment"
-                android:name="com.raj.slotify.fragments.reserves.MapsFragment"
-                android:layout_width="match_parent"
-                android:layout_height="254dp"
-                android:layout_weight="1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/cancelButton"
