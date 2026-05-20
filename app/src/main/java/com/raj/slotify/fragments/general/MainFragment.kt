@@ -14,12 +14,12 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.marginEnd
 import androidx.core.view.updatePadding
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.google.gson.Gson
 import com.raj.slotify.R
 import com.raj.slotify.activities.LogOutActivity
 import com.raj.slotify.databinding.FragmentMainBinding
@@ -58,15 +58,32 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.drawerLayout) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            v.setPadding(systemBars.left, 0, systemBars.right, 0)
             insets
         }
 
         // MANAGE THE UP FRAGMENT
         upNavFragment = childFragmentManager.findFragmentById(R.id.fragmentUp) as NavHostFragment
         upNavController = upNavFragment.navController
+
+        layoutViewModel.superiorFragmentVisibility.observe(viewLifecycleOwner) { visibility ->
+            binding.fragmentUp.visibility = visibility
+        }
+
+        layoutViewModel.downFragmentFullScreenSize.observe(viewLifecycleOwner) { zeroAppMargin ->
+            val params = binding.mainLinearLayout.layoutParams as ViewGroup.MarginLayoutParams
+
+            if (zeroAppMargin) {
+                params.setMargins(0, 0, 0, 0)
+            } else {
+                val margin32dp = (32 * resources.displayMetrics.density).toInt()
+                params.setMargins(margin32dp, margin32dp, margin32dp, 0)
+            }
+
+            binding.mainLinearLayout.layoutParams = params
+        }
 
         layoutViewModel.centerIconTitle.observe(viewLifecycleOwner) { centerIconTitle ->
             val currentDestinationId = upNavController.currentDestination?.id
@@ -82,12 +99,12 @@ class MainFragment : Fragment() {
             }
         }
 
+        // EXTEND BOTTOM NAVIGATION IN SYSTEM NAV BAR
         val window = requireActivity().window
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
             window.isNavigationBarContrastEnforced = false
         }
 
-        // EXTEND BOTTOM NAVIGATION IN SYSTEM NAV BAR
         ViewCompat.setOnApplyWindowInsetsListener(binding.bottomNavigationView) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
 

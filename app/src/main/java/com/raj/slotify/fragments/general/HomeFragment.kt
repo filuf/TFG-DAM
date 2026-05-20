@@ -15,7 +15,6 @@ import com.raj.slotify.R
 import com.raj.slotify.adapters.ReservesListCustomAdapter
 import com.raj.slotify.databinding.FragmentHomeBinding
 import com.raj.slotify.dtos.reserves.ReserveSummary
-import com.raj.slotify.models.ReserveRecyclerItem
 import com.raj.slotify.viewModels.apiRest.ReservesViewModel
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
@@ -54,10 +53,8 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val recyclerView: RecyclerView = binding.recyclerHome
-        val customAdapter = ReservesListCustomAdapter(mutableListOf()) { reserve: ReserveRecyclerItem ->
-            val userToken = "Bearer ${userDataViewModel.userToken.value?.accessToken?:""}"
-            reservesViewModel.getReserveById(reserve.id, userToken)
-
+        val customAdapter = ReservesListCustomAdapter(userDataViewModel.reserves.value?:mutableListOf()) { reserve: ReserveSummary ->
+            userDataViewModel.setLastReserveSelected(reserve)
             view.findNavController().navigate(R.id.action_homeFragment_to_reserveDetailsFragment)
         }
 
@@ -72,71 +69,7 @@ class HomeFragment : Fragment() {
                         val reservesSummarySelection: MutableList<ReserveSummary> =
                             reservesSummary.take(2).toMutableList()
 
-                        fun calculateDate(
-                            startTime: LocalDateTime,
-                            endTime: LocalDateTime
-                        ): List<String> {
-                            val listToReturn: ArrayList<String> = arrayListOf()
-
-                            listToReturn.add("${startTime.hour}:${startTime.minute} - ${endTime.hour}:${endTime.minute}")
-                            listToReturn.add("${startTime.dayOfMonth}/${startTime.monthValue}/${startTime.year}")
-                            return listToReturn
-                        }
-
-                        fun calculateRemainingText(startTime: LocalDateTime): String {
-                            // SET REMAINING TEXT
-                            val now: LocalDateTime = LocalDateTime.now()
-
-                            val duration = java.time.Duration.between(now, startTime)
-                            if (duration.isNegative || duration.isZero) {
-                                return getString(R.string.already_started)
-                            }
-
-                            val remainingDays = duration.toDays()
-                            val remainingHours = duration.toHours()
-                            val remainingMinutes = duration.toMinutes()
-
-                            return when {
-                                remainingDays > 0 -> " $remainingDays ${
-                                    if (remainingDays > 1) getString(
-                                        R.string.days_word
-                                    ) else getString(R.string.day_word)
-                                } ${getString(R.string.left_after)} "
-
-                                remainingHours > 0 -> " $remainingHours ${
-                                    if (remainingHours > 1) getString(
-                                        R.string.hours_word
-                                    ) else getString(R.string.hour_word)
-                                } ${getString(R.string.left_after)} "
-
-                                else -> " $remainingMinutes ${
-                                    if (remainingMinutes > 1) getString(R.string.minutes_word) else getString(
-                                        R.string.minute_word
-                                    )
-                                } ${getString(R.string.left_after)} "
-                            }
-                        }
-
-                        val recyclerItems: MutableList<ReserveRecyclerItem> =
-                            reservesSummarySelection
-                                .map { reserveSummary ->
-                                    ReserveRecyclerItem(
-                                        reserveSummary.reserveId,
-                                        reserveSummary.serviceName,
-                                        calculateDate(
-                                            reserveSummary.startDateTime,
-                                            reserveSummary.endDateTime
-                                        )[1],
-                                        calculateDate(
-                                            reserveSummary.startDateTime,
-                                            reserveSummary.endDateTime
-                                        )[0],
-                                        calculateRemainingText(reserveSummary.startDateTime)
-                                    )
-                                }
-                                .toMutableList()
-
-                        customAdapter.setItems(recyclerItems)
+                        customAdapter.setItems(reservesSummarySelection)
                     }
                 }
             } catch (e: Exception) {

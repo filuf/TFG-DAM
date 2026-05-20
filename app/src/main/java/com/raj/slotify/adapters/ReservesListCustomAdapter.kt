@@ -1,18 +1,21 @@
 package com.raj.slotify.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.raj.slotify.R
+import com.raj.slotify.dtos.reserves.ReserveSummary
 import com.raj.slotify.models.ReserveRecyclerItem
+import java.time.LocalDateTime
 
-class ReservesListCustomAdapter(private val dataSet: MutableList<ReserveRecyclerItem>,
-                                private val onClick: (ReserveRecyclerItem) -> Unit) :
+class ReservesListCustomAdapter(private val dataSet: MutableList<ReserveSummary>,
+                                private val onClick: (ReserveSummary) -> Unit) :
     RecyclerView.Adapter<ReservesListCustomAdapter.ViewHolder>() {
 
-    fun setItems(newItems: List<ReserveRecyclerItem>) {
+    fun setItems(newItems: List<ReserveSummary>) {
         dataSet.clear()
         dataSet.addAll(newItems)
         notifyDataSetChanged()
@@ -53,10 +56,18 @@ class ReservesListCustomAdapter(private val dataSet: MutableList<ReserveRecycler
         // contents of the view with that element
         val reserve = dataSet[position]
 
-        viewHolder.reserveTitleText.text = reserve.title
-        viewHolder.reserveDateText.text = reserve.date
-        viewHolder.reservePeriodText.text = reserve.period
-        viewHolder.remainingOrClientText.text = reserve.remainingOrClient
+        val context = viewHolder.itemView.context
+
+        viewHolder.reserveTitleText.text = reserve.serviceName
+
+        val dateInfo = calculateDate(
+            reserve.startDateTime,
+            reserve.endDateTime
+        )
+        viewHolder.reserveDateText.text = dateInfo[1]
+        viewHolder.reservePeriodText.text = dateInfo[0]
+
+        viewHolder.remainingOrClientText.text = calculateRemainingText(reserve.startDateTime, context)
 
         viewHolder.itemView.setOnClickListener {
             onClick(reserve)
@@ -66,5 +77,50 @@ class ReservesListCustomAdapter(private val dataSet: MutableList<ReserveRecycler
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
+
+    fun calculateDate(
+        startTime: LocalDateTime,
+        endTime: LocalDateTime
+    ): List<String> {
+        val listToReturn: ArrayList<String> = arrayListOf()
+
+        listToReturn.add("${startTime.hour}:${startTime.minute} - ${endTime.hour}:${endTime.minute}")
+        listToReturn.add("${startTime.dayOfMonth}/${startTime.monthValue}/${startTime.year}")
+        return listToReturn
+    }
+
+    fun calculateRemainingText(startTime: LocalDateTime, context: Context): String {
+        // SET REMAINING TEXT
+        val now: LocalDateTime = LocalDateTime.now()
+
+        val duration = java.time.Duration.between(now, startTime)
+        if (duration.isNegative || duration.isZero) {
+            return context.getString(R.string.already_started)
+        }
+
+        val remainingDays = duration.toDays()
+        val remainingHours = duration.toHours()
+        val remainingMinutes = duration.toMinutes()
+
+        return when {
+            remainingDays > 0 -> " $remainingDays ${
+                if (remainingDays > 1) context.getString(
+                    R.string.days_word
+                ) else context.getString(R.string.day_word)
+            } ${context.getString(R.string.left_after)} "
+
+            remainingHours > 0 -> " $remainingHours ${
+                if (remainingHours > 1) context.getString(
+                    R.string.hours_word
+                ) else context.getString(R.string.hour_word)
+            } ${context.getString(R.string.left_after)} "
+
+            else -> " $remainingMinutes ${
+                if (remainingMinutes > 1) context.getString(R.string.minutes_word) else context.getString(
+                    R.string.minute_word
+                )
+            } ${context.getString(R.string.left_after)} "
+        }
+    }
 
 }

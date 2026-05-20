@@ -11,7 +11,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.raj.slotify.activities.MainActivity
 import com.raj.slotify.R
 import com.raj.slotify.activities.LogInActivity
 import com.raj.slotify.databinding.FragmentEndRegistryBinding
