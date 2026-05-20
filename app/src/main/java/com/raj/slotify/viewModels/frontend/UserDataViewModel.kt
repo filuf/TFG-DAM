@@ -21,6 +21,8 @@ class UserDataViewModel: ViewModel() {
     private val _imageUri = MutableLiveData<Uri>()
     private val _userType = MutableLiveData<String>()
     private val _reserves = MutableLiveData<MutableList<ReserveSummary>>()
+    private val _lastReserveSelected = MutableLiveData<ReserveSummary>()
+    private val _serviceLocation = MutableLiveData<String>()
 
     val userToken: LiveData<TokenEntity> = _userToken
     val uuid: LiveData<UUID> = _uuid
@@ -32,9 +34,11 @@ class UserDataViewModel: ViewModel() {
     val imageUri: LiveData<Uri> = _imageUri
     val userType: LiveData<String> = _userType
     val reserves: LiveData<MutableList<ReserveSummary>> = _reserves
+    val lastReserveSelected: LiveData<ReserveSummary> = _lastReserveSelected
+    val serviceLocation: LiveData<String> = _serviceLocation
 
-    fun setUserToken(accessToken: TokenEntity) {
-        _userToken.postValue(accessToken)
+    fun setUserToken(userToken: TokenEntity) {
+        _userToken.postValue(userToken)
     }
 
     fun setUuid(uuid: UUID) {
@@ -67,6 +71,14 @@ class UserDataViewModel: ViewModel() {
 
     fun setReserves(reserves: MutableList<ReserveSummary>) {
         _reserves.postValue(reserves)
+    }
+
+    fun setLastReserveSelected(lastReserveSelected: ReserveSummary) {
+        _lastReserveSelected.postValue(lastReserveSelected)
+    }
+
+    fun setServiceLocation(serviceLocation: String) {
+        _serviceLocation.postValue(serviceLocation)
     }
 
 }

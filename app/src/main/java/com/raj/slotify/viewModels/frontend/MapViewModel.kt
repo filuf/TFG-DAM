@@ -16,7 +16,7 @@ import kotlin.coroutines.cancellation.CancellationException
 
 class MapViewModel: ViewModel() {
 
-    private val service = RetrofitInstance.getApiService<GoogleMapsApiService>("https://nominatim.openstreetmap.org/")
+    private val service = RetrofitInstance.getService(GoogleMapsApiService::class.java, "https://nominatim.openstreetmap.org/")
     private var searchJob: Job? = null // JOB TO DELAY THE API CALL
 
     private val _placeSuggestions = MutableLiveData<List<PlaceSuggestion>>()
