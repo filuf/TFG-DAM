@@ -19,11 +19,7 @@ import java.util.UUID
 
 class ReservesViewModel: ViewModel() {
 
-    val appInDebug: Boolean = BuildConfig.DEBUG_MODE
-    val baseUrl: String = if (appInDebug) BuildConfig.SPRING_TEST_URL else BuildConfig.SPRING_BASE_URL
-
-    val endpoint: String = baseUrl + "reserves/"
-    val service = RetrofitInstance.getApiService<ReservesService>(endpoint)
+    val service = RetrofitInstance.getService(ReservesService::class.java)
 
     private val _reservesSummary = MutableLiveData<Response<PageResponse<ReserveSummary>>?>()
     var reservesSummary: LiveData<Response<PageResponse<ReserveSummary>>?> = _reservesSummary
@@ -53,6 +49,7 @@ class ReservesViewModel: ViewModel() {
     fun getReserves(authHeader: String, page: Int?, size: Int?, sort: String?, fetchType: String?) {
         viewModelScope.launch(Dispatchers.IO) {
             val response = service.getReserves(authHeader, page, size, sort, fetchType)
+            Log.i("DEBUG GET RESERVES", "url: ")
             if (!response.isSuccessful) {
                 Log.e(
                     "Error en ReservesViewModel",

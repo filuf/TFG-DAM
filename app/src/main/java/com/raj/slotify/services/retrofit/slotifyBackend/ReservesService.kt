@@ -10,13 +10,13 @@ import java.util.UUID
 
 interface ReservesService {
 
-    @GET("{reserveId}")
+    @GET("reserves/{reserveId}")
     suspend fun getReserve(
         @Path("reserveId") reserveId: UUID,
         @Header("Authorization") authHeader: String
     ): Response<ReserveSummary>
 
-    @GET(".")
+    @GET("reserves")
     suspend fun getReserves(
         @Header("Authorization") authHeader: String,
 
@@ -27,13 +27,13 @@ interface ReservesService {
         @Query("fetchType") fetchType: String? = "PRESENT"
     ): Response<PageResponse<ReserveSummary>>
 
-    @POST(".")
+    @POST("reserves")
     suspend fun createReserve(
         @Header("Authorization") authHeader: String,
         @Body createReserveRequest: CreateReserveRequest
     ): Response<CreateReserveResponse>
 
-    @POST("{reserveId}/cancel")
+    @POST("reserves/{reserveId}/cancel")
     suspend fun cancelReserve(
         @Path("reserveId") reserveId: UUID,
         @Header("Authorization") authHeader: String

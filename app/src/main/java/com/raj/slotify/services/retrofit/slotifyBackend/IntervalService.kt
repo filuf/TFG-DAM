@@ -8,13 +8,13 @@ import java.util.UUID
 
 interface IntervalService {
 
-    @POST(".")
+    @POST("intervals")
     suspend fun createInterval(
         @Header("Authorization") authHeader: String,
         @Body createIntervalRequest: CreateIntervalRequest
     ): Response<CreateIntervalResponse>
 
-    @DELETE("{intervalId}")
+    @DELETE("intervals/{intervalId}")
     suspend fun deleteInterval(
         @Header("Authorization") authHeader: String,
         @Path("intervalId") intervalId: UUID

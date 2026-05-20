@@ -10,19 +10,19 @@ import retrofit2.http.*
 
 interface ServiceService {
 
-    @POST(".")
+    @POST("services")
     suspend fun createService(
         @Header("Authorization") authHeader: String,
         @Body createServiceRequest: CreateServiceRequest
     ): Response<CreateServiceResponse>
 
-    @GET("{serviceId}")
+    @GET("services/{serviceId}/schedules")
     suspend fun getServiceSchedules(
         @Path("serviceId") serviceId: String,
         @Header("Authorization") authHeader: String
     ): Response<ServiceSummary>
 
-    @POST("{serviceId}/schedules")
+    @POST("services/{serviceId}/schedules")
     suspend fun createServiceSchedule(
         @Path("serviceId") serviceId: String,
         @Header("Authorization") authHeader: String,

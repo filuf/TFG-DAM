@@ -8,7 +8,7 @@ import java.util.UUID
 
 interface ScheduleService {
 
-    @PATCH("{scheduleId}")
+    @PATCH("schedules/{scheduleId}")
     suspend fun patchSchedule(
         @Path("scheduleId") scheduleId: UUID,
         @Header("Authorization") authHeader: String,

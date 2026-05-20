@@ -16,11 +16,7 @@ import java.util.UUID
 
 class ScheduleViewModel: ViewModel() {
 
-    val appInDebug: Boolean = BuildConfig.DEBUG_MODE
-    val baseUrl: String = if (appInDebug) BuildConfig.SPRING_TEST_URL else BuildConfig.SPRING_BASE_URL
-
-    val endpoint: String = baseUrl + "schedules/"
-    val service = RetrofitInstance.getApiService<ScheduleService>(endpoint)
+    val service = RetrofitInstance.getService(ScheduleService::class.java)
 
     private val _scheduleUpdated = MutableLiveData<Response<ScheduleSummary>?>()
     var scheduleUpdated: MutableLiveData<Response<ScheduleSummary>?> = _scheduleUpdated

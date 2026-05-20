@@ -10,12 +10,12 @@ import retrofit2.http.POST
 
 interface RegisterUserService {
 
-    @POST("register/user")
+    @POST("auth/register/user")
     suspend fun registerClient(
         @Body registerClientRequest: RegisterUserRequest
     ): Response<RegisterUserResponse>
 
-    @POST("register/company")
+    @POST("auth/register/company")
     suspend fun registerCompany(
         @Body registerCompanyRequest: RegisterCompanyRequest
     ): Response<RegisterCompanyResponse>

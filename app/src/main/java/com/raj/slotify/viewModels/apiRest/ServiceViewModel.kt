@@ -20,11 +20,7 @@ import java.util.UUID
 
 class ServiceViewModel: ViewModel() {
 
-    val appInDebug: Boolean = BuildConfig.DEBUG_MODE
-    val baseUrl: String = if (appInDebug) BuildConfig.SPRING_TEST_URL else BuildConfig.SPRING_BASE_URL
-
-    val endpoint: String = baseUrl + "services/"
-    val service = RetrofitInstance.getApiService<ServiceService>(endpoint)
+    val service = RetrofitInstance.getService(ServiceService::class.java)
 
     private val _serviceCreated = MutableLiveData<Response<CreateServiceResponse>?>()
     var serviceCreated: LiveData<Response<CreateServiceResponse>?> = _serviceCreated

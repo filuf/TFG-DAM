@@ -17,18 +17,14 @@ import java.util.UUID
 
 class CompanyViewModel: ViewModel() {
 
-    val appInDebug: Boolean = BuildConfig.DEBUG_MODE
-    val baseUrl: String = if (appInDebug) BuildConfig.SPRING_TEST_URL else BuildConfig.SPRING_BASE_URL
-
-    val endpoint: String = baseUrl + "companies/"
-    val service = RetrofitInstance.getApiService<CompanyService>(endpoint)
+    val service = RetrofitInstance.getService(CompanyService::class.java)
 
     private val _listOfServices = MutableLiveData<Response<List<GetServicesResponse>>?>()
     var listOfServices: LiveData<Response<List<GetServicesResponse>>?> = _listOfServices
 
-    fun getServicesByCompanyId(companyId: UUID, place: String, page: Int, sortBy: String, order: String) {
+    fun getServicesByCompanyId(companyId: UUID, authHeader: String, place: String?=null, page: Int?=null, sortBy: String?=null, order: String?=null) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = service.getServicesByCompanyId(companyId, place, page, sortBy, order)
+            val response = service.getServicesByCompanyId(companyId, authHeader, place, page, sortBy, order)
             if (!response.isSuccessful) {
                 Log.e(
                     "Error en CompanyViewModel",

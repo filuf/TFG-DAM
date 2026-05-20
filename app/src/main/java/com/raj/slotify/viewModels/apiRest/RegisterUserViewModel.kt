@@ -18,11 +18,7 @@ import retrofit2.Response
 
 class RegisterUserViewModel: ViewModel() {
 
-    val appInDebug: Boolean = BuildConfig.DEBUG_MODE
-    val baseUrl: String = if (appInDebug) BuildConfig.SPRING_TEST_URL else BuildConfig.SPRING_BASE_URL
-
-    val endpoint: String = baseUrl + "auth/"
-    val service = RetrofitInstance.getApiService<RegisterUserService>(endpoint)
+    val service = RetrofitInstance.getService(RegisterUserService::class.java)
 
     private val _clientRegistered = MutableLiveData<Response<RegisterUserResponse>?>()
     var clientRegistered: LiveData<Response<RegisterUserResponse>?> = _clientRegistered

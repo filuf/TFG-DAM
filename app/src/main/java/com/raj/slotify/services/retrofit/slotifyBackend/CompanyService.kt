@@ -7,13 +7,14 @@ import java.util.UUID
 
 interface CompanyService {
 
-    @GET("{companyId}/services")
+    @GET("companies/{companyId}/services")
     suspend fun getServicesByCompanyId(
         @Path("companyId") companyId: UUID,
-        @Query("fetchMode") place: String,
-        @Query("page") page: Int,
-        @Query("sortBy") sortBy: String,
-        @Query("order") order: String
+        @Header("Authorization") authHeader: String,
+        @Query("fetchMode") place: String?,
+        @Query("page") page: Int?,
+        @Query("sortBy") sortBy: String?,
+        @Query("order") order: String?
     ): Response<List<GetServicesResponse>>
 
 }
