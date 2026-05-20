@@ -1,11 +1,14 @@
 package com.raj.slotify.fragments.reserves
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.launch
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -14,16 +17,18 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.raj.slotify.R
 import com.raj.slotify.viewModels.frontend.EnterpriseRegistryViewModel
+import com.raj.slotify.viewModels.frontend.UserDataViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MapsFragment : Fragment() {
 
-    private val enterpriseViewModel: EnterpriseRegistryViewModel by activityViewModels()
+    private val userDataViewModel: UserDataViewModel by activityViewModels()
     private var mMap: GoogleMap? = null
 
     private val callback = OnMapReadyCallback { googleMap ->
         mMap = googleMap
-        // Iniciamos la observación una vez que el mapa está listo
-        setupPlaceObserver()
     }
 
     override fun onCreateView(
@@ -38,27 +43,39 @@ class MapsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+
+        userDataViewModel.serviceLocation.observe(viewLifecycleOwner) { location ->
+            viewLifecycleOwner.lifecycleScope.launch {
+                loadMapFromAddress(location)
+            }
+        }
     }
 
-    private fun setupPlaceObserver() {
-        // Observamos los cambios en la sugerencia del lugar
-        enterpriseViewModel.ubicationPlaceSuggestion.observe(viewLifecycleOwner) { placeSuggestion ->
-            placeSuggestion?.let { suggestion ->
-                val lat = suggestion.lat
-                val lon = suggestion.lon
-                val location = LatLng(lat, lon)
+    private suspend fun loadMapFromAddress(address: String) {
+        if (!android.location.Geocoder.isPresent()) {
+            Log.e("MapsFragment", "El dispositivo no tiene servicios de Geocodificación")
+            return
+        }
 
-                mMap?.apply {
-                    clear()
-                    addMarker(
-                        MarkerOptions()
-                        .position(location)
-                        .title(suggestion.displayName))
+        val geocoder = android.location.Geocoder(requireContext())
 
-                    // Animamos la cámara hacia la nueva ubicación
-                    animateCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
+        try {
+            val addresses = geocoder.getFromLocationName(address, 1)
+
+            if (!addresses.isNullOrEmpty()) {
+                val addr = addresses[0]
+                val location = LatLng(addr.latitude, addr.longitude)
+
+                withContext(Dispatchers.Main) {
+                    mMap?.apply {
+                        clear()
+                        addMarker(MarkerOptions().position(location).title(address))
+                        animateCamera(CameraUpdateFactory.newLatLngZoom(location, 15f))
+                    }
                 }
             }
+        } catch (e: Exception) {
+            Log.e("MapsFragment", "Error buscando la dirección: ${e.message}")
         }
     }
 }

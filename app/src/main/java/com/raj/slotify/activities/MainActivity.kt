@@ -36,12 +36,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-
         // FIND ACCESS TOKEN AND REDIRECT INTO HOME PAGE
         val navHostFragment = supportFragmentManager
             .findFragmentById(com.raj.slotify.R.id.fragmentContainerView3) as NavHostFragment
@@ -50,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         val navInflater = navController.navInflater
         val graph = navInflater.inflate(com.raj.slotify.R.navigation.nav_graph_main)
 
-        val authToken = intent.getStringExtra("TOKEN_ENTITY")
+        val authToken = intent.getStringExtra("AUTH_TOKEN_ENTITY")
 
         if (!authToken.isNullOrEmpty()) {
             Log.i("MainActivity", "Token recibido por Intent")

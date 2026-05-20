@@ -59,6 +59,7 @@ class LogInActivity : AppCompatActivity() {
     private fun completeLogIn(tokenResponse: TokenResponse?) {
         if (tokenResponse != null) {
             Log.i("AUTH", "Token obtenido correctamente: ${tokenResponse.accessToken!!}")
+            Log.i("AUTH", "id token: ${tokenResponse.idToken?:"no id token"}")
 
             tokenViewModel.deleteAllTokens()
             val tokenEntity = TokenEntity(
@@ -155,7 +156,9 @@ class LogInActivity : AppCompatActivity() {
             "android-app-client",
             ResponseTypeValues.CODE,
             "com.raj.slotify://oauth2redirect".toUri()
-        ).build()
+        )
+        .setScope("openid profile email")
+        .build()
 
         val authIntent = authService.getAuthorizationRequestIntent(authRequest)
         getAuthResult.launch(authIntent)
