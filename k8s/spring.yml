@@ -39,6 +39,19 @@ spec:
           - name: KEYCLOAK_REALM
             value: "slotify"
 
+          # --- MAIL ---
+          - name: MAIL_ADDRESS
+            valueFrom:
+              secretKeyRef:
+                name: mail-secret
+                key: email
+          - name: MAIL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mail-secret
+                key: password
+          
+
           - name: JAVA_TOOL_OPTIONS
             value: "-XX:+UseZGC -XX:+ZGenerational" # ZGC Generacional
         
