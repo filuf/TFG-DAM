@@ -29,11 +29,9 @@ spring:
 
   # ELASTIC
   elasticsearch:
-    uris: https://${ELASTIC_HOST:elastic-es-http}:9200
+    uris: http://${ELASTIC_HOST:elastic-es-http}:9200
     username: elastic
     password: ${ELASTIC_PASSWORD}
-    ssl:
-      verification-mode: none
 
   # KEYCLOAK
   security:
