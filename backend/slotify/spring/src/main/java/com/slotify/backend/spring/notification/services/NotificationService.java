@@ -13,4 +13,6 @@ public interface NotificationService {
     Optional<NotificationEntity> findNotificationById(UUID notificationId);
 
     Optional<NotificationEntity> findNotificationByIdAndAccountType(UUID notificationId, AccountType accountType, UUID accountId);
+
+    long countUnreadNotifications(UUID accountId, AccountType accountType);
 }
