@@ -21,6 +21,7 @@ public class NotificationEntity {
 
     @Id
     @Column(name = "notification_id", updatable = false, nullable = false)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @EqualsAndHashCode.Include
     private UUID notificationId;
 
