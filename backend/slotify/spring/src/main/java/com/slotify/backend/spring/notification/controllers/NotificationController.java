@@ -49,7 +49,7 @@ public class NotificationController {
         return ResponseEntity.ok(notifications);
     }
 
-    @GetMapping("{notificationId:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}}")
+    @GetMapping("{notificationId}")
     @PreAuthorize("hasAnyRole('USER','COMPANY')")
     public ResponseEntity<NotificationSummary> getNotification(
             @PathVariable UUID notificationId,
