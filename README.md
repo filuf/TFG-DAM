@@ -522,6 +522,32 @@ kubectl logs -f -l app=traefik
 
 ---
 
+## Configurar Mail
+
+### Requisitos previos
+
+- Tener una cuenta de correo Gmail o de empresa (SMTP habilitado).
+- Activar la verificación en dos pasos (2FA) en la cuenta.
+- Crear una contraseña de aplicación (app password) para uso con SMTP.
+
+### Crear el secreto en Kubernetes
+
+Una vez tengas la dirección de correo y la contraseña de aplicación, crea un `Secret` que la aplicación pueda usar para enviar correos:
+
+```bash
+kubectl create secret generic mail-secret \
+  --from-literal=email='tu-correo@gmail.com' \
+  --from-literal=password='tu-contraseña-o-token-smtp'
+```
+
+En PowerShell (Windows) puedes ejecutar la misma instrucción en una sola línea:
+
+```powershell
+kubectl create secret generic mail-secret --from-literal=email="tu-correo@gmail.com" --from-literal=password="tu-contraseña-o-token-smtp"
+```
+
+Este secreto será referenciado por la configuración del backend para autenticarse en el servidor SMTP y enviar correos (por ejemplo, notificaciones, restablecimiento de contraseña, etc.).
+
 ## Spring Backend en Kubernetes
 
 ### Requisitos previos

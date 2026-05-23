@@ -1,8 +1,10 @@
 package com.slotify.backend.spring.company.models;
 
+import com.slotify.backend.spring.service.models.ServiceEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -44,5 +46,8 @@ public class CompanyEntity {
 
     @Column(name = "ratting_avg")
     private Short rattingAvg;
+
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
+    List<ServiceEntity> services;
 
 }
