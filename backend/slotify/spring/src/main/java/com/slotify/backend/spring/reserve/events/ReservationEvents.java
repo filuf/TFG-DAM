@@ -1,5 +1,6 @@
 package com.slotify.backend.spring.reserve.events;
 
+import com.slotify.backend.spring.auth.enums.AccountType;
 import com.slotify.backend.spring.company.models.CompanyEntity;
 import com.slotify.backend.spring.mailer.MailService;
 import com.slotify.backend.spring.mailer.SendMailRequest;
@@ -11,6 +12,7 @@ import com.slotify.backend.spring.reserve.models.ReserveEntity;
 import com.slotify.backend.spring.service.models.ServiceEntity;
 import com.slotify.backend.spring.user.models.UserEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +43,7 @@ public class ReservationEvents {
     }
 
     @EventListener
+    @CacheEvict(value = "sent-notifications", allEntries = true)
     public void saveCancelNotification(ReservationCanceledEvent event) {
         ReserveEntity reserve = event.getReserveEntity();
         ServiceEntity service = reserve.getService();
