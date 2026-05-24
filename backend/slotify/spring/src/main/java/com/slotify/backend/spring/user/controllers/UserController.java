@@ -1,7 +1,9 @@
 package com.slotify.backend.spring.user.controllers;
 
+import com.slotify.backend.spring.auth.enums.AccountType;
 import com.slotify.backend.spring.user.dtos.PatchUserRequest;
 import com.slotify.backend.spring.user.dtos.UserSummary;
+import com.slotify.backend.spring.user.useCases.GetUserUseCase;
 import com.slotify.backend.spring.user.useCases.PatchUserUseCase;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import java.util.UUID;
 public class UserController {
 
     private final PatchUserUseCase patchUserUseCase;
+    private final GetUserUseCase getUserUseCase;
 
     @PatchMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('USER')")
@@ -36,6 +39,20 @@ public class UserController {
                 request.getUsernameJsonNullable(),
                 request.getPhoneNumberJsonNullable()
         );
+
+        return ResponseEntity.ok(userSummary);
+    }
+
+    @GetMapping("{userId}")
+    @PreAuthorize("hasAnyRole('USER','COMPANY')")
+    public ResponseEntity<UserSummary> getUser(
+            @PathVariable UUID userId,
+            @AuthenticationPrincipal Jwt jwt
+    ) {
+        AccountType accountType = AccountType.fromType(jwt.getClaim("account-type"));
+        UUID accountId = UUID.fromString(jwt.getSubject());
+
+        UserSummary userSummary = this.getUserUseCase.getUser(userId, accountType, accountId);
 
         return ResponseEntity.ok(userSummary);
     }
