@@ -1,60 +1,147 @@
 package com.raj.slotify.fragments.general
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
+import com.applandeo.materialcalendarview.CalendarDay
 import com.raj.slotify.R
+import com.raj.slotify.databinding.FragmentCalendarBinding
+import com.raj.slotify.viewModels.apiRest.ReservesViewModel
+import com.raj.slotify.viewModels.frontend.LayoutViewModel
+import com.raj.slotify.viewModels.frontend.MainViewModel
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.util.Calendar
+import java.util.Date
+import com.applandeo.materialcalendarview.listeners.OnCalendarDayClickListener
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.raj.slotify.activities.client.MakeReserveActivity
+import com.raj.slotify.dtos.reserves.ReserveSummary
+import com.raj.slotify.tools.Navigation
+import com.raj.slotify.viewModels.frontend.ClientReservesViewModel
+import com.raj.slotify.viewModels.frontend.UserDataViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [CalendarFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class CalendarFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class CalendarFragment : Fragment(), OnCalendarDayClickListener {
+
+    private val viewModel: MainViewModel by activityViewModels()
+    private val layoutViewModel: LayoutViewModel by activityViewModels()
+    private val userDataViewModel: UserDataViewModel by activityViewModels()
+    private val clientReservesViewModel: ClientReservesViewModel by activityViewModels()
+
+    private val reservesViewModel: ReservesViewModel by activityViewModels()
+
+    private lateinit var binding: FragmentCalendarBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calendar, container, false)
+    ): View {
+        binding = FragmentCalendarBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CalendarFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CalendarFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    fun selectDateInCalendar(dateTime: LocalDateTime) {
+        val millis = dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+
+        binding.calendarView.setDate(Date(millis))
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val makeReserveButton = binding.makeReserveButton
+        makeReserveButton.setOnClickListener {
+            val intent = Intent(requireActivity(), MakeReserveActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.calendarView.setOnCalendarDayClickListener(this)
+
+        val calendarDays: MutableList<CalendarDay> = ArrayList<CalendarDay>()
+
+        reservesViewModel.reservesSummary.observe(viewLifecycleOwner) { response ->
+            if (response == null)
+                return@observe
+            if (!response.isSuccessful) {
+                return@observe
+            }
+            val content = response.body()?.content
+
+            if (content == null)
+                return@observe
+
+            clientReservesViewModel.setReserves(content.toMutableList())
+
+            for (reserve in content) {
+                val startTime = reserve.startDateTime
+                val calendar = Calendar.getInstance()
+
+                val timesTamp = startTime.toInstant(ZoneId.systemDefault().rules.getOffset(startTime))
+
+                calendar.timeInMillis = timesTamp.toEpochMilli()
+                val calendarDay = CalendarDay(calendar)
+
+                calendarDay.imageResource = R.drawable.sample_circle
+                calendarDay.labelColor = R.color.nav_item_color
+
+                calendarDays.add(calendarDay)
+            }
+
+            binding.calendarView.setCalendarDays(calendarDays.toList())
+
+            if (content.isNotEmpty()) {
+                selectDateInCalendar(content[0].startDateTime)
+            }
+        }
+
+    }
+
+    private fun showReservesPopup(reserves: List<ReserveSummary>) {
+        val items = reserves.map { reserve ->
+            "${reserve.serviceName} (${reserve.startDateTime.toLocalTime()})"
+        }.toTypedArray()
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.daily_reserves_title)
+            .setItems(items) { _, which ->
+                val selectedReserve = reserves[which]
+                clientReservesViewModel.setLastReserveSelected(selectedReserve)
+
+                requireView().findNavController().navigate(R.id.action_calendarFragment_to_reserveDetailsFragment)
+            }
+            .setNegativeButton(R.string.dialog_close, null)
+            .show()
+    }
+
+    override fun onClick(calendarDay: CalendarDay) {
+        Log.i("Calendar", "Selected date: ${calendarDay.calendar}")
+        val calendar = calendarDay.calendar
+
+        val instant = calendar.time.toInstant()
+
+        val selectedDate = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalDate()
+        val allReserves = clientReservesViewModel.reserves.value ?: mutableListOf()
+
+        val dailyReserves = allReserves.filter {
+            it.startDateTime.toLocalDate() == selectedDate
+        }
+
+        if (dailyReserves.isNotEmpty()) {
+            showReservesPopup(dailyReserves)
+        } else {
+            Log.i("Calendar", "No hay reservas para el día $selectedDate")
+        }
+    }
+
 }

@@ -17,6 +17,7 @@ import com.raj.slotify.R
 import com.raj.slotify.activities.LogInActivity
 import com.raj.slotify.activities.RegistryActivity
 import com.raj.slotify.databinding.FragmentFirstBinding
+import com.raj.slotify.models.TextModel
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
 
@@ -35,9 +36,9 @@ class FirstFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        viewModel.setNewIcon(R.drawable._logoslotify_retocado)
-        viewModel.setNewTitle(R.string.welcome)
-        viewModel.setNewExplication(R.string.account_question)
+        viewModel.setIcon(R.drawable._logoslotify_retocado)
+        viewModel.setTitle(TextModel(R.string.welcome))
+        viewModel.setExplication(TextModel(R.string.account_question))
 
         layoutViewModel.setSecondTextVisibility(View.GONE)
         layoutViewModel.setExplicationVisibility(View.GONE)
@@ -62,8 +63,8 @@ class FirstFragment : Fragment() {
         val logOnButton: Button = binding.buttonLogOn
         val logInButton: Button = binding.buttonLogIn
 
-        viewModel.newExplication.observe(viewLifecycleOwner) { explication ->
-            textExplication.text = getString(explication)
+        viewModel.explication.observe(viewLifecycleOwner) { explication ->
+            textExplication.text = if (explication.stringId != null) getString(explication.stringId) else explication.customText?: ""
         }
 
         changeLanguageLayout.setOnClickListener {

@@ -3,27 +3,28 @@ package com.raj.slotify.viewModels.frontend
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.raj.slotify.models.TextModel
 
 class MainViewModel: ViewModel() {
 
     // ICONS
-    private val _newIcon = MutableLiveData<Int>()
-    val newIcon: LiveData<Int> = _newIcon
+    private val _icon = MutableLiveData<Int>()
+    val icon: LiveData<Int> = _icon
 
     // TITLES
-    private val _newTitle = MutableLiveData<Int>()
-    val newTitle: LiveData<Int> = _newTitle
+    private val _title = MutableLiveData<TextModel>()
+    val title: LiveData<TextModel> = _title
 
     private val _secondTitle = MutableLiveData<String>()
     val secondTitle: LiveData<String> = _secondTitle
 
     // SUBTITLES
-    private val _newSubtitle = MutableLiveData<Int>()
-    val newSubtitle: LiveData<Int> = _newSubtitle
+    private val _subtitle = MutableLiveData<TextModel>()
+    val subtitle: LiveData<TextModel> = _subtitle
 
     // EXPLICATION
-    private val _newExplication = MutableLiveData<Int>()
-    val newExplication: LiveData<Int> = _newExplication
+    private val _explication = MutableLiveData<TextModel>()
+    val explication: LiveData<TextModel> = _explication
 
     // ACTUAL USER TYPE
     private val _userType = MutableLiveData<String>()
@@ -34,24 +35,24 @@ class MainViewModel: ViewModel() {
     val language: LiveData<String> = _language
 
     // SET METHODS
-    fun setNewTitle(newTitle: Int) {
-        _newTitle.postValue(newTitle)
+    fun setTitle(newTitle: TextModel) {
+        _title.postValue(newTitle)
     }
 
     fun setSecondTitle(secondTitle: String) {
         _secondTitle.postValue(secondTitle)
     }
 
-    fun setNewSubtitle(newSubtitle: Int) {
-        _newSubtitle.postValue(newSubtitle)
+    fun setSubtitle(newSubtitle: TextModel) {
+        _subtitle.postValue(newSubtitle)
     }
 
-    fun setNewExplication(newExplication: Int) {
-        _newExplication.postValue(newExplication)
+    fun setExplication(newExplication: TextModel) {
+        _explication.postValue(newExplication)
     }
 
-    fun setNewIcon(icon: Int) {
-        _newIcon.postValue(icon)
+    fun setIcon(icon: Int) {
+        _icon.postValue(icon)
     }
 
     fun setUserType(userType: String) {

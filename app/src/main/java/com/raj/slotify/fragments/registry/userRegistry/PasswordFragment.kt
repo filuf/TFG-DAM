@@ -20,6 +20,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
 import androidx.core.view.isGone
+import com.raj.slotify.models.TextModel
 
 class PasswordFragment : Fragment() {
 
@@ -46,8 +47,8 @@ class PasswordFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel.setNewTitle(R.string.enter_secure_password)
-        viewModel.setNewExplication(R.string.verify_password_security)
+        viewModel.setTitle(TextModel(R.string.enter_secure_password))
+        viewModel.setExplication(TextModel(R.string.verify_password_security))
 
         layoutViewModel.setExplicationVisibility(View.VISIBLE)
 

@@ -10,9 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentRegistryBinding
+import com.raj.slotify.models.TextModel
 import com.raj.slotify.viewModels.frontend.EnterpriseRegistryViewModel
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
@@ -52,7 +52,7 @@ class RegistryFragment : Fragment() {
         enterpriseViewModel.let { }
         layoutViewModel.let { }
 
-        viewModel.setNewTitle(R.string.selectUserType)
+        viewModel.setTitle(TextModel(R.string.selectUserType))
         layoutViewModel.setNextButtonVisibility(View.GONE)
 
         val superiorFragment: FragmentContainerView = binding.fragmentSuperior

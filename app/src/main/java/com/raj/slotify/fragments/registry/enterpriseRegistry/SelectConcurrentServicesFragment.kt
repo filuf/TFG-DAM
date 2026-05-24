@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentSelectConcurrentServicesBinding
+import com.raj.slotify.models.TextModel
 import com.raj.slotify.viewModels.frontend.EnterpriseRegistryViewModel
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
@@ -34,8 +35,8 @@ class SelectConcurrentServicesFragment : Fragment() {
     ): View? {
         layoutViewModel.setExplicationVisibility(View.VISIBLE)
 
-        viewModel.setNewTitle(R.string.enter_simultaneous_services)
-        viewModel.setNewExplication(R.string.simultaneous_numer_explication)
+        viewModel.setTitle(TextModel(R.string.enter_simultaneous_services))
+        viewModel.setExplication(TextModel(R.string.simultaneous_numer_explication))
 
         binding = FragmentSelectConcurrentServicesBinding.inflate(inflater, container, false)
         return binding.root

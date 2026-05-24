@@ -55,7 +55,7 @@
     <string name="account_recuperated_message">Your account has been successfully recovered.\n\nGo into the log in page to enter with your account.</string>
     <string name="welcome_greeting">Welcome back,</string>
     <string name="you_have">You have</string>
-    <string name="reserves_pending">reserves pending</string>
+    <string name="pending_word">pending</string>
     <string name="left_after">left</string>
     <string name="see_more">See more</string>
     <string name="shortcouts">Shortcuts</string>
@@ -73,8 +73,8 @@
     <string name="service_to_reserve_question">What service you want to reserve?</string>
     <string name="select_cattegory_message">Select the relevant category or enter the desired service:</string>
     <string name="search_text">Search</string>
-    <string name="restaurants">Restaurants</string>
-    <string name="hairdressers">Hairdressers</string>
+    <string name="hostelery_cat">Food and Beverage</string>
+    <string name="beauty_cat">Beauty and Health</string>
     <string name="mechanical_workshops">Mechanical workshops</string>
     <string name="site_where_reserve">Where do you want to reserve?</string>
     <string name="find_by_enterprise_name">Find by enterprise name</string>
@@ -194,6 +194,21 @@
     <string name="day_word">day</string>
     <string name="hour_word">hour</string>
     <string name="minute_word">second</string>
-    <string name="cant_close_session_title">Error clossing session</string>
-    <string name="cant_close_sesion_message">Close your sesion has not be possible. Retry it later.</string>
+    <string name="cant_close_session_title">Error closing session</string>
+    <string name="cant_close_sesion_message">Close your session has not be possible. Retry it later.</string>
+    <string name="sesion_expired_title">Your session is expired</string>
+    <string name="sesion_expired_explication">Please log back into your account</string>
+    <string name="canceled_sesion_explication">You want to retry it?</string>
+    <string name="canceled_sesion_title">Log in canceled</string>
+    <string name="daily_reserves_title">Select a reserve:</string>
+    <string name="dialog_close">CLOSE</string>
+    <string name="reserves">reserves</string>
+    <string name="reserve">reserve</string>
+    <string name="pending_plural">pending</string>
+    <string name="empty_string" />
+    <string name="travels_cat">Travels and accommodation</string>
+    <string name="reserve_cancelation_title">Reserve cancelation</string>
+    <string name="reserve_cancelation_confirmation">You are sure of the appointment cancelation?</string>
+    <string name="negation_word">NO</string>
+    <string name="yes_word">YES</string>
 </resources>

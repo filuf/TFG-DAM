@@ -14,6 +14,7 @@ import com.raj.slotify.viewModels.frontend.MainViewModel
 import com.raj.slotify.viewModels.frontend.UserDataViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.raj.slotify.databinding.FragmentRegistryNameEmailBinding
+import com.raj.slotify.models.TextModel
 import com.raj.slotify.viewModels.apiRest.RegisterUserViewModel
 import kotlinx.coroutines.launch
 
@@ -52,10 +53,10 @@ class RegistryNameEmailFragment : Fragment() {
         layoutViewModel.setNextButtonVisibility(View.VISIBLE)
 
         if (isClient) {
-            viewModel.setNewTitle(R.string.enter_user_data)
+            viewModel.setTitle(TextModel(R.string.enter_user_data))
             binding.inputLayoutUserName.hint = getString(R.string.enter_user_name)
         } else {
-            viewModel.setNewTitle(R.string.enter_organitation_data)
+            viewModel.setTitle(TextModel(R.string.enter_organitation_data))
             binding.inputLayoutUserName.hint = getString(R.string.company_name)
         }
 

@@ -20,7 +20,7 @@ class LayoutViewModel: ViewModel() {
     private val _superiorFragmentVisibility = MutableLiveData<Int>()
     private val _inferiorFragmentVisibility = MutableLiveData<Int>()
     private val _secondTextVisibility = MutableLiveData<Int>()
-    private val _downFragmentFullScreenSize = MutableLiveData<Boolean>()
+    private val _bottomNavVisibility = MutableLiveData<Int>()
     private val _centerIconTitle = MutableLiveData<Boolean>()
     
     val nextButtonVisibility: LiveData<Int> = _nextButtonVisibility
@@ -32,7 +32,7 @@ class LayoutViewModel: ViewModel() {
     val imageVisibility: LiveData<Int> = _imageVisibility
     val superiorFragmentVisibility: LiveData<Int> = _superiorFragmentVisibility
     val inferiorFragmentVisibility: LiveData<Int> = _inferiorFragmentVisibility
-    val downFragmentFullScreenSize: LiveData<Boolean> = _downFragmentFullScreenSize
+    val bottomNavVisibility: LiveData<Int> = _bottomNavVisibility
     val centerIconTitle: LiveData<Boolean> = _centerIconTitle
     val secondTextVisibility: LiveData<Int> = _secondTextVisibility
 
@@ -64,16 +64,16 @@ class LayoutViewModel: ViewModel() {
         _imageVisibility.postValue(visibility)
     }
 
-    fun setDownFragmentFullScreenSize(zeroAppMargin: Boolean) {
-        _downFragmentFullScreenSize.postValue(zeroAppMargin)
-    }
-
     fun setSuperiorFragmentVisibility(visibility: Int) {
         _superiorFragmentVisibility.postValue(visibility)
     }
 
     fun setInferiorFragmentVisibility(visibility: Int) {
         _inferiorFragmentVisibility.postValue(visibility)
+    }
+
+    fun setNavBottomVisibility(visibility: Int) {
+        _bottomNavVisibility.postValue(visibility)
     }
 
     fun setCenterIconTitle(centerIconTitle: Boolean) {

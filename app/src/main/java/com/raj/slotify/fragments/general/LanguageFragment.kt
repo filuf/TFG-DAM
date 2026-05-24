@@ -14,6 +14,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentLanguageBinding
+import com.raj.slotify.models.TextModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
 
 class LanguageFragment : Fragment() {
@@ -29,7 +30,7 @@ class LanguageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel.setNewTitle(R.string.change_language)
+        viewModel.setTitle(TextModel(R.string.change_language))
 
         binding = FragmentLanguageBinding.inflate(inflater, container, false)
         return binding.root

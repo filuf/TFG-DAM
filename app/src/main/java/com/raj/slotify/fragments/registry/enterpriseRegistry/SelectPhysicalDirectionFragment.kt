@@ -31,6 +31,7 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.raj.slotify.models.TextModel
 import kotlinx.coroutines.launch
 
 class SelectPhysicalDirectionFragment : Fragment(), OnMapReadyCallback {
@@ -55,7 +56,7 @@ class SelectPhysicalDirectionFragment : Fragment(), OnMapReadyCallback {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel.setNewTitle(R.string.establish_enterprise_ubication)
+        viewModel.setTitle(TextModel(R.string.establish_enterprise_ubication))
 
         binding = FragmentSelectPhysicalDirectionBinding.inflate(inflater, container, false)
 

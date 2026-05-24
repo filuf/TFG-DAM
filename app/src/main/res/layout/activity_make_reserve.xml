@@ -7,4 +7,12 @@
     android:layout_height="match_parent"
     tools:context=".activities.client.MakeReserveActivity">
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView7"
+        android:name="com.raj.slotify.fragments.reserves.client.createReserve.LayoutMakeReserveFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_layout_make_reserve" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,19 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".fragments.components.UpFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/upConstraitLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardIcon"
             android:layout_width="110dp"
             android:layout_height="110dp"
+            android:layout_marginBottom="16dp"
             app:cardCornerRadius="10dp"
-            app:cardElevation="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:cardElevation="0dp">
 
             <ImageView
                 android:id="@+id/bigImage"
@@ -33,12 +33,9 @@
             android:id="@+id/titleText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:text="Title"
             android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/bigImage"
-            app:layout_constraintTop_toBottomOf="@id/cardIcon" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textDesc"
@@ -47,9 +44,7 @@
             android:layout_marginTop="16dp"
             android:text="TextView"
             android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/titleText" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textExplication"
@@ -57,9 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="TextView"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textDesc" />
+            android:textSize="14sp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </FrameLayout>

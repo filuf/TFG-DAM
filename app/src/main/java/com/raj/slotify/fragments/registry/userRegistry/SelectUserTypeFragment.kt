@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentSelectUserTypeBinding
+import com.raj.slotify.models.TextModel
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
 import com.raj.slotify.viewModels.frontend.UserDataViewModel
@@ -36,7 +37,7 @@ class SelectUserTypeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.setNewTitle(R.string.selectUserType)
+        viewModel.setTitle(TextModel(R.string.selectUserType))
 
         layoutViewModel.setBackButtonVisibility(View.VISIBLE)
         layoutViewModel.setNextButtonVisibility(View.GONE)

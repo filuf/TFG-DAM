@@ -16,6 +16,7 @@ import com.raj.slotify.activities.LogInActivity
 import com.raj.slotify.databinding.FragmentEndRegistryBinding
 import com.raj.slotify.dtos.registry.client.RegisterUserRequest
 import com.raj.slotify.dtos.registry.company.RegisterCompanyRequest
+import com.raj.slotify.models.TextModel
 import com.raj.slotify.viewModels.apiRest.RegisterUserViewModel
 import com.raj.slotify.viewModels.frontend.EnterpriseRegistryViewModel
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
@@ -44,8 +45,8 @@ class EndRegistryFragment : Fragment() {
         layoutViewModel.setInferiorFragmentVisibility(View.GONE)
         layoutViewModel.setExplicationVisibility(View.VISIBLE)
 
-        viewModel.setNewTitle(R.string.wait_a_moment)
-        viewModel.setNewExplication(R.string.wait_a_moment_expication)
+        viewModel.setTitle(TextModel(R.string.wait_a_moment))
+        viewModel.setExplication(TextModel(R.string.wait_a_moment_expication))
 
         layoutViewModel.setBackButtonVisibility(View.GONE)
         layoutViewModel.setNextButtonVisibility(View.GONE)
@@ -118,7 +119,7 @@ class EndRegistryFragment : Fragment() {
     }
 
     private fun successfulRegistryConfirmation() {
-        viewModel.setNewTitle(R.string.succesful_account_creation)
+        viewModel.setTitle(TextModel(R.string.succesful_account_creation))
         layoutViewModel.setExplicationVisibility(View.GONE)
         layoutViewModel.setInferiorFragmentVisibility(View.VISIBLE)
     }
