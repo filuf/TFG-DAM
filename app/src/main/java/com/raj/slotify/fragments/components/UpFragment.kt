@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.activityViewModels
+import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentUpBinding
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
@@ -42,45 +43,21 @@ class UpFragment : Fragment() {
         val descText: TextView = binding.textDesc
         val explicationText: TextView = binding.textExplication
 
-        viewModel.newIcon.observe(viewLifecycleOwner) { icon ->
+        viewModel.icon.observe(viewLifecycleOwner) { icon ->
             image.setImageResource(icon)
         }
-        viewModel.newTitle.observe(viewLifecycleOwner) { title ->
-            titleText.text = getString(title)
+        viewModel.title.observe(viewLifecycleOwner) { title ->
+            titleText.text = if (title.stringId != null) getString(title.stringId) else title.customText?: ""
         }
-        viewModel.newExplication.observe(viewLifecycleOwner) { explication ->
-            explicationText.text = getString(explication)
+        viewModel.subtitle.observe(viewLifecycleOwner) { desc ->
+            descText.text = if (desc.stringId != null) getString(desc.stringId) else desc.customText?: ""
+        }
+        viewModel.explication.observe(viewLifecycleOwner) { explication ->
+            explicationText.text = if (explication.stringId != null) getString(explication.stringId) else explication.customText?: ""
         }
 
         layoutViewModel.imageVisibility.observe(viewLifecycleOwner) { visibility ->
-            image.visibility = visibility
-        }
-
-        layoutViewModel.centerIconTitle.observe(viewLifecycleOwner) { centerIconTitle ->
-            // CENTER IMAGE
-            val constraintSet = ConstraintSet()
-
-            constraintSet.clone(binding.upConstraitLayout) // clone constraint form fragment
-
-            if (centerIconTitle) {
-                constraintSet.connect(
-                    cardIcon.id,
-                    ConstraintSet.END,
-                    ConstraintSet.PARENT_ID,
-                    ConstraintSet.END
-                )
-            } else {
-                constraintSet.clear(cardIcon.id, ConstraintSet.END)
-            }
-            constraintSet.applyTo(binding.upConstraitLayout)
-
-            // CENTER TEXT
-            if (centerIconTitle) {
-                titleText.gravity = View.TEXT_ALIGNMENT_CENTER
-            } else {
-                titleText.gravity = View.TEXT_ALIGNMENT_TEXT_START
-            }
-
+            cardIcon.visibility = visibility
         }
 
         layoutViewModel.descriptionVisibility.observe(viewLifecycleOwner) { visibility ->

@@ -1,11 +1,9 @@
 package com.raj.slotify.activities
 
-import android.R
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Base64
-import android.util.JsonToken
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -14,6 +12,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.raj.slotify.R
 import com.raj.slotify.room.database.TokenEntity
 import com.raj.slotify.viewModels.room.TokenViewModel
 import net.openid.appauth.AppAuthConfiguration
@@ -121,17 +120,44 @@ class LogInActivity : AppCompatActivity() {
         }
     }
 
-    private val getAuthResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            result ->
-        if (result.resultCode == RESULT_OK) {
-            val data = result.data
-            val response = AuthorizationResponse.fromIntent(data!!)
+    private fun handleAuthError(error: AuthorizationException) {
+        Log.e("AUTH", "Error de AppAuth: [${error.code}] ${error.errorDescription}")
+
+        if (error.code == AuthorizationException.GeneralErrors.USER_CANCELED_AUTH_FLOW.code) {
+            Log.w("AUTH", "El usuario cerró el navegador manualmente")
+
+            MaterialAlertDialogBuilder(this)
+                .setTitle(getString(R.string.canceled_sesion_title))
+                .setMessage(getString(R.string.canceled_sesion_explication))
+                .setPositiveButton(getString(R.string.dialog_retry)) { _, _ ->
+                    doLogin()
+                }.setNegativeButton(getString(R.string.cancel)) { _, _ ->
+                    goToFirstFragment()
+                }.show()
+        } else {
+            Toast.makeText(this, "Error: ${error.errorDescription}", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private val getAuthResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->val data = result.data
+
+        if (result.resultCode == RESULT_OK && data != null) {
+            val response = AuthorizationResponse.fromIntent(data)
             val error = AuthorizationException.fromIntent(data)
 
-            if(response != null) {
+            if (response != null) {
                 exchangeCodeForToken(response)
+            } else if (error != null) {
+                handleAuthError(error)
+            }
+        }
+
+        else if (result.resultCode == RESULT_CANCELED) {
+            if (data != null) {
+                val error = AuthorizationException.fromIntent(data)
+                if (error != null) handleAuthError(error)
             } else {
-                Log.e("AUTH", "Error en el login: ${error?.message}")
+                Log.e("AUTH", "Ha ocurrido alfgo raro")
             }
         }
     }

@@ -19,9 +19,11 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
 import com.raj.slotify.R
 import com.raj.slotify.activities.LogOutActivity
+import com.raj.slotify.activities.client.MakeReserveActivity
 import com.raj.slotify.databinding.FragmentMainBinding
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
@@ -55,6 +57,24 @@ class MainFragment : Fragment() {
         return binding.root
     }
 
+    private fun navigateSafely(navController: NavController, destinationId: Int) {
+        val currentDestinationId = navController.currentDestination?.id
+
+        if (currentDestinationId == destinationId) return
+
+        val navOptions = androidx.navigation.NavOptions.Builder()
+            .setLaunchSingleTop(true)
+            .setRestoreState(true)
+            .setPopUpTo(navController.graph.startDestinationId, inclusive = false, saveState = true)
+            .build()
+
+        try {
+            navController.navigate(destinationId, null, navOptions)
+        } catch (e: Exception) {
+            Log.e("NavError", "No se pudo navegar al destino: $destinationId")
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -62,41 +82,6 @@ class MainFragment : Fragment() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, 0, systemBars.right, 0)
             insets
-        }
-
-        // MANAGE THE UP FRAGMENT
-        upNavFragment = childFragmentManager.findFragmentById(R.id.fragmentUp) as NavHostFragment
-        upNavController = upNavFragment.navController
-
-        layoutViewModel.superiorFragmentVisibility.observe(viewLifecycleOwner) { visibility ->
-            binding.fragmentUp.visibility = visibility
-        }
-
-        layoutViewModel.downFragmentFullScreenSize.observe(viewLifecycleOwner) { zeroAppMargin ->
-            val params = binding.mainLinearLayout.layoutParams as ViewGroup.MarginLayoutParams
-
-            if (zeroAppMargin) {
-                params.setMargins(0, 0, 0, 0)
-            } else {
-                val margin32dp = (32 * resources.displayMetrics.density).toInt()
-                params.setMargins(margin32dp, margin32dp, margin32dp, 0)
-            }
-
-            binding.mainLinearLayout.layoutParams = params
-        }
-
-        layoutViewModel.centerIconTitle.observe(viewLifecycleOwner) { centerIconTitle ->
-            val currentDestinationId = upNavController.currentDestination?.id
-
-            if (centerIconTitle) {
-                if (currentDestinationId == R.id.upFragment) {
-                    upNavController.navigate(R.id.action_upFragment_to_centerTextNormalIconFragment)
-                }
-            } else {
-                if (currentDestinationId == R.id.centerTextNormalIconFragment) {
-                    upNavController.navigate(R.id.action_centerTextNormalIconFragment_to_upFragment)
-                }
-            }
         }
 
         // EXTEND BOTTOM NAVIGATION IN SYSTEM NAV BAR
@@ -117,10 +102,24 @@ class MainFragment : Fragment() {
         val activity = requireActivity() as androidx.appcompat.app.AppCompatActivity
         activity.setSupportActionBar(binding.toolbar)
 
-        // BLOCK SYSTEM BACK BUTTON
+        val navHostFragment = childFragmentManager.findFragmentById(R.id.navHostFragmentHome) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        // BLOCK SYSTEM BACK BUTTON OR GO BACK IN NAV
         activity.onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                requireActivity().finishAffinity()
+                // IF LATERAL MENU IS OPEN CLOSE IT
+                if (binding.drawerLayout.isDrawerOpen(androidx.core.view.GravityCompat.START)) {
+                    binding.drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START)
+                }
+                // IF NAV CONTROLLER CAN GO BACK
+                else if (navController.previousBackStackEntry != null) {
+                    navController.popBackStack()
+                }
+                // IF NAV CONTROLLER CANNOT GO BACK
+                else {
+                    requireActivity().finishAffinity()
+                }
             }
         })
 
@@ -150,62 +149,40 @@ class MainFragment : Fragment() {
         }
 
         // SET UP NAV HOST FRAGMENT
-        val navHostFragment = childFragmentManager.findFragmentById(R.id.navHostFragmentHome) as NavHostFragment
-        val navController = navHostFragment.navController
-
-        binding.navigationView.setupWithNavController(navController)
-
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.closeSesion -> {
-                    val closeSessionIntent = Intent(requireContext(), LogOutActivity::class.java)
+                    binding.drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START)
 
+                    val intent = Intent(requireActivity(), LogOutActivity::class.java)
                     val tokenEntity = userDataViewModel.userToken.value
-
                     if (tokenEntity != null) {
-
-                        val idToken = tokenEntity.idToken
-                        closeSessionIntent.putExtra("ID_TOKEN", idToken)
-
-                        startActivity(closeSessionIntent)
-                    } else {
-                        Log.e("MainFragment", "No hay entidad de token disponible")
+                        intent.putExtra("ID_TOKEN", tokenEntity.idToken)
                     }
-                    true
-                }
-                else -> true
-            }
-        }
-
-        binding.bottomNavigationView.setOnItemSelectedListener { item ->
-            Log.i("MainFragment", "Item selected: ${item.itemId}")
-            when(item.itemId) {
-                R.id.homeFragment -> {
-                    navController.navigate(R.id.homeFragment)
-                    true
-                }
-                R.id.calendarFragment -> {
-                    navController.navigate(R.id.calendarFragment)
-                    true
-                }
-                R.id.viewAllReservesFragment -> {
-                    navController.navigate(R.id.viewAllReservesFragment)
+                    startActivity(intent)
                     true
                 }
                 R.id.reserveAService -> {
-                    // TODO: ACTIVITY TO RESERVE
+                    binding.drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START)
+
+                    val intent = Intent(requireActivity(), MakeReserveActivity::class.java)
+                    startActivity(intent)
                     true
                 }
-                R.id.inqueriesChat -> {
-                    //navController.navigate(R.id.chatForInqueriesFragment)
-                    false
+                else -> {
+                    val handled = androidx.navigation.ui.NavigationUI.onNavDestinationSelected(menuItem, navController)
+                    if (handled) {
+                        binding.drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START)
+                    }
+                    handled
                 }
-                R.id.settingsFragment -> {
-                    navController.navigate(R.id.settingsFragment)
-                    true
-                }
-                else -> false
             }
+        }
+
+        binding.bottomNavigationView.setupWithNavController(navController)
+
+        layoutViewModel.bottomNavVisibility.observe(viewLifecycleOwner) { visibility ->
+            binding.bottomNavigationView.visibility = visibility
         }
 
         val menuHost: androidx.core.view.MenuHost = requireActivity()
@@ -213,12 +190,10 @@ class MainFragment : Fragment() {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.main_toolbar_menu, menu)
             }
-
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.settingsFragment -> {
-                        navController.navigate(R.id.settingsFragment)
-                        upNavController.popBackStack()
+                        navigateSafely(navController, R.id.settingsFragment)
                         true
                     }
                     else -> false
