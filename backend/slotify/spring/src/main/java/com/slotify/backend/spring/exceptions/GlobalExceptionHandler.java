@@ -122,6 +122,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(exc.getHttpStatus()).body(error);
     }
 
+    @ExceptionHandler(InvalidImageException.class)
+    public ResponseEntity<Map<String, Object>> handleInvalidImageException(InvalidImageException exc) {
+        Map<String, Object> error = new HashMap<>();
+        error.put("error", "imagen invalida");
+        error.put("message", exc.getMessage());
+
+        return ResponseEntity.badRequest().body(error);
+    }
+
     @ExceptionHandler(AuthorizationDeniedException.class)
     public ResponseEntity<Map<String, String>> handleAuthorizationDeniedException(AuthorizationDeniedException ex) {
         log.warn("Intento de acceso no autorizado: {}", ex.getMessage());
