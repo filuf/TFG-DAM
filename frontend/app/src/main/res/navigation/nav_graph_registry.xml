@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_registry"
+    app:startDestination="@id/selectUserTypeFragment">
+    <fragment
+        android:id="@+id/selectUserTypeFragment"
+        android:name="com.raj.slotify.fragments.registry.userRegistry.SelectUserTypeFragment"
+        android:label="fragment_select_user_type"
+        tools:layout="@layout/fragment_select_user_type" >
+        <action
+            android:id="@+id/action_selectUserTypeFragment_to_clientRegistryPhoneEmailFragment"
+            app:destination="@id/registryPhoneEmailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registryPhoneEmailFragment"
+        android:name="com.raj.slotify.fragments.registry.userRegistry.RegistryNameEmailFragment"
+        android:label="fragment_registry_phone_email"
+        tools:layout="@layout/fragment_registry_name_email">
+        <action
+            android:id="@+id/action_clientRegistryPhoneEmailFragment2_to_passwordFragment"
+            app:destination="@id/passwordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/passwordFragment"
+        android:name="com.raj.slotify.fragments.registry.userRegistry.PasswordFragment"
+        android:label="fragment_password"
+        tools:layout="@layout/fragment_password" >
+        <action
+            android:id="@+id/action_passwordFragment_to_endRegistryFragment"
+            app:destination="@id/endRegistryFragment" />
+        <action
+            android:id="@+id/action_passwordFragment_to_selectPhysicalDirectionFragment"
+            app:destination="@id/selectPhysicalDirectionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/endRegistryFragment"
+        android:name="com.raj.slotify.fragments.registry.userRegistry.EndRegistryFragment"
+        android:label="fragment_end_registry"
+        tools:layout="@layout/fragment_end_registry" >
+        <action
+            android:id="@+id/action_endRegistryFragment_to_registryPhoneEmailFragment2"
+            app:destination="@id/registryPhoneEmailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectPhysicalDirectionFragment"
+        android:name="com.raj.slotify.fragments.registry.enterpriseRegistry.SelectPhysicalDirectionFragment"
+        android:label="fragment_select_physical_direction"
+        tools:layout="@layout/fragment_select_physical_direction" >
+        <action
+            android:id="@+id/action_selectPhysicalDirectionFragment_to_selectConcurrentServicesFragment"
+            app:destination="@id/selectConcurrentServicesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectConcurrentServicesFragment"
+        android:name="com.raj.slotify.fragments.registry.enterpriseRegistry.SelectConcurrentServicesFragment"
+        android:label="fragment_select_concurrent_services"
+        tools:layout="@layout/fragment_select_concurrent_services" >
+        <action
+            android:id="@+id/action_selectConcurrentServicesFragment_to_endRegistryFragment"
+            app:destination="@id/endRegistryFragment" />
+    </fragment>
+</navigation>
