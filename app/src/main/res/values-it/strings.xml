@@ -10,4 +10,5 @@
     <string name="change_language">Cambia lingua</string>
     <string name="return_to_setup">&lt; Torna alla pagina principale</string>
     <string name="system_language">Linguaggio di sistema</string>
+    <string name="empty_string" />
 </resources>

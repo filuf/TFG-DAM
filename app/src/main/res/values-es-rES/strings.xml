@@ -56,7 +56,7 @@
     <string name="account_recuperated_message">Su cuenta se ha recuperado correctamente\n\nIngresa a la ventana de inicio de sesión para entrar con tu cuenta.</string>
     <string name="welcome_greeting">Bienvenido de nuevo,</string>
     <string name="you_have">Tiene</string>
-    <string name="reserves_pending">reservas pendientes</string>
+    <string name="pending_word">pendiente</string>
     <string name="left_after">restantes</string>
     <string name="see_more">Ver más</string>
     <string name="shortcouts">Accesos directos</string>
@@ -74,8 +74,8 @@
     <string name="service_to_reserve_question">¿Qué servicio desea reservar?</string>
     <string name="select_cattegory_message">Selecciona la categoría correspondiente o introduzca el servicio deseado:</string>
     <string name="search_text">Buscar</string>
-    <string name="restaurants">Restaurantes</string>
-    <string name="hairdressers">Peluquerías</string>
+    <string name="hostelery_cat">Comida y Bebida</string>
+    <string name="beauty_cat">Belleza y Salud</string>
     <string name="mechanical_workshops">Talleres mecánicos</string>
     <string name="site_where_reserve">¿Dónde desea reservar?</string>
     <string name="find_by_enterprise_name">Buscar por nombre de empresa</string>
@@ -191,4 +191,19 @@
     <string name="minute_word">segundo</string>
     <string name="cant_close_session_title">Error cerrando la sesión</string>
     <string name="cant_close_sesion_message">No ha sido posible cerrar su sesión. Inténtalo más tarde.</string>
+    <string name="sesion_expired_title">Su sesión ha expirado</string>
+    <string name="sesion_expired_explication">Vuelva a iniciar sesión en su cuenta</string>
+    <string name="canceled_sesion_explication">¿Desea reintentarlo?</string>
+    <string name="canceled_sesion_title">Inicio sesión cancelado</string>
+    <string name="daily_reserves_title">Selecciona una reserva</string>
+    <string name="dialog_close">CERRAR</string>
+    <string name="reserves">reservas</string>
+    <string name="reserve">reserva</string>
+    <string name="pending_plural">pendientes</string>
+    <string name="empty_string" />
+    <string name="travels_cat">Viajes y alojamiento</string>
+    <string name="reserve_cancelation_title">Cancelación de la reserva</string>
+    <string name="reserve_cancelation_confirmation">¿Está seguro de la cancelación de la cita?</string>
+    <string name="negation_word">NO</string>
+    <string name="yes_word">SÍ</string>
 </resources>

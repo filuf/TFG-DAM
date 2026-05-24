@@ -12,7 +12,13 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_reserveDetailsFragment"
-            app:destination="@id/reserveDetailsFragment3" />
+            app:destination="@id/reserveDetailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_viewAllReservesFragment"
+            app:destination="@id/viewAllReservesFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/servicesFragment"
@@ -28,7 +34,11 @@
         android:id="@+id/calendarFragment"
         android:name="com.raj.slotify.fragments.general.CalendarFragment"
         android:label="fragment_calendar"
-        tools:layout="@layout/fragment_calendar" />
+        tools:layout="@layout/fragment_calendar" >
+        <action
+            android:id="@+id/action_calendarFragment_to_reserveDetailsFragment"
+            app:destination="@id/reserveDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/viewAllReservesFragment"
         android:name="com.raj.slotify.fragments.general.ViewAllReservesFragment"
@@ -36,7 +46,7 @@
         tools:layout="@layout/fragment_view_all_reserves" >
         <action
             android:id="@+id/action_viewAllReservesFragment_to_reserveDetailsFragment"
-            app:destination="@id/reserveDetailsFragment3" />
+            app:destination="@id/reserveDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatForInqueriesFragment"
@@ -49,7 +59,7 @@
         android:label="fragment_language"
         tools:layout="@layout/fragment_language" />
     <fragment
-        android:id="@+id/reserveDetailsFragment3"
+        android:id="@+id/reserveDetailsFragment"
         android:name="com.raj.slotify.fragments.reserves.client.ReserveDetailsFragment"
         android:label="fragment_reserve_details_client"
         tools:layout="@layout/fragment_reserve_details_client" />

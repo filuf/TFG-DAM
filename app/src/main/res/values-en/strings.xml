@@ -56,7 +56,7 @@
     <string name="account_recuperated_message">Your account has been succesfully recovered.\\n\\nGo into the log in page to enter with your account.</string>
     <string name="welcome_greeting">Welcome back,</string>
     <string name="you_have">You have</string>
-    <string name="reserves_pending">reserves pending</string>
+    <string name="pending_word">pending</string>
     <string name="left_after">left</string>
     <string name="see_more">See more</string>
     <string name="shortcouts">Shortcouts</string>
@@ -74,8 +74,8 @@
     <string name="service_to_reserve_question">What service you want to reserve?</string>
     <string name="select_cattegory_message">Select the relevant category or enter the desired service:</string>
     <string name="search_text">Search</string>
-    <string name="restaurants">Restaurants</string>
-    <string name="hairdressers">Hairdressers</string>
+    <string name="hostelery_cat">Food and Beverage</string>
+    <string name="beauty_cat">Beauty and health</string>
     <string name="mechanical_workshops">Mechanical workshops</string>
     <string name="site_where_reserve">Where do you want to reserve?</string>
     <string name="find_by_enterprise_name">Find by enterprise name</string>
@@ -158,4 +158,5 @@
     <string name="open_drawer">Open drawer</string>
     <string name="close_drawer">Close drawer</string>
     <string name="already_started">In course</string>
+    <string name="empty_string" />
 </resources>

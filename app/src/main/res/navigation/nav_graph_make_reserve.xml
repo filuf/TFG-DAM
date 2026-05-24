@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_make_reserve"
+    app:startDestination="@id/firstReserveCreationFragment">
+
+    <fragment
+        android:id="@+id/firstReserveCreationFragment"
+        android:name="com.raj.slotify.fragments.reserves.client.createReserve.FirstReserveCreationFragment"
+        android:label="fragment_first_reserve_creation"
+        tools:layout="@layout/fragment_first_reserve_creation" >
+        <action
+            android:id="@+id/action_firstReserveCreationFragment_to_listCompaniesToReserveFragment"
+            app:destination="@id/listCompaniesToReserveFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listCompaniesToReserveFragment"
+        android:name="com.raj.slotify.fragments.reserves.client.createReserve.ListCompaniesToReserveFragment"
+        android:label="fragment_list_companies_to_reserve"
+        tools:layout="@layout/fragment_list_companies_to_reserve" />
+</navigation>
