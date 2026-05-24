@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <external-path name="my_images" path="Android/data/com.raj.slotify/files/Pictures" />
+    <cache-path name="cache_files" path="." />
+    <files-path name="internal_files" path="." />
+</paths>
