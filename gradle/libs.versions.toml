@@ -25,6 +25,7 @@ playServicesMaps = "20.0.0"
 roomCompiler = "2.8.4"
 coordinatorlayout = "1.3.0"
 googleAndroidLibrariesMapsplatformSecretsGradlePlugin = "2.0.1"
+cardviewV7 = "28.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -53,6 +54,7 @@ androidx-cardview = { group = "androidx.cardview", name = "cardview", version.re
 androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
 androidx-coordinatorlayout = { group = "androidx.coordinatorlayout", name = "coordinatorlayout", version.ref = "coordinatorlayout" }
+cardview-v7 = { group = "com.android.support", name = "cardview-v7", version.ref = "cardviewV7" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

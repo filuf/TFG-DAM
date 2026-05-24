@@ -29,6 +29,16 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="${GOOGLE_MAPS_KEY}"/>
 
+        <activity    android:name="net.openid.appauth.RedirectUriReceiverActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="com.raj.slotify" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".activities.company.AddEditServiceActivity"
             android:exported="false" />

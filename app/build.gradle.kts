@@ -58,6 +58,12 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
 }
 
 dependencies {
@@ -73,6 +79,7 @@ dependencies {
     implementation(libs.androidx.cardview)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.activity)
+    implementation("com.applandeo:material-calendar-view:1.9.2")
 
     // Retrofit
     val retrofit_version = "2.9.0"

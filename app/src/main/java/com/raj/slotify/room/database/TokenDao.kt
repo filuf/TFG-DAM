@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 
 @Dao
 interface TokenDao {
@@ -20,9 +21,11 @@ interface TokenDao {
     @Query("SELECT * FROM tokens ORDER BY id DESC LIMIT 1")
     suspend fun getLastToken(): TokenEntity
 
+    @Transaction
     @Query("DELETE FROM tokens WHERE id = :id")
     suspend fun deleteTokenById(id: Long)
 
+    @Transaction
     @Query("DELETE FROM tokens")
     suspend fun deleteAllTokens()
 
