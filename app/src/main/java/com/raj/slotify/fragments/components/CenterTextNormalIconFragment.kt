@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
+import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentCenterTextNormalIconBinding
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
@@ -37,11 +38,11 @@ class CenterTextNormalIconFragment : Fragment() {
         val secondText: TextView = binding.secondText
         val image: ImageView = binding.bigImage
 
-        viewModel.newIcon.observe(viewLifecycleOwner) { icon ->
+        viewModel.icon.observe(viewLifecycleOwner) { icon ->
             image.setImageResource(icon)
         }
-        viewModel.newTitle.observe(viewLifecycleOwner) { title ->
-            titleText.text = getString(title)
+        viewModel.title.observe(viewLifecycleOwner) { title ->
+            titleText.text = if (title.stringId != null) getString(title.stringId) else title.customText?: ""
         }
         viewModel.secondTitle.observe(viewLifecycleOwner) { secondTitle ->
             secondText.text = secondTitle

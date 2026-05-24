@@ -18,6 +18,7 @@ import androidx.navigation.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentClientEditDataBinding
+import com.raj.slotify.models.TextModel
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
 import com.raj.slotify.viewModels.frontend.UserDataViewModel
@@ -44,7 +45,7 @@ class ClientEditDataFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         layoutViewModel.setExplicationVisibility(View.GONE)
-        viewModel.setNewTitle(R.string.enter_user_data)
+        viewModel.setTitle(TextModel(R.string.enter_user_data))
 
         binding = FragmentClientEditDataBinding.inflate(inflater, container, false)
         return binding.root

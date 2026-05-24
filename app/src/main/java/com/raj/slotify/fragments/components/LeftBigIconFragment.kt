@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
+import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentLeftBigIconBinding
 import com.raj.slotify.viewModels.frontend.MainViewModel
 
@@ -35,11 +36,11 @@ class LeftBigIconFragment : Fragment() {
         val image: ImageView = binding.bigImage
         val titleText: TextView = binding.titleText
 
-        viewModel.newIcon.observe(viewLifecycleOwner) { icon ->
+        viewModel.icon.observe(viewLifecycleOwner) { icon ->
             image.setImageResource(icon)
         }
-        viewModel.newTitle.observe(viewLifecycleOwner) { title ->
-            titleText.text = getString(title)
+        viewModel.title.observe(viewLifecycleOwner) { title ->
+            titleText.text = if (title.stringId != null) getString(title.stringId) else title.customText?: ""
         }
 
     }

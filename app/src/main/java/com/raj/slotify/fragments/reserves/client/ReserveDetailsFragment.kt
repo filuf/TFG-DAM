@@ -17,6 +17,7 @@ import com.raj.slotify.dtos.reserves.UserReserveSummary
 import com.raj.slotify.dtos.service.ServiceSummary
 import com.raj.slotify.viewModels.apiRest.ReservesViewModel
 import com.raj.slotify.viewModels.apiRest.ServiceViewModel
+import com.raj.slotify.viewModels.frontend.ClientReservesViewModel
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
 import com.raj.slotify.viewModels.frontend.UserDataViewModel
@@ -27,6 +28,7 @@ class ReserveDetailsFragment : Fragment() {
     private val viewModel: MainViewModel by activityViewModels()
     private val layoutViewModel: LayoutViewModel by activityViewModels()
     private val userDataViewModel: UserDataViewModel by activityViewModels()
+    private val clientReservesViewModel: ClientReservesViewModel by activityViewModels()
     private val serviceViewModel: ServiceViewModel by activityViewModels()
 
     private val reservesViewModel: ReservesViewModel by activityViewModels()
@@ -43,8 +45,7 @@ class ReserveDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        layoutViewModel.setSuperiorFragmentVisibility(View.GONE)
-        layoutViewModel.setDownFragmentFullScreenSize(true)
+        layoutViewModel.setNavBottomVisibility(View.GONE)
 
         binding = FragmentReserveDetailsClientBinding.inflate(inflater, container, false)
         return binding.root
@@ -71,7 +72,7 @@ class ReserveDetailsFragment : Fragment() {
 
         val userToken = "Bearer ${userDataViewModel.userToken.value?.accessToken?:""}"
 
-        userDataViewModel.lastReserveSelected.observe(viewLifecycleOwner) { reserveSummary ->
+        clientReservesViewModel.lastReserveSelected.observe(viewLifecycleOwner) { reserveSummary ->
 
             binding.serviceNameText.text = reserveSummary.serviceName
             binding.descText.text = serviceWithSchedules?.description?:"null"
@@ -154,8 +155,7 @@ class ReserveDetailsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
 
-        layoutViewModel.setSuperiorFragmentVisibility(View.VISIBLE)
-        layoutViewModel.setDownFragmentFullScreenSize(false)
+        layoutViewModel.setNavBottomVisibility(View.VISIBLE)
     }
 
 }
