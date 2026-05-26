@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.raj.slotify.R
 import com.raj.slotify.databinding.ActivityAddEditServiceBinding
 import com.raj.slotify.dtos.service.CreateServiceRequest
 import com.raj.slotify.fragments.company.services.ServicesFragment.Companion.EXTRA_AUTH_TOKEN
@@ -53,7 +54,7 @@ class AddEditServiceActivity : AppCompatActivity() {
 
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbarAddService)
-        binding.toolbarAddService.title = if (editMode) "Editar servicio" else "Nuevo servicio"
+        binding.toolbarAddService.title = if (editMode) getString(R.string.edit_the_service) else getString(R.string.add_service)
         binding.toolbarAddService.setNavigationOnClickListener { finish() }
     }
 

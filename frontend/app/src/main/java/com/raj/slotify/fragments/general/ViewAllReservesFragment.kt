@@ -8,14 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.observe
-import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.raj.slotify.R
-import com.raj.slotify.activities.LogInActivity
 import com.raj.slotify.activities.client.MakeReserveActivity
 import com.raj.slotify.adapters.ReservesListCustomAdapter
 import com.raj.slotify.databinding.FragmentViewAllReservesBinding
@@ -52,6 +48,14 @@ class ViewAllReservesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val makeReserveButton = binding.makeReserveButton
+        userDataViewModel.userType.observe(viewLifecycleOwner) { userType ->
+            if (userType.equals("USER")) {
+                makeReserveButton.visibility = View.VISIBLE
+            } else {
+                makeReserveButton.visibility = View.GONE
+            }
+        }
+
         makeReserveButton.setOnClickListener {
             val intent = Intent(requireActivity(), MakeReserveActivity::class.java)
             startActivity(intent)

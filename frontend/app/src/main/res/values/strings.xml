@@ -212,4 +212,6 @@
     <string name="negation_word">NO</string>
     <string name="yes_word">YES</string>
     <string name="my_services">My services</string>
+    <string name="no_services_yet">There are not any services set. Add one using the down button.</string>
+    <string name="save">Save</string>
 </resources>

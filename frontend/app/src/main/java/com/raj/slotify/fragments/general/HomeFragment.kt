@@ -56,6 +56,18 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val intervalButton = binding.createIntervalButton
+        userDataViewModel.userType.observe(viewLifecycleOwner) { userType ->
+            if (userType.equals("USER")) {
+                intervalButton.visibility = View.GONE
+            } else {
+                intervalButton.visibility = View.VISIBLE
+            }
+        }
+        intervalButton.setOnClickListener {
+            // TODO: NAVEGAR A LA PÁGINA DE INTERVALOS
+        }
+
         userDataViewModel.name.observe(viewLifecycleOwner) { name ->
             viewModel.setSecondTitle(name)
         }
@@ -82,10 +94,17 @@ class HomeFragment : Fragment() {
 
                         val numberOfReserves = reservesSummary.size
 
-                        binding.numberReservesRemainingText.text = numberOfReserves.toString()
-                        val reserveText = if (numberOfReserves == 1) getString(R.string.reserve) else getString(R.string.reserves)
+                        // Set visibility of see more reserves button
+                        if (numberOfReserves == 0) {
+                            binding.seeMoreLayout.visibility = View.GONE
+                        } else {
+                            binding.seeMoreLayout.visibility = View.VISIBLE
+                        }
 
-                        binding.remaingText.text = "$reserveText ${getString(R.string.pending_word)}"
+                        binding.numberReservesRemainingText.text = numberOfReserves.toString()
+                        val reserveText = if (numberOfReserves == 1) "${getString(R.string.reserve)} ${getString(R.string.pending_word)}" else "${getString(R.string.reserves)} ${getString(R.string.pending_plural)}"
+
+                        binding.remaingText.text = reserveText
 
                         clientReservesViewModel.setReserves(reservesSummary.toMutableList())
 

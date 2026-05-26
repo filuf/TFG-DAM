@@ -22,7 +22,14 @@ import androidx.navigation.ui.setupWithNavController
 import com.raj.slotify.R
 import com.raj.slotify.activities.LogOutActivity
 import com.raj.slotify.activities.client.MakeReserveActivity
+import com.raj.slotify.activities.company.AddEditServiceActivity
 import com.raj.slotify.databinding.FragmentMainBinding
+import com.raj.slotify.dtos.company.GetServicesResponse
+import com.raj.slotify.fragments.company.services.ServicesFragment.Companion.EXTRA_AUTH_TOKEN
+import com.raj.slotify.fragments.company.services.ServicesFragment.Companion.EXTRA_COMPANY_ID
+import com.raj.slotify.fragments.company.services.ServicesFragment.Companion.EXTRA_SERVICE_ID
+import com.raj.slotify.fragments.company.services.ServicesFragment.Companion.EXTRA_SERVICE_NAME
+import com.raj.slotify.fragments.company.services.ServicesFragment.Companion.REQUEST_ADD_SERVICE
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
 import com.raj.slotify.viewModels.frontend.UserDataViewModel
@@ -180,6 +187,21 @@ class MainFragment : Fragment() {
         }
     }
 
+    private fun openAddEditService(service: GetServicesResponse?) {
+        val companyId = userDataViewModel.uuid.value ?: return
+        val token = userDataViewModel.userToken.value?.accessToken ?: return
+
+        val intent = Intent(requireActivity(), AddEditServiceActivity::class.java).apply {
+            putExtra(EXTRA_COMPANY_ID, companyId.toString())
+            putExtra(EXTRA_AUTH_TOKEN, token)
+            if (service != null) {
+                putExtra(EXTRA_SERVICE_ID, service.serviceId.toString())
+                putExtra(EXTRA_SERVICE_NAME, service.serviceName)
+            }
+        }
+        startActivityForResult(intent, REQUEST_ADD_SERVICE)
+    }
+
     private fun setupDrawerClickListeners(navController: NavController) {
         binding.toolbar.setNavigationOnClickListener {
             binding.drawerLayout.openDrawer(androidx.core.view.GravityCompat.START)
@@ -187,23 +209,36 @@ class MainFragment : Fragment() {
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.closeSesion -> {
-                    binding.drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START)
-
                     val intent = Intent(requireActivity(), LogOutActivity::class.java)
                     val tokenEntity = userDataViewModel.userToken.value
                     if (tokenEntity != null) {
                         intent.putExtra("ID_TOKEN", tokenEntity.idToken)
                     }
                     startActivity(intent)
+                    binding.drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START)
                     true
                 }
-                R.id.reserveAService -> {
-                    binding.drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START)
 
+                R.id.reserveAService -> {
                     val intent = Intent(requireActivity(), MakeReserveActivity::class.java)
                     startActivity(intent)
+                    binding.drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START)
                     true
                 }
+
+                R.id.addService -> {
+                    openAddEditService(null)
+                    binding.drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START)
+                    true
+                }
+
+                R.id.manageExceptions -> {
+                    // TODO: NAVEGAR A LA PÁGINA DE INTERVALOS
+
+                    binding.drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START)
+                    true
+                }
+
                 else -> {
                     val handled = androidx.navigation.ui.NavigationUI.onNavDestinationSelected(menuItem, navController)
                     if (handled) {

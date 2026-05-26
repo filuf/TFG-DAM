@@ -59,6 +59,15 @@ class CalendarFragment : Fragment(), OnCalendarDayClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         val makeReserveButton = binding.makeReserveButton
+
+        userDataViewModel.userType.observe(viewLifecycleOwner) { userType ->
+            if (userType.equals("USER")) {
+                makeReserveButton.visibility = View.VISIBLE
+            } else {
+                makeReserveButton.visibility = View.GONE
+            }
+        }
+
         makeReserveButton.setOnClickListener {
             val intent = Intent(requireActivity(), MakeReserveActivity::class.java)
             startActivity(intent)
