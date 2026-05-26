@@ -50,12 +50,11 @@
             android:layout_height="wrap_content"
             android:fitsSystemWindows="false"
             app:elevation="0dp"
-            app:labelVisibilityMode="labeled"
             app:itemActiveIndicatorStyle="@null"
-            app:menu="@menu/bottom_navigation_menu_client"
             app:itemIconTint="@color/nav_item_color"
             app:itemRippleColor="@android:color/transparent"
-            app:itemTextColor="@color/nav_item_color"/>
+            app:itemTextColor="@color/nav_item_color"
+            app:labelVisibilityMode="labeled" />
 
     </LinearLayout>
 
@@ -64,7 +63,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:headerLayout="@layout/header_main_nav_view"
-        app:menu="@menu/nav_menu_client" />
+        app:headerLayout="@layout/header_main_nav_view" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

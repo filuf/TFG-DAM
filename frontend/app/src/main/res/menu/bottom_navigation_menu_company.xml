@@ -11,15 +11,10 @@
         android:title="@string/appointments" />
     <item
         android:id="@+id/calendarFragment"
-        android:icon="@drawable/outline_calendar_24"
+        android:icon="@drawable/home_dark"
         android:title="@string/calendar" />
     <item
         android:id="@+id/servicesFragment"
-        android:icon="@drawable/outline_scissors_24"
+        android:icon="@drawable/home_dark"
         android:title="@string/services_word" />
-    <item
-        android:id="@+id/settingsFragment"
-        android:icon="@drawable/outline_construction_24"
-        android:title="@string/settings" />
-
 </menu>
