@@ -206,4 +206,6 @@
     <string name="reserve_cancelation_confirmation">¿Está seguro de la cancelación de la cita?</string>
     <string name="negation_word">NO</string>
     <string name="yes_word">SÍ</string>
+    <string name="no_services_yet">No hay configurado ningún servicio. Añada uno usando el botón de abajo.</string>
+    <string name="save">Guardar</string>
 </resources>
