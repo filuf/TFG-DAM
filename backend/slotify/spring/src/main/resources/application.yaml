@@ -61,6 +61,17 @@ spring:
             enable: true
             required: true
 
+  cloud:
+    aws:
+      credentials:
+        access-key: ${AWS_ACCESS_KEY_ID}
+        secret-key: ${AWS_SECRET_ACCESS_KEY}
+        session-token: ${AWS_SESSION_TOKEN}
+      region:
+        static: us-east-1
+      s3:
+        region: us-east-1
+
 springdoc:
   api-docs:
     path: /v3/api-docs
@@ -73,6 +84,7 @@ logging:
   level:
     org.springframework.security: INFO
     com.slotify.backend: DEBUG
+    software.amazon.awssdk.request: DEBUG
 
 # PROPIEDAD REUTILIZABLE
 keycloak:
