@@ -211,4 +211,5 @@
     <string name="reserve_cancelation_confirmation">You are sure of the appointment cancelation?</string>
     <string name="negation_word">NO</string>
     <string name="yes_word">YES</string>
+    <string name="my_services">My services</string>
 </resources>

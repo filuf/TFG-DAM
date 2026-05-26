@@ -177,7 +177,25 @@ class MainFragment : Fragment() {
             }
         }
 
+        // Set bottom nav menu based on account type
+        // userType may arrive via postValue (async), so we observe + check current value
+        fun applyCompanyMenu() {
+            if (binding.bottomNavigationView.menu.findItem(R.id.servicesFragment) == null) {
+                binding.bottomNavigationView.menu.clear()
+                binding.bottomNavigationView.inflateMenu(R.menu.bottom_navigation_menu_company)
+                binding.bottomNavigationView.setupWithNavController(navController)
+            }
+        }
+
+        if (userDataViewModel.userType.value == "COMPANY") {
+            applyCompanyMenu()
+        }
+
         binding.bottomNavigationView.setupWithNavController(navController)
+
+        userDataViewModel.userType.observe(viewLifecycleOwner) { userType ->
+            if (userType == "COMPANY") applyCompanyMenu()
+        }
 
         layoutViewModel.bottomNavVisibility.observe(viewLifecycleOwner) { visibility ->
             binding.bottomNavigationView.visibility = visibility
