@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,8 +36,8 @@ class ViewAllReservesFragment : Fragment() {
     private lateinit var binding: FragmentViewAllReservesBinding
     private lateinit var returnPageButton: Button
     private lateinit var advancePageButton: Button
-    private var totalPages: Int = 1
-    private var actualPage: Int = 1
+    private var totalPages: Int = 0
+    private var actualPage: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +62,20 @@ class ViewAllReservesFragment : Fragment() {
 
         // RECYCLER VIEW
         val customAdapter = configRecyclerView(view)
+        val searchReserveText = binding.searchReserveText
 
+        searchReserveText.doOnTextChanged { text, _, _, _ ->
+            val reserves: MutableList<ReserveSummary> = clientReservesViewModel.reserves.value ?: mutableListOf()
+
+            if (text.isNullOrEmpty()) {
+                customAdapter.setItems(reserves)
+            } else {
+                val filteredReserves: MutableList<ReserveSummary> = reserves
+                    .filter { reserve -> reserve.serviceName.lowercase().contains(text.toString().lowercase().trim()) }
+                    .toMutableList()
+                customAdapter.setItems(filteredReserves)
+            }
+        }
         observeReserves(pageTextView, customAdapter)
     }
 
@@ -92,6 +106,9 @@ class ViewAllReservesFragment : Fragment() {
             val responseBody = response.body()!!
             val reservesSummary = responseBody.content
 
+            // UPDATE CLIENT RESERVES VIEW MODEL
+            clientReservesViewModel.setReserves(reservesSummary.toMutableList())
+
             // PAGE LOGIC
             if (totalPages == 0)
                 totalPages = responseBody.totalPages
@@ -116,6 +133,11 @@ class ViewAllReservesFragment : Fragment() {
                 else "${getString(R.string.reserves)} ${getString(R.string.pending_plural)}"
 
             binding.remaingText.text = reserveText
+        }
+
+        // OBSERVER FOR SEARCH
+        clientReservesViewModel.reserves.observe(viewLifecycleOwner) { reserves ->
+            customAdapter.setItems(reserves)
         }
     }
 

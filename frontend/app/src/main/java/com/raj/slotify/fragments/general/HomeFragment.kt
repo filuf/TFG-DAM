@@ -95,6 +95,7 @@ class HomeFragment : Fragment() {
                     if (response.isSuccessful && response.body() != null) {
                         val reservesSummary = response.body()!!.content
 
+                        clientReservesViewModel.setReserves(reservesSummary.toMutableList())
                         val numberOfReserves = response.body()!!.totalElements.toInt()
 
                         // Set visibility of see more reserves button
@@ -108,8 +109,6 @@ class HomeFragment : Fragment() {
                         val reserveText = if (numberOfReserves == 1) "${getString(R.string.reserve)} ${getString(R.string.pending_word)}" else "${getString(R.string.reserves)} ${getString(R.string.pending_plural)}"
 
                         binding.remaingText.text = reserveText
-
-                        clientReservesViewModel.setReserves(reservesSummary.toMutableList())
 
                         val reservesSummarySelection: MutableList<ReserveSummary> =
                             reservesSummary.take(2).toMutableList()
