@@ -23,6 +23,12 @@ class ClientReservesViewModel: ViewModel() {
         _reserves.postValue(reserves)
     }
 
+    fun addReserves(newList: List<ReserveSummary>) {
+        val currentList = _reserves.value ?: mutableListOf()
+        currentList.addAll(newList)
+        _reserves.value = currentList
+    }
+
     fun setLastReserveSelected(lastReserveSelected: ReserveSummary) {
         _lastReserveSelected.postValue(lastReserveSelected)
     }

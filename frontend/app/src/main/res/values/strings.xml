@@ -214,4 +214,6 @@
     <string name="my_services">My services</string>
     <string name="no_services_yet">There are not any services set. Add one using the down button.</string>
     <string name="save">Save</string>
+    <string name="page_word">Page</string>
+    <string name="of_word">of</string>
 </resources>
