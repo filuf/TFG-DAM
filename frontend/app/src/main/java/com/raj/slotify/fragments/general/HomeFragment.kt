@@ -49,6 +49,9 @@ class HomeFragment : Fragment() {
 
         layoutViewModel.setCenterIconTitle(true)
 
+        val accessToken = userDataViewModel.userToken.value?.accessToken ?: ""
+        reservesViewModel.getReserves("Bearer $accessToken", 0, null, null, null)
+
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -92,7 +95,7 @@ class HomeFragment : Fragment() {
                     if (response.isSuccessful && response.body() != null) {
                         val reservesSummary = response.body()!!.content
 
-                        val numberOfReserves = reservesSummary.size
+                        val numberOfReserves = response.body()!!.totalElements.toInt()
 
                         // Set visibility of see more reserves button
                         if (numberOfReserves == 0) {
