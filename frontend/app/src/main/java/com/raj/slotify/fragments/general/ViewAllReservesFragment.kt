@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,6 +34,10 @@ class ViewAllReservesFragment : Fragment() {
     private val reservesViewModel: ReservesViewModel by activityViewModels()
 
     private lateinit var binding: FragmentViewAllReservesBinding
+    private lateinit var returnPageButton: Button
+    private lateinit var advancePageButton: Button
+    private var totalPages: Int = 0
+    private var actualPage: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +54,129 @@ class ViewAllReservesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setMakeReserveButton()
+        setPaginationLogic()
+
+        // SET PAGE LAYOUT CARD
+        val pageTextView: TextView = binding.textPage
+
+        // RECYCLER VIEW
+        val customAdapter = configRecyclerView(view)
+        val searchReserveText = binding.searchReserveText
+
+        searchReserveText.doOnTextChanged { text, _, _, _ ->
+            val reserves: MutableList<ReserveSummary> = clientReservesViewModel.reserves.value ?: mutableListOf()
+
+            if (text.isNullOrEmpty()) {
+                customAdapter.setItems(reserves)
+            } else {
+                val filteredReserves: MutableList<ReserveSummary> = reserves
+                    .filter { reserve -> reserve.serviceName.lowercase().contains(text.toString().lowercase().trim()) }
+                    .toMutableList()
+                customAdapter.setItems(filteredReserves)
+            }
+        }
+        observeReserves(pageTextView, customAdapter)
+    }
+
+    private fun observeReserves(
+        pageTextView: TextView,
+        customAdapter: ReservesListCustomAdapter
+    ) {
+        // MANAGE POSITION
+        fun isFirst(actualPage: Int): Boolean {
+            return actualPage == 0
+        }
+        fun isLast(actualPage: Int, totalPages: Int): Boolean {
+            return actualPage == totalPages - 1
+        }
+
+        reservesViewModel.reservesSummary.observe(viewLifecycleOwner) { response ->
+            // DISCARD UNSUCCESSFULLY CASES
+            if (response == null)
+                return@observe
+
+            if (!response.isSuccessful) {
+                Log.e("ViewAllReserves", "Error cargando reservas: ${response.code()}")
+                return@observe
+            }
+            if (response.body() == null)
+                return@observe
+
+            val responseBody = response.body()!!
+            val reservesSummary = responseBody.content
+
+            // UPDATE CLIENT RESERVES VIEW MODEL
+            clientReservesViewModel.setReserves(reservesSummary.toMutableList())
+
+            // PAGE LOGIC
+            if (totalPages == 0)
+                totalPages = responseBody.totalPages
+
+            actualPage = responseBody.number
+
+            val pageText =
+                "${getString(R.string.page_word)} ${actualPage + 1} ${getString(R.string.of_word)} $totalPages"
+            pageTextView.text = pageText
+
+            // PAGE BUTTON ENABLED BEHAVIOUR
+            returnPageButton.isEnabled = !isFirst(actualPage)
+            advancePageButton.isEnabled = !isLast(actualPage, totalPages)
+
+            customAdapter.setItems(reservesSummary)
+            val numberOfReserves = responseBody.totalElements.toInt()
+
+            // REMAINING TEXT
+            binding.numberReservesRemainingText.text = numberOfReserves.toString()
+            val reserveText =
+                if (numberOfReserves == 1) "${getString(R.string.reserve)} ${getString(R.string.pending_word)}"
+                else "${getString(R.string.reserves)} ${getString(R.string.pending_plural)}"
+
+            binding.remaingText.text = reserveText
+        }
+
+        // OBSERVER FOR SEARCH
+        clientReservesViewModel.reserves.observe(viewLifecycleOwner) { reserves ->
+            customAdapter.setItems(reserves)
+        }
+    }
+
+    private fun setPaginationLogic() {
+        returnPageButton = binding.returnPageButton
+        advancePageButton = binding.advancePageButton
+
+        returnPageButton.isEnabled = false
+        advancePageButton.isEnabled = false
+
+        // SET PAGE BUTTONS
+        val accessToken = userDataViewModel.userToken.value?.accessToken ?: ""
+
+        returnPageButton.setOnClickListener {
+            val destinyPage = actualPage - 1
+            reservesViewModel.getReserves("Bearer $accessToken", destinyPage, null, null, null)
+        }
+        advancePageButton.setOnClickListener {
+            val destinyPage = actualPage + 1
+            reservesViewModel.getReserves("Bearer $accessToken", destinyPage, null, null, null)
+        }
+    }
+
+    private fun configRecyclerView(view: View): ReservesListCustomAdapter {
+        val recyclerView: RecyclerView = binding.viewAllReservesRecycler
+        val customAdapter = ReservesListCustomAdapter(
+            clientReservesViewModel.reserves.value ?: mutableListOf()
+        ) { reserve: ReserveSummary ->
+            clientReservesViewModel.setLastReserveSelected(reserve)
+            view.findNavController()
+                .navigate(R.id.action_viewAllReservesFragment_to_reserveDetailsFragment)
+        }
+
+        recyclerView.adapter = customAdapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        return customAdapter
+    }
+
+    private fun setMakeReserveButton() {
         val makeReserveButton = binding.makeReserveButton
         userDataViewModel.userType.observe(viewLifecycleOwner) { userType ->
             if (userType.equals("USER")) {
@@ -60,35 +190,6 @@ class ViewAllReservesFragment : Fragment() {
             val intent = Intent(requireActivity(), MakeReserveActivity::class.java)
             startActivity(intent)
         }
-
-        val recyclerView: RecyclerView = binding.viewAllReservesRecycler
-        val customAdapter = ReservesListCustomAdapter(clientReservesViewModel.reserves.value?:mutableListOf()) { reserve: ReserveSummary ->
-            clientReservesViewModel.setLastReserveSelected(reserve)
-            view.findNavController().navigate(R.id.action_viewAllReservesFragment_to_reserveDetailsFragment)
-        }
-
-        recyclerView.adapter = customAdapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-        reservesViewModel.reservesSummary.observe(viewLifecycleOwner) { response ->
-            if (response != null) {
-                if (response.isSuccessful) {
-                    val reservesSummary = response.body()?.content
-
-                    customAdapter.setItems(reservesSummary?: mutableListOf())
-
-                    val numberOfReserves = reservesSummary?.size?:0
-
-                    binding.numberReservesRemainingText.text = numberOfReserves.toString()
-                    val reserveText = if (numberOfReserves == 1) "${getString(R.string.reserve)} ${getString(R.string.pending_word)}" else "${getString(R.string.reserves)} ${getString(R.string.pending_plural)}"
-
-                    binding.remaingText.text = reserveText
-
-                } else {
-                    Log.e("ViewAllReserves", "Error cargando reservas: ${response.code()}")
-                }
-            }
-        }
-
     }
+
 }

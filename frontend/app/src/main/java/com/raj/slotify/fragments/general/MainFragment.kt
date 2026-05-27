@@ -102,18 +102,14 @@ class MainFragment : Fragment() {
             drawerToggle.syncState()
         }
 
-        // WINDOW PADDING SETTINGS
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
-            val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-
-            v.setPadding(systemBars.left, 0, systemBars.right, imeInsets.bottom)
+            v.setPadding(systemBars.left, 0, systemBars.right, 0)
 
             binding.toolbar.setPadding(0, systemBars.top, 0, 0)
             binding.navigationView.setPadding(0, systemBars.top, 0, 0)
 
             binding.bottomNavigationView.updatePadding(bottom = systemBars.bottom)
-
             insets
         }
 
