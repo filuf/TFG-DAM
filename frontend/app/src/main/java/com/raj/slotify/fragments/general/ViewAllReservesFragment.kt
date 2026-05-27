@@ -36,8 +36,8 @@ class ViewAllReservesFragment : Fragment() {
     private lateinit var binding: FragmentViewAllReservesBinding
     private lateinit var returnPageButton: Button
     private lateinit var advancePageButton: Button
-    private var totalPages: Int = 1
-    private var actualPage: Int = 1
+    private var totalPages: Int = 0
+    private var actualPage: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
