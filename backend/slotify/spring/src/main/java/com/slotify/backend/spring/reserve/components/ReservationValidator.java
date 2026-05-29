@@ -40,14 +40,29 @@ public class ReservationValidator {
     public void validateServiceSchedule(ServiceEntity serviceEntity, LocalDateTime reserveDateTime) {
         DayOfWeek reserveDayOfWeek = reserveDateTime.getDayOfWeek();
 
-        List<ServiceScheduleEntity> schedules = serviceScheduleService.findAllByServiceAndDayOfWeekIn(serviceEntity, List.of(reserveDayOfWeek.getValue()));
+        List<ServiceScheduleEntity> schedules = serviceScheduleService.findAllByServiceAndDayOfWeekIn(
+                serviceEntity, List.of(reserveDayOfWeek.minus(1).getValue(), reserveDayOfWeek.getValue(), reserveDayOfWeek.plus(1).getValue())
+        );
+        schedules = schedules.stream()
+                .map(scheduleEntity -> {
+                    if (scheduleEntity.getStartTime().isAfter(scheduleEntity.getEndTime())) {
+                        return ServiceScheduleEntity.builder()
+                                .startTime(LocalTime.MIN)
+                                .endTime(scheduleEntity.getEndTime())
+                                .dayOfWeek(scheduleEntity.getDayOfWeek())
+                                .service(scheduleEntity.getService())
+                                .build();
+                    }
+                    return scheduleEntity;
+        }).toList();
+
         LocalTime reserveTime = reserveDateTime.toLocalTime();
-        boolean disponibleHora = schedules.stream()
+        boolean hourAvailable = schedules.stream()
                 .anyMatch(schedule ->
                         (schedule.getStartTime().isBefore(reserveTime) || schedule.getStartTime().equals(reserveTime))
                                 && (schedule.getEndTime().isAfter(reserveTime) || schedule.getEndTime().equals(reserveTime))
                 );
-        if (!disponibleHora) {
+        if (!hourAvailable) {
             throw new ReservationBadRequestException("El servicio no se oferta en ese horario");
         }
     }
