@@ -140,7 +140,7 @@ public class GetServiceSlotsAvailableUseCaseImpl implements GetServiceSlotsAvail
                 ? LocalDateTime.of(date.plusDays(1), reserveEndTime)
                 : LocalDateTime.of(date, reserveEndTime);
 
-        boolean minuteAvailable =  schedules.stream()
+        return schedules.stream()
                 .filter(schedule -> schedule.getService().getServiceId().equals(serviceId))
                 .anyMatch(schedule -> {
                     DayOfWeek scheduleDayOfWeek = DayOfWeek.of(schedule.getDayOfWeek());
@@ -162,8 +162,5 @@ public class GetServiceSlotsAvailableUseCaseImpl implements GetServiceSlotsAvail
 
                     return !requestStart.isBefore(scheduleStart) && !requestEnd.isAfter(scheduleEnd);
                 });
-        log.info("reserveStartTime: {}, available: {}", reserveStartTime, minuteAvailable);
-
-        return minuteAvailable;
     }
 }

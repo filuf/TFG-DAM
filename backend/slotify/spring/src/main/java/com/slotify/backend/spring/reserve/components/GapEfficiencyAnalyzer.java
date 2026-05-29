@@ -27,7 +27,6 @@ public class GapEfficiencyAnalyzer {
      */
     public void validateGaps(LocalDateTime startReq, LocalDateTime endReq, List<ReserveEntity> reserves,
                              List<ServiceScheduleDTO> schedules, Integer workersAvailable) {
-        log.info("startReq: {}, endReq: {}", startReq, endReq);
 
         // la reserva no deja un espacio inservible con la siguiente
         // el espacio libre permite que un servicio que se oferte en ese horario entre
@@ -53,12 +52,10 @@ public class GapEfficiencyAnalyzer {
 
 
 
-        log.info("limitBefore: {}, limitAfter: {}", limitBefore, limitAfter);
 
         long startGap = ChronoUnit.MINUTES.between(limitBefore, startReq);
         long endGap = ChronoUnit.MINUTES.between(endReq, limitAfter);
 
-        log.info("startGap: {}, endGap: {}", startGap, endGap);
 
         boolean isStartGapValid = false;
 
@@ -71,7 +68,6 @@ public class GapEfficiencyAnalyzer {
             }
         }
 
-        log.info("isStarGapValid: {}", isStartGapValid);
         if (!isStartGapValid) {
             throw new ReservationConflictException("El horario de la reserva no es válido.");
         }
@@ -88,7 +84,6 @@ public class GapEfficiencyAnalyzer {
             }
         }
 
-        log.info("isEndGapValid: {}", isEndGapValid);
         if (!isEndGapValid) {
             throw new ReservationConflictException("El horario de la reserva no es válido.");
         }
@@ -194,7 +189,6 @@ public class GapEfficiencyAnalyzer {
                 })
                 .min(Comparator.comparingInt(ServiceScheduleDTO::serviceMinutesDuration))
                 .orElse(null);
-        log.info("range: {} - {}, service: {}", startRange, endRange, serviceScheduleDTO);
         return serviceScheduleDTO; // Devuelve null si no hay ningún servicio disponible en ese rango
     }
 
