@@ -37,7 +37,7 @@ public class CapacityManager {
         );
     }
 
-    public void validateInstantCapacity(CompanyEntity company, List<ReserveEntity> companyReservesInRange, LocalDateTime reserveDateTime, LocalDateTime reserveEndTime, Integer maxConcurrentServices) {
+    public Integer getInstantCapacity(List<ReserveEntity> companyReservesInRange, LocalDateTime reserveDateTime, LocalDateTime reserveEndTime, Integer maxConcurrentServices) {
 
         Long companyReservesInDateTime = companyReservesInRange.stream()
                 .filter(reserve -> {
@@ -47,7 +47,11 @@ public class CapacityManager {
                     return existingStart.isBefore(reserveEndTime) && existingEnd.isAfter(reserveDateTime);
                 }).count();
 
-        if (maxConcurrentServices <= companyReservesInDateTime) {
+        return (int) (maxConcurrentServices - companyReservesInDateTime);
+    }
+
+    public void validateInstantCapacity(Integer workersAvailable, CompanyEntity company) {
+        if (workersAvailable < 1) {
             throw new ReservationConflictException("La empresa " + company.getCompanyName() + " no tiene cupos libres en esta franja horaria");
         }
     }

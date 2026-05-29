@@ -1,15 +1,17 @@
 package com.slotify.backend.spring.reserve.useCases;
 
 import com.slotify.backend.spring.company.models.CompanyEntity;
-import com.slotify.backend.spring.reserve.components.*;
+import com.slotify.backend.spring.reserve.components.CapacityManager;
+import com.slotify.backend.spring.reserve.components.GapEfficiencyAnalyzer;
+import com.slotify.backend.spring.reserve.components.RedisLockReserveExecutor;
+import com.slotify.backend.spring.reserve.components.ReservationValidator;
 import com.slotify.backend.spring.reserve.dtos.CreateReserveResponse;
 import com.slotify.backend.spring.reserve.dtos.ReservationCreatedEvent;
 import com.slotify.backend.spring.reserve.mappers.ReserveMapper;
 import com.slotify.backend.spring.reserve.models.ReserveEntity;
-import com.slotify.backend.spring.service.projections.ServiceScheduleDTO;
 import com.slotify.backend.spring.reserve.services.ReserveService;
-import com.slotify.backend.spring.service.enums.ScheduleLimits;
 import com.slotify.backend.spring.service.models.ServiceEntity;
+import com.slotify.backend.spring.service.projections.ServiceScheduleDTO;
 import com.slotify.backend.spring.service.services.ServiceService;
 import com.slotify.backend.spring.user.models.UserEntity;
 import com.slotify.backend.spring.user.services.UserService;
@@ -20,7 +22,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.*;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -69,18 +72,21 @@ public class CreateReserveUseCaseImpl implements CreateReserveUseCase {
             return this.redisLockReserveExecutor.companyLock(companyEntity.getUserId().toString(), 10, () -> {
                 List<ReserveEntity> companyReservesInRange = capacityManager.getCompanyReservesInDateRange(
                         companyEntity.getUserId(),
-                        reserveDateTime.minusMinutes(ScheduleLimits.MAX_MINUTES_DURATION.getValue()),
-                        reserveEndTime.plusMinutes(ScheduleLimits.MAX_MINUTES_DURATION.getValue())
+                        reserveDateTime,
+                        reserveEndTime
                 );
 
-                this.capacityManager.validateInstantCapacity(companyEntity, companyReservesInRange, reserveDateTime, reserveEndTime, maxConcurrentServices);
+                Integer workersAvailable = this.capacityManager.getInstantCapacity(companyReservesInRange, reserveDateTime, reserveEndTime, maxConcurrentServices);
+                this.capacityManager.validateInstantCapacity(workersAvailable, companyEntity);
 
                 DayOfWeek reserveDayOfWeek = reserveDateTime.getDayOfWeek();
                 List<ServiceScheduleDTO> companyServiceSchedules = this.serviceService.findServicesWithSchedulesByCompanyIdAndDays(companyEntity.getUserId(),
                         List.of(reserveDayOfWeek.minus(1).getValue(), reserveDayOfWeek.getValue(), reserveDayOfWeek.plus(1).getValue())
                 );
 
-                this.gapEfficiencyAnalyzer.validateGaps(reserveDateTime, reserveEndTime, companyReservesInRange, companyServiceSchedules);
+                this.gapEfficiencyAnalyzer.validateGaps(
+                        reserveDateTime, reserveEndTime, companyReservesInRange, companyServiceSchedules, workersAvailable
+                );
 
                 ReserveEntity reserveEntity = this.reserveService.saveReserve(
                         reserveMapper.toEntity(userEntity, serviceEntity, reserveDateTime, LocalDateTime.now(), false)
