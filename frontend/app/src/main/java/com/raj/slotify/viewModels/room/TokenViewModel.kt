@@ -22,6 +22,7 @@ class TokenViewModel: ViewModel() {
     fun insertToken(token: TokenEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                database.tokenDao().deleteAllTokens()
                 database.tokenDao().insertToken(token)
                 Log.i("INSERTED TOKEN", "Token insertado correctamente: ${token}")
             } catch (e: Exception) {

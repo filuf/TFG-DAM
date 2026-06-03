@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import com.raj.slotify.BuildConfig
+import com.raj.slotify.dtos.reserves.TimeIntervalDTO
 import com.raj.slotify.dtos.service.CreateServiceRequest
 import com.raj.slotify.dtos.service.CreateServiceResponse
 import com.raj.slotify.dtos.service.CreateServiceScheduleRequest
@@ -20,7 +20,7 @@ import java.util.UUID
 
 class ServiceViewModel: ViewModel() {
 
-    val service = RetrofitInstance.getService(ServiceService::class.java)
+    private val service = RetrofitInstance.getService(ServiceService::class.java)
 
     private val _serviceCreated = MutableLiveData<Response<CreateServiceResponse>?>()
     var serviceCreated: LiveData<Response<CreateServiceResponse>?> = _serviceCreated
@@ -30,6 +30,9 @@ class ServiceViewModel: ViewModel() {
 
     private val _serviceScheduleCreated = MutableLiveData<Response<CreateServiceScheduleResponse>?>()
     var serviceScheduleCreated: LiveData<Response<CreateServiceScheduleResponse>?> = _serviceScheduleCreated
+
+    private val _serviceSlotsAvailable = MutableLiveData<Response<List<TimeIntervalDTO>>?>()
+    var serviceSlotsAvailable: LiveData<Response<List<TimeIntervalDTO>>?> = _serviceSlotsAvailable
 
     fun createService(authHeader: String, createServiceRequest: CreateServiceRequest) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -48,30 +51,60 @@ class ServiceViewModel: ViewModel() {
 
     fun getServiceWithSchedules(serviceId: UUID, authHeader: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = service.getServiceSchedules(serviceId.toString(), authHeader)
-            if (!response.isSuccessful) {
-                Log.e(
-                    "Error en ServiceViewModel",
-                    "Error intentando obtener el horario del servicio: ${response.code()}: ${response.message()}"
-                )
+            try {
+                val response = service.getServiceSchedules(serviceId.toString(), authHeader)
+                if (!response.isSuccessful) {
+                    Log.e(
+                        "Error en ServiceViewModel",
+                        "Error intentando obtener el horario del servicio: ${response.code()}: ${response.message()}"
+                    )
+                }
+                _serviceWithSchedules.postValue(response)
+            } catch (e: Exception) {
+                Log.e("ServiceViewModel", "Excepción al obtener el horario del servicio: ${e.message}")
                 _serviceWithSchedules.postValue(null)
             }
-            _serviceWithSchedules.postValue(response)
         }
     }
 
     fun createServiceSchedule(authHeader: String, serviceId: String, createServiceScheduleRequest: CreateServiceScheduleRequest) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = service.createServiceSchedule(authHeader, serviceId, createServiceScheduleRequest)
-            if (!response.isSuccessful) {
-                Log.e(
-                    "Error en ServiceViewModel",
-                    "Error intentando crear el horario del servicio: ${response.code()}: ${response.message()}"
-                )
+            try {
+                val response = service.createServiceSchedule(authHeader, serviceId, createServiceScheduleRequest)
+                if (!response.isSuccessful) {
+                    Log.e(
+                        "Error en ServiceViewModel",
+                        "Error intentando crear el horario del servicio: ${response.code()}: ${response.message()}"
+                    )
+                }
+                _serviceScheduleCreated.postValue(response)
+            } catch (e: Exception) {
+                Log.e("ServiceViewModel", "Excepción al crear el horario del servicio: ${e.message}")
                 _serviceScheduleCreated.postValue(null)
             }
-            _serviceScheduleCreated.postValue(response)
         }
+    }
+
+    fun getServiceSlotsAvailable(serviceId: UUID, authHeader: String, date: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val response = service.getServiceSlotsAvailable(serviceId, authHeader, date)
+                if (!response.isSuccessful) {
+                    Log.e(
+                        "Error en ServiceViewModel",
+                        "Error intentando obtener los intervalos disponibles del servicio: ${response.code()}: ${response.message()}"
+                    )
+                }
+                _serviceSlotsAvailable.postValue(response)
+            } catch (e: Exception) {
+                Log.e("ServiceViewModel", "Excepción al obtener los intervalos disponibles del servicio: ${e.message}")
+                _serviceSlotsAvailable.postValue(null)
+            }
+        }
+    }
+
+    fun clearSlots() {
+        _serviceSlotsAvailable.postValue(null)
     }
 
 }

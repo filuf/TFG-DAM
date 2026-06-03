@@ -73,7 +73,7 @@
     <string name="reserve_appointment">Reserve an appointment</string>
     <string name="service_to_reserve_question">What service you want to reserve?</string>
     <string name="select_cattegory_message">Select the relevant category or enter the desired service:</string>
-    <string name="search_text">Search</string>
+    <string name="search_text">Search...</string>
     <string name="hostelery_cat">Food and Beverage</string>
     <string name="beauty_cat">Beauty and health</string>
     <string name="mechanical_workshops">Mechanical workshops</string>

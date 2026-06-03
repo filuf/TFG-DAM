@@ -73,7 +73,7 @@
     <string name="reserve_appointment">Reservar una cita</string>
     <string name="service_to_reserve_question">¿Qué servicio desea reservar?</string>
     <string name="select_cattegory_message">Selecciona la categoría correspondiente o introduzca el servicio deseado:</string>
-    <string name="search_text">Buscar</string>
+    <string name="search_text">Buscar...</string>
     <string name="hostelery_cat">Comida y Bebida</string>
     <string name="beauty_cat">Belleza y Salud</string>
     <string name="mechanical_workshops">Talleres mecánicos</string>
@@ -184,11 +184,11 @@
     <string name="close_drawer">Close drawer</string>
     <string name="days_word">días</string>
     <string name="hours_word">horas</string>
-    <string name="minutes_word">minutes</string>
+    <string name="minutes_word">minutos</string>
     <string name="already_started">In course</string>
     <string name="day_word">día</string>
     <string name="hour_word">hora</string>
-    <string name="minute_word">segundo</string>
+    <string name="minute_word">minuto</string>
     <string name="cant_close_session_title">Error cerrando la sesión</string>
     <string name="cant_close_sesion_message">No ha sido posible cerrar su sesión. Inténtalo más tarde.</string>
     <string name="sesion_expired_title">Su sesión ha expirado</string>
@@ -210,4 +210,16 @@
     <string name="save">Guardar</string>
     <string name="page_word">Página</string>
     <string name="of_word">de</string>
+    <string name="select_date_time">Selecciona fecha y hora</string>
+    <string name="select_word">Seleccionar</string>
+    <string name="wait_while_reserving">Espere un momento mientras creamos su reserva...</string>
+    <string name="date_selected">Fecha seleccionada:</string>
+    <string name="none_selected_word">No hay nada seleccionado</string>
+    <string name="place_details">Detalles del lugar</string>
+    <string name="error_title">Ha ocurrido un error</string>
+    <string name="hour_selected">Hora seleccionada:</string>
+    <string name="invalid_time_title">Hora inválida, seleccione entre estos intervalos:</string>
+    <string name="no_slot_text">No hay servicios para reservar este día</string>
+    <string name="select_interval">Seleccione un intervalo</string>
+    <string name="reserve_successfully_canceled">La reserva ha sido cancelada satisfactoriamente</string>
 </resources>
