@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.google.devtools.ksp")
+    id("kotlin-parcelize")
     alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
 }
 
@@ -80,6 +81,7 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.activity)
     implementation("com.applandeo:material-calendar-view:1.9.2")
+    implementation(libs.androidx.coordinatorlayout)
 
     // Retrofit
     val retrofit_version = "2.9.0"

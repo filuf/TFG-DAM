@@ -36,6 +36,20 @@ class LayoutViewModel: ViewModel() {
     val centerIconTitle: LiveData<Boolean> = _centerIconTitle
     val secondTextVisibility: LiveData<Int> = _secondTextVisibility
 
+    // BUTTONS
+    private val _nextButtonClicked = MutableSharedFlow<Unit>(replay = 0)
+    val nextButtonClicked = _nextButtonClicked.asSharedFlow()
+    private val _confirmButtonClicked = MutableSharedFlow<Unit>(replay = 0)
+    val confirmButtonClicked = _confirmButtonClicked.asSharedFlow()
+
+    // TOOLBAR
+    // En MainViewModel.kt o LayoutViewModel.kt
+    private val _toolbarTitle = MutableLiveData<String>()
+    val toolbarTitle: LiveData<String> = _toolbarTitle
+
+    private val _toolbarNavigationIcon = MutableLiveData<Int?>()
+    val toolbarNavigationIcon: LiveData<Int?> = _toolbarNavigationIcon
+
     fun setNextButtonVisibility(visibility: Int) {
         _nextButtonVisibility.postValue(visibility)
     }
@@ -84,11 +98,17 @@ class LayoutViewModel: ViewModel() {
         _secondTextVisibility.postValue(visibility)
     }
 
-    private val _nextButtonClicked = MutableSharedFlow<Unit>(replay = 0)
-    val nextButtonClicked = _nextButtonClicked.asSharedFlow()
-
     fun onNextClicked() {
         viewModelScope.launch { _nextButtonClicked.emit(Unit) }
+    }
+
+    fun onConfirmClicked() {
+        viewModelScope.launch { _confirmButtonClicked.emit(Unit) }
+    }
+
+    fun updateToolbar(title: String, iconRes: Int?) {
+        _toolbarTitle.value = title
+        _toolbarNavigationIcon.value = iconRes
     }
 
 }
