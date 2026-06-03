@@ -1,9 +1,12 @@
 package com.raj.slotify.dtos.reserves
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
 import java.util.UUID
 
+@Parcelize
 data class UserReserveSummary(
 
     @SerializedName("reserveId")
@@ -40,6 +43,6 @@ data class UserReserveSummary(
     val companyPhysicalAddress: String,
 
     @SerializedName("companyImageUrl")
-    val companyImageUrl: String
+    val companyImageUrl: String?
 
-): ReserveSummary ()
+): ReserveSummary (), Parcelable
