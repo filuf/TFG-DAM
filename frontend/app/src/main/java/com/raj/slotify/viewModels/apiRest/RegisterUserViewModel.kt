@@ -17,7 +17,7 @@ import retrofit2.Response
 
 class RegisterUserViewModel: ViewModel() {
 
-    val service = RetrofitInstance.getService(RegisterUserService::class.java)
+    private val service = RetrofitInstance.getService(RegisterUserService::class.java)
 
     private val _clientRegistered = MutableLiveData<Response<RegisterUserResponse>?>()
     var clientRegistered: LiveData<Response<RegisterUserResponse>?> = _clientRegistered
@@ -27,31 +27,41 @@ class RegisterUserViewModel: ViewModel() {
 
     fun registerClient(registerUserRequest: RegisterUserRequest) {
         viewModelScope.launch(Dispatchers.IO) {
-            Log.w("RegisterUserViewModel", "Intentando registrar cliente")
-            val response = service.registerClient(registerUserRequest)
-            Log.w("${response.code()}", "Petición de registro hecha: ${response.body()}")
-            if (!response.isSuccessful) {
-                Log.e(
-                    "Error en RegisterUserViewModel",
-                    "Error intentando registrar cliente: ${response.code()}: ${response.body()}"
-                )
+            try {
+                Log.w("RegisterUserViewModel", "Intentando registrar cliente")
+                val response = service.registerClient(registerUserRequest)
+                Log.w("${response.code()}", "Petición de registro hecha: ${response.body()}")
+                if (!response.isSuccessful) {
+                    Log.e(
+                        "Error en RegisterUserViewModel",
+                        "Error intentando registrar cliente: ${response.code()}: ${response.body()}"
+                    )
+                }
+                _clientRegistered.postValue(response)
+            } catch (e: Exception) {
+                Log.e("Error en RegisterUserViewModel", "Error intentando registrar cliente: ${e.message}")
+                _clientRegistered.postValue(null)
             }
-            _clientRegistered.postValue(response)
         }
     }
 
     fun registerCompany(registerCompanyRequest: RegisterCompanyRequest) {
         viewModelScope.launch(Dispatchers.IO) {
-            Log.w("RegisterUserViewModel", "Intentando registrar empresa")
-            val response = service.registerCompany(registerCompanyRequest)
-            Log.w("${response.code()}", "Petición de registro hecha: ${response.body()}")
-            if (!response.isSuccessful) {
-                Log.e(
-                    "Error en RegisterUserViewModel",
-                    "Error intentando registrar empresa: ${response.code()}: ${response.body()}"
-                )
+            try {
+                Log.w("RegisterUserViewModel", "Intentando registrar empresa")
+                val response = service.registerCompany(registerCompanyRequest)
+                Log.w("${response.code()}", "Petición de registro hecha: ${response.body()}")
+                if (!response.isSuccessful) {
+                    Log.e(
+                        "Error en RegisterUserViewModel",
+                        "Error intentando registrar empresa: ${response.code()}: ${response.body()}"
+                    )
+                }
+                _companyRegistered.postValue(response)
+            } catch (e: Exception) {
+                Log.e("Error en RegisterUserViewModel", "Error intentando registrar empresa: ${e.message}")
+                _companyRegistered.postValue(null)
             }
-            _companyRegistered.postValue(response)
         }
     }
 

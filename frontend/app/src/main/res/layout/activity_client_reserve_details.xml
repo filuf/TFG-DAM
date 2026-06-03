@@ -1,47 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.reserves.client.ReserveDetailsFragment">
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/materialToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:title="@string/go_back" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/colorOutlineVariant" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="vertical">
-
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="16dp">
-
-            <TextView
-                android:id="@+id/textGt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:text="&lt;"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/goBackText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/go_back"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="32dp"
             android:layout_marginBottom="32dp">
 
             <TextView
@@ -127,24 +116,24 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="225dp"
             android:paddingHorizontal="32dp">
 
             <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/gMapsFragment"
+                android:id="@+id/reserveMapFragment"
                 android:name="com.raj.slotify.fragments.reserves.MapsFragment"
                 android:layout_width="match_parent"
-                android:layout_height="254dp"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_marginTop="35dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout="@layout/fragment_maps" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardDirectionInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="8dp"
                 app:cardCornerRadius="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -208,12 +197,13 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/cancelButton"
+        android:id="@+id/cancelReserveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
+        android:layout_gravity="end"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
-        android:text="@string/cancel_reserve" />
+        android:text="@string/appointment_cancell" />
 
-</FrameLayout>
+
+</LinearLayout>
