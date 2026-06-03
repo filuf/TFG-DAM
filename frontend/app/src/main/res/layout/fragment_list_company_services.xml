@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.reserves.client.createReserve.ListCompaniesToReserveFragment">
+    tools:context=".fragments.reserves.client.createReserve.ListCompanyServicesFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,7 +12,7 @@
         android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/searchEnterpriseInputLayout"
+            android:id="@+id/searchServiceReserveInput"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
             app:startIconTint="?attr/colorOnSurfaceVariant">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/searchEnterpriseText"
+                android:id="@+id/searchServiceReserveText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/search_text"
@@ -50,14 +50,9 @@
             app:cardElevation="0dp">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/companiesRecycler"
+                android:id="@+id/recyclerListServices"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:paddingBottom="100dp" />
-
+                android:layout_height="match_parent" />
         </androidx.cardview.widget.CardView>
-
     </LinearLayout>
-
 </FrameLayout>

@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.raj.slotify.R
 import com.raj.slotify.dtos.reserves.ReserveSummary
+import com.raj.slotify.tools.FormatUtils
 import java.time.LocalDateTime
 
 class ReservesListCustomAdapter(private val dataSet: MutableList<ReserveSummary>,
@@ -83,8 +84,8 @@ class ReservesListCustomAdapter(private val dataSet: MutableList<ReserveSummary>
     ): List<String> {
         val listToReturn: ArrayList<String> = arrayListOf()
 
-        listToReturn.add("${startTime.hour}:${startTime.minute} - ${endTime.hour}:${endTime.minute}")
-        listToReturn.add("${startTime.dayOfMonth}/${startTime.monthValue}/${startTime.year}")
+        listToReturn.add("${FormatUtils.formatTime(startTime.toLocalTime())} - ${FormatUtils.formatTime(endTime.toLocalTime())}")
+        listToReturn.add(FormatUtils.formatDate(startTime.toLocalDate()))
         return listToReturn
     }
 

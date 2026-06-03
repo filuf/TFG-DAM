@@ -7,9 +7,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import coil.transform.RoundedCornersTransformation
 import com.raj.slotify.R
 import com.raj.slotify.dtos.company.GetServicesResponse
+import com.raj.slotify.tools.FormatUtils
 
 class ServiceListAdapter(
     private val dataSet: MutableList<GetServicesResponse>,
@@ -45,8 +45,7 @@ class ServiceListAdapter(
         val mins = service.serviceMinutesDuration % 60
         viewHolder.serviceDuration.text = if (hours > 0) "${hours}h ${mins}min" else "${mins} min"
 
-        val priceEuros = service.servicePriceCent / 100.0
-        viewHolder.servicePrice.text = String.format("%.2f €", priceEuros)
+        viewHolder.servicePrice.text = FormatUtils.formatPrice(service.servicePriceCent)
 
         viewHolder.serviceDescription.text = service.description
 

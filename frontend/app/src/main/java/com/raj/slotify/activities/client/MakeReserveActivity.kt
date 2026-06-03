@@ -23,12 +23,13 @@ class MakeReserveActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
+            val paddingButton = if (imeInsets.bottom > 0) imeInsets.bottom else systemBars.bottom
+
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, paddingButton)
             insets
         }
-
-        // REMOVE CONTRAST
         val window = this.window
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
             window.isNavigationBarContrastEnforced = false

@@ -9,7 +9,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentFirstReserveCreationBinding
-import com.raj.slotify.dtos.reserves.UserReserveSummary
 import com.raj.slotify.models.TextModel
 import com.raj.slotify.viewModels.frontend.ClientReservesViewModel
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
@@ -50,7 +49,7 @@ class FirstReserveCreationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val customCatText = binding.customCatText
+        val customCatText = binding.searchText
         val searchButton = binding.customSearchLayout
 
         val restaurantCat = binding.cardHostelery
@@ -72,7 +71,7 @@ class FirstReserveCreationFragment : Fragment() {
             goToNextPage("travels")
         }
         searchButton.setOnClickListener {
-            goToNextPage(customCatText.text.toString())
+            goToNextPage(customCatText.text.toString().trim())
         }
 
     }
