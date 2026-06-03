@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.findNavController
 import com.applandeo.materialcalendarview.CalendarDay
 import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentCalendarBinding
@@ -21,8 +20,12 @@ import java.util.Calendar
 import java.util.Date
 import com.applandeo.materialcalendarview.listeners.OnCalendarDayClickListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.raj.slotify.activities.client.ClientReserveDetailsActivity
+import com.raj.slotify.activities.client.CompanyReserveDetailsActivity
 import com.raj.slotify.activities.client.MakeReserveActivity
+import com.raj.slotify.dtos.reserves.CompanyReserveSummary
 import com.raj.slotify.dtos.reserves.ReserveSummary
+import com.raj.slotify.dtos.reserves.UserReserveSummary
 import com.raj.slotify.viewModels.frontend.ClientReservesViewModel
 import com.raj.slotify.viewModels.frontend.UserDataViewModel
 
@@ -75,7 +78,13 @@ class CalendarFragment : Fragment(), OnCalendarDayClickListener {
 
         binding.calendarView.setOnCalendarDayClickListener(this)
 
+        // ADD TODAY DAY
+        val today = Calendar.getInstance()
+        val todayCalendar = CalendarDay(today)
+        todayCalendar.backgroundResource = R.drawable.calendar_day_background
+
         val calendarDays: MutableList<CalendarDay> = ArrayList<CalendarDay>()
+        calendarDays.add(todayCalendar)
 
         reservesViewModel.reservesSummary.observe(viewLifecycleOwner) { response ->
             if (response == null)
@@ -122,10 +131,17 @@ class CalendarFragment : Fragment(), OnCalendarDayClickListener {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.daily_reserves_title)
             .setItems(items) { _, which ->
-                val selectedReserve = reserves[which]
-                clientReservesViewModel.setLastReserveSelected(selectedReserve)
+                val reserve = reserves[which]
 
-                requireView().findNavController().navigate(R.id.action_calendarFragment_to_reserveDetailsFragment)
+                if (reserve is UserReserveSummary) {
+                    val intent = Intent(requireActivity(), ClientReserveDetailsActivity::class.java)
+                    intent.putExtra("EXTRA_RESERVE", reserve)
+                    startActivity(intent)
+                } else if (reserve is CompanyReserveSummary) {
+                    val intent = Intent(requireActivity(), CompanyReserveDetailsActivity::class.java)
+                    intent.putExtra("EXTRA_RESERVE", reserve)
+                    startActivity(intent)
+                }
             }
             .setNegativeButton(R.string.dialog_close, null)
             .show()

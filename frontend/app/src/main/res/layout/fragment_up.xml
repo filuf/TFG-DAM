@@ -34,8 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Title"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            style="@style/TextAppearance.Slotify.Title" />
 
         <TextView
             android:id="@+id/textDesc"
@@ -43,8 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="TextView"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            style="@style/TextAppearance.Slotify.Description" />
 
         <TextView
             android:id="@+id/textExplication"
@@ -52,7 +50,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="TextView"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            style="@style/TextAppearance.Slotify.Explication" />
 
     </LinearLayout>
 </FrameLayout>

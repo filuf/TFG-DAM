@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import com.raj.slotify.BuildConfig
 import com.raj.slotify.dtos.reserves.CreateReserveRequest
 import com.raj.slotify.dtos.reserves.CreateReserveResponse
 import com.raj.slotify.dtos.reserves.ReserveSummary
@@ -19,7 +18,7 @@ import java.util.UUID
 
 class ReservesViewModel: ViewModel() {
 
-    val service = RetrofitInstance.getService(ReservesService::class.java)
+    private val service = RetrofitInstance.getService(ReservesService::class.java)
 
     private val _reservesSummary = MutableLiveData<Response<PageResponse<ReserveSummary>>?>()
     var reservesSummary: LiveData<Response<PageResponse<ReserveSummary>>?> = _reservesSummary
@@ -35,54 +34,75 @@ class ReservesViewModel: ViewModel() {
 
     fun getReserveById(reserveId: UUID, authHeader: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = service.getReserve(reserveId, authHeader)
-            if (!response.isSuccessful) {
-                Log.e(
-                    "Error en ReservesViewModel",
-                    "Error intentando obtener reserva: ${response.code()}: ${response.message()} - ${response.body()}"
-                )
+            try {
+                val response = service.getReserve(reserveId, authHeader)
+                if (!response.isSuccessful) {
+                    Log.e(
+                        "Error en ReservesViewModel",
+                        "Error intentando obtener reserva: ${response.code()}: ${response.message()} - ${response.body()}"
+                    )
+                }
+                _reserveSearched.postValue(response)
+            } catch (e: Exception) {
+                Log.e("ReservesViewModel", "Excepción al obtener reserva: ${e.message}")
+                _reserveSearched.postValue(null)
             }
-            _reserveSearched.postValue(response)
         }
     }
 
     fun getReserves(authHeader: String, page: Int?, size: Int?, sort: String?, fetchType: String?) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = service.getReserves(authHeader, page, size, sort, fetchType)
-            Log.i("DEBUG GET RESERVES", "url: ")
-            if (!response.isSuccessful) {
-                Log.e(
-                    "Error en ReservesViewModel",
-                    "Error intentando obtener reservas: ${response.code()}: ${response.message()} - ${response.body()}"
-                )
+            try {
+                val response = service.getReserves(authHeader, page, size, sort, fetchType)
+                Log.i("DEBUG GET RESERVES", "url: ")
+                if (!response.isSuccessful) {
+                    Log.e(
+                        "Error en ReservesViewModel",
+                        "Error intentando obtener reservas: ${response.code()}: ${response.message()} - ${response.body()}"
+                    )
+                }
+                _reservesSummary.postValue(response)
+            } catch (e: Exception) {
+                Log.e("ReservesViewModel", "Excepción al obtener reservas: ${e.message}")
+                _reservesSummary.postValue(null)
             }
-            _reservesSummary.postValue(response)
         }
     }
 
     fun createReserve(authHeader: String, createReserveRequest: CreateReserveRequest) {
+        _reserveCreate.value = null
         viewModelScope.launch(Dispatchers.IO) {
-            val response = service.createReserve(authHeader, createReserveRequest)
-            if (!response.isSuccessful) {
-                Log.e(
-                    "Error en ReservesViewModel",
-                    "Error intentando crear reserva: ${response.code()}: ${response.message()} - ${response.body()}"
-                )
+            try {
+                val response = service.createReserve(authHeader, createReserveRequest)
+                if (!response.isSuccessful) {
+                    Log.e(
+                        "Error en ReservesViewModel",
+                        "Error intentando crear reserva: ${response.code()}: ${response.message()} - ${response.body()}"
+                    )
+                }
+                _reserveCreate.postValue(response)
+            } catch (e: Exception) {
+                Log.e("ReservesViewModel", "Excepción al crear reserva: ${e.message}")
+                _reserveCreate.postValue(null)
             }
-            _reserveCreate.postValue(response)
         }
     }
 
     fun cancelReserve(reserveId: UUID, authHeader: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = service.cancelReserve(reserveId, authHeader)
-            if (!response.isSuccessful) {
-                Log.e(
-                    "Error en ReservesViewModel",
-                    "Error intentando cancelar reserva: ${response.code()}: ${response.message()} - ${response.body()}"
-                )
+            try {
+                val response = service.cancelReserve(reserveId, authHeader)
+                if (!response.isSuccessful) {
+                    Log.e(
+                        "Error en ReservesViewModel",
+                        "Error intentando cancelar reserva: ${response.code()}: ${response.message()} - ${response.body()}"
+                    )
+                }
+                _reserveCanceledResponse.postValue(response)
+            } catch (e: Exception) {
+                Log.e("ReservesViewModel", "Excepción al cancelar reserva: ${e.message}")
+                _reserveCanceledResponse.postValue(null)
             }
-            _reserveCanceledResponse.postValue(response)
         }
     }
 

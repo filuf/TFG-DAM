@@ -72,7 +72,7 @@
     <string name="reserve_appointment">Reserve an appointment</string>
     <string name="service_to_reserve_question">What service you want to reserve?</string>
     <string name="select_cattegory_message">Select the relevant category or enter the desired service:</string>
-    <string name="search_text">Search</string>
+    <string name="search_text">Search...</string>
     <string name="hostelery_cat">Food and Beverage</string>
     <string name="beauty_cat">Beauty and Health</string>
     <string name="mechanical_workshops">Mechanical workshops</string>
@@ -81,7 +81,7 @@
     <string name="in_word">In</string>
     <string name="find_by_service_name">Find by service name</string>
     <string name="see_ubication_in_gm">See location in Google Maps</string>
-    <string name="sellect_date">Sellect date</string>
+    <string name="sellect_date">Select date</string>
     <string name="check_info">Please check that the information is correct</string>
     <string name="payment_moment_acclaration">The payment will be made in the enterprise location once the service is completed</string>
     <string name="succesful_reserve">The appointment has reserved correctly!</string>
@@ -193,7 +193,7 @@
     <string name="already_started">In course</string>
     <string name="day_word">day</string>
     <string name="hour_word">hour</string>
-    <string name="minute_word">second</string>
+    <string name="minute_word">minute</string>
     <string name="cant_close_session_title">Error closing session</string>
     <string name="cant_close_sesion_message">Close your session has not be possible. Retry it later.</string>
     <string name="sesion_expired_title">Your session is expired</string>
@@ -216,4 +216,16 @@
     <string name="save">Save</string>
     <string name="page_word">Page</string>
     <string name="of_word">of</string>
+    <string name="select_date_time">Select date and time</string>
+    <string name="select_word">Select</string>
+    <string name="wait_while_reserving">Please, wait a moment while we create your reserve...</string>
+    <string name="date_selected">Selected date:</string>
+    <string name="none_selected_word">There are nothing selected</string>
+    <string name="place_details">Place details</string>
+    <string name="error_title">An error happened</string>
+    <string name="hour_selected">Hour selected:</string>
+    <string name="invalid_time_title">Invalid time selected, chose between these:</string>
+    <string name="no_slot_text">There are not any service to reserve at this day</string>
+    <string name="select_interval">Select an interval</string>
+    <string name="reserve_successfully_canceled">The reserve was successfully canceled</string>
 </resources>

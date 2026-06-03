@@ -16,21 +16,26 @@ import java.util.UUID
 
 class ScheduleViewModel: ViewModel() {
 
-    val service = RetrofitInstance.getService(ScheduleService::class.java)
+    private val service = RetrofitInstance.getService(ScheduleService::class.java)
 
     private val _scheduleUpdated = MutableLiveData<Response<ScheduleSummary>?>()
     var scheduleUpdated: MutableLiveData<Response<ScheduleSummary>?> = _scheduleUpdated
 
     fun updateSchedule(scheduleId: UUID, authHeader: String, patchScheduleRequest: PatchScheduleRequest) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = service.patchSchedule(scheduleId, authHeader, patchScheduleRequest)
-            if (!response.isSuccessful) {
-                Log.e(
-                    "Error en ScheduleViewModel",
-                    "Error intentando actualizar horario: ${response.code()}: ${response.message()}"
-                )
+            try {
+                val response = service.patchSchedule(scheduleId, authHeader, patchScheduleRequest)
+                if (!response.isSuccessful) {
+                    Log.e(
+                        "Error en ScheduleViewModel",
+                        "Error intentando actualizar horario: ${response.code()}: ${response.message()}"
+                    )
+                }
+                _scheduleUpdated.postValue(response)
+            } catch (e: Exception) {
+                Log.e("ScheduleViewModel", "Excepción al actualizar horario: ${e.message}")
+                _scheduleUpdated.postValue(null)
             }
-            _scheduleUpdated.postValue(response)
         }
     }
 

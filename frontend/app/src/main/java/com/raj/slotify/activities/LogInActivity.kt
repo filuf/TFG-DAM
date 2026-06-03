@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.raj.slotify.R
-import com.raj.slotify.room.database.TokenEntity
 import com.raj.slotify.viewModels.room.TokenViewModel
 import net.openid.appauth.AppAuthConfiguration
 import net.openid.appauth.AuthorizationException
@@ -60,17 +59,6 @@ class LogInActivity : AppCompatActivity() {
             Log.i("AUTH", "Token obtenido correctamente: ${tokenResponse.accessToken!!}")
             Log.i("AUTH", "id token: ${tokenResponse.idToken?:"no id token"}")
 
-            tokenViewModel.deleteAllTokens()
-            val tokenEntity = TokenEntity(
-                0,
-                tokenResponse.accessToken ?: "",
-                tokenResponse.refreshToken ?: "",
-                tokenResponse.tokenType ?: "Bearer",
-                tokenResponse.accessTokenExpirationTime ?: 0L,
-                tokenResponse.idToken ?: "",
-                tokenResponse.scope ?: "",
-            )
-            tokenViewModel.insertToken(tokenEntity)
             goToHomePage(tokenResponse.jsonSerializeString())
 
         } else {

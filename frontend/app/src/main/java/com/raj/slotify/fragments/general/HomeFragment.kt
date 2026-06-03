@@ -14,9 +14,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.raj.slotify.R
 import com.raj.slotify.activities.LogInActivity
+import com.raj.slotify.activities.client.ClientReserveDetailsActivity
+import com.raj.slotify.activities.client.CompanyReserveDetailsActivity
 import com.raj.slotify.adapters.ReservesListCustomAdapter
 import com.raj.slotify.databinding.FragmentHomeBinding
+import com.raj.slotify.dtos.reserves.CompanyReserveSummary
 import com.raj.slotify.dtos.reserves.ReserveSummary
+import com.raj.slotify.dtos.reserves.UserReserveSummary
 import com.raj.slotify.models.TextModel
 import com.raj.slotify.tools.Navigation
 import com.raj.slotify.viewModels.apiRest.ReservesViewModel
@@ -49,15 +53,18 @@ class HomeFragment : Fragment() {
 
         layoutViewModel.setCenterIconTitle(true)
 
-        val accessToken = userDataViewModel.userToken.value?.accessToken ?: ""
-        reservesViewModel.getReserves("Bearer $accessToken", 0, null, null, null)
-
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // OBSERVE USER TOKEN AND GET RESERVES
+        userDataViewModel.userToken.observe(viewLifecycleOwner) { token ->
+            val accessToken = token.accessToken
+            reservesViewModel.getReserves("Bearer $accessToken", 0, null, null, null)
+        }
 
         val intervalButton = binding.createIntervalButton
         userDataViewModel.userType.observe(viewLifecycleOwner) { userType ->
@@ -81,9 +88,18 @@ class HomeFragment : Fragment() {
         }
 
         val recyclerView: RecyclerView = binding.recyclerHome
-        val customAdapter = ReservesListCustomAdapter(clientReservesViewModel.reserves.value?:mutableListOf()) { reserve: ReserveSummary ->
-            clientReservesViewModel.setLastReserveSelected(reserve)
-            view.findNavController().navigate(R.id.action_homeFragment_to_reserveDetailsFragment)
+        val customAdapter = ReservesListCustomAdapter(
+            clientReservesViewModel.reserves.value ?: mutableListOf()
+        ) { reserve: ReserveSummary ->
+            if (reserve is UserReserveSummary) {
+                val intent = Intent(requireActivity(), ClientReserveDetailsActivity::class.java)
+                intent.putExtra("EXTRA_RESERVE", reserve)
+                startActivity(intent)
+            } else if (reserve is CompanyReserveSummary) {
+                val intent = Intent(requireActivity(), CompanyReserveDetailsActivity::class.java)
+                intent.putExtra("EXTRA_RESERVE", reserve)
+                startActivity(intent)
+            }
         }
 
         recyclerView.adapter = customAdapter

@@ -77,14 +77,14 @@ public class IntervalServiceImpl implements IntervalService {
     }
 
     @Override
-    public List<CompanyIntervalEntity> findIntervalByCompanyIdAndBetweenDatesTime(UUID companyId, LocalDateTime reserveStartDateTime, LocalDateTime reserveEndDateTime) {
+    public List<CompanyIntervalEntity> findIntervalByCompanyIdAndBetweenDatesTime(UUID companyId, LocalDateTime startDateTime, LocalDateTime endDateTime) {
         return intervalRepository.findAll( (root, query, criteriaBuilder) -> {
 
             Join<CompanyIntervalEntity, CompanyEntity> companyJoin = root.join("company");
             Predicate userPred = criteriaBuilder.equal(companyJoin.get("userId"), companyId);
 
-            Predicate startDatetimePred = criteriaBuilder.lessThan(root.get("startDatetime"), reserveEndDateTime);
-            Predicate endDatetimePred = criteriaBuilder.greaterThan(root.get("endDatetime"), reserveStartDateTime);
+            Predicate startDatetimePred = criteriaBuilder.lessThan(root.get("startDatetime"), endDateTime);
+            Predicate endDatetimePred = criteriaBuilder.greaterThan(root.get("endDatetime"), startDateTime);
 
             return criteriaBuilder.and(userPred, startDatetimePred, endDatetimePred);
         });

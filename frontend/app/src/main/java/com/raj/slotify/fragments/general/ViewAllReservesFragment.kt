@@ -11,14 +11,17 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.raj.slotify.R
+import com.raj.slotify.activities.client.ClientReserveDetailsActivity
+import com.raj.slotify.activities.client.CompanyReserveDetailsActivity
 import com.raj.slotify.activities.client.MakeReserveActivity
 import com.raj.slotify.adapters.ReservesListCustomAdapter
 import com.raj.slotify.databinding.FragmentViewAllReservesBinding
+import com.raj.slotify.dtos.reserves.CompanyReserveSummary
 import com.raj.slotify.dtos.reserves.ReserveSummary
+import com.raj.slotify.dtos.reserves.UserReserveSummary
 import com.raj.slotify.viewModels.apiRest.ReservesViewModel
 import com.raj.slotify.viewModels.frontend.ClientReservesViewModel
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
@@ -37,7 +40,7 @@ class ViewAllReservesFragment : Fragment() {
     private lateinit var returnPageButton: Button
     private lateinit var advancePageButton: Button
     private var totalPages: Int = 0
-    private var actualPage: Int = 0
+    private var actualPage: Int = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,12 +60,18 @@ class ViewAllReservesFragment : Fragment() {
         setMakeReserveButton()
         setPaginationLogic()
 
+        // LOAD RESERVES
+        userDataViewModel.userToken.observe(viewLifecycleOwner) { token ->
+            val accessToken = token.accessToken
+            reservesViewModel.getReserves("Bearer $accessToken", 0, null, null, null)
+        }
+
         // SET PAGE LAYOUT CARD
         val pageTextView: TextView = binding.textPage
 
         // RECYCLER VIEW
         val customAdapter = configRecyclerView(view)
-        val searchReserveText = binding.searchReserveText
+        val searchReserveText = binding.searchReservesText
 
         searchReserveText.doOnTextChanged { text, _, _, _ ->
             val reserves: MutableList<ReserveSummary> = clientReservesViewModel.reserves.value ?: mutableListOf()
@@ -88,6 +97,9 @@ class ViewAllReservesFragment : Fragment() {
             return actualPage == 0
         }
         fun isLast(actualPage: Int, totalPages: Int): Boolean {
+            if (totalPages == 0)
+                return true
+
             return actualPage == totalPages - 1
         }
 
@@ -110,7 +122,7 @@ class ViewAllReservesFragment : Fragment() {
             clientReservesViewModel.setReserves(reservesSummary.toMutableList())
 
             // PAGE LOGIC
-            if (totalPages == 0)
+            if (totalPages == 0 && responseBody.totalPages != 0)
                 totalPages = responseBody.totalPages
 
             actualPage = responseBody.number
@@ -166,9 +178,15 @@ class ViewAllReservesFragment : Fragment() {
         val customAdapter = ReservesListCustomAdapter(
             clientReservesViewModel.reserves.value ?: mutableListOf()
         ) { reserve: ReserveSummary ->
-            clientReservesViewModel.setLastReserveSelected(reserve)
-            view.findNavController()
-                .navigate(R.id.action_viewAllReservesFragment_to_reserveDetailsFragment)
+            if (reserve is UserReserveSummary) {
+                val intent = Intent(requireActivity(), ClientReserveDetailsActivity::class.java)
+                intent.putExtra("EXTRA_RESERVE", reserve)
+                startActivity(intent)
+            } else if (reserve is CompanyReserveSummary) {
+                val intent = Intent(requireActivity(), CompanyReserveDetailsActivity::class.java)
+                intent.putExtra("EXTRA_RESERVE", reserve)
+                startActivity(intent)
+            }
         }
 
         recyclerView.adapter = customAdapter
