@@ -22,7 +22,7 @@ import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
-public class ReservationEvents {
+public class ReservationCancelEventListener {
 
     private final MailService mailService;
     private final NotificationService notificationService;
