@@ -55,17 +55,18 @@ class MainActivity : AppCompatActivity() {
 
             if (accessToken != null) {
                 extractTokenComponents(accessToken)
-                uploadToken(
-                    TokenEntity(
-                        0,
-                        accessToken,
-                        tokenResponse.refreshToken?:"null",
-                        tokenResponse.tokenType?:"null",
-                        tokenResponse.accessTokenExpirationTime?:0,
-                        tokenResponse.idToken?:"null",
-                        tokenResponse.scope?:"null"
-                    )
+                val tokenEntity = TokenEntity(
+                    0,
+                    accessToken,
+                    tokenResponse.refreshToken?:"null",
+                    tokenResponse.tokenType?:"null",
+                    tokenResponse.accessTokenExpirationTime?:0,
+                    tokenResponse.idToken?:"null",
+                    tokenResponse.scope?:"null"
                 )
+                uploadToken(tokenEntity)
+                tokenViewModel.insertToken(tokenEntity)
+
                 Log.i("MainActivity", "Token obtenido por Intent: $accessToken")
 
                 graph.setStartDestination(R.id.mainFragment)
@@ -121,7 +122,6 @@ class MainActivity : AppCompatActivity() {
                 userDataViewModel.setEmail(email)
                 userDataViewModel.setName(username)
                 userDataViewModel.setUuid(UUID.fromString(sub))
-
             }
         } catch (e: Exception) {
             Log.e("ERROR", "Error al decodificar el token: ${e.message}")
