@@ -28,4 +28,10 @@ public interface ReserveRepository extends JpaRepository<ReserveEntity, UUID>, J
             LocalDateTime end
     );
 
+    @EntityGraph(attributePaths = {"user", "service", "service.company"})
+    List<ReserveEntity> findByServiceTimeBetweenAndIsCanceledFalse(
+            LocalDateTime start,
+            LocalDateTime end
+    );
+
 }
