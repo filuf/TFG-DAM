@@ -1,9 +1,11 @@
 package com.slotify.backend.spring.service.controllers;
 
+import com.slotify.backend.spring.reserve.dtos.TimeIntervalDTO;
 import com.slotify.backend.spring.service.dtos.*;
 import com.slotify.backend.spring.service.useCases.CreateServiceScheduleUseCase;
 import com.slotify.backend.spring.service.useCases.CreateServiceUseCase;
 import com.slotify.backend.spring.service.useCases.GetServiceSchedulesUseCase;
+import com.slotify.backend.spring.service.useCases.GetServiceSlotsAvailableUseCase;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,8 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -23,6 +27,7 @@ public class ServiceController {
     private final CreateServiceUseCase createServiceUseCase;
     private final CreateServiceScheduleUseCase createServiceScheduleUseCase;
     private final GetServiceSchedulesUseCase getServiceSchedulesUseCase;
+    private final GetServiceSlotsAvailableUseCase getServiceSlotsAvailableUseCase;
 
     @PostMapping()
     @PreAuthorize("hasRole('COMPANY')")
@@ -72,5 +77,17 @@ public class ServiceController {
         return ResponseEntity.created(URI.create("/service/" + serviceId + "/schedule/" + createServiceScheduleResponse.getScheduleId()))
                 .body(createServiceScheduleResponse);
     }
+
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/{serviceId}/date/{date}/available")
+    public ResponseEntity<List<TimeIntervalDTO>> getServiceSlotsAvailable(
+            @PathVariable UUID serviceId,
+            @PathVariable LocalDate date
+    ) {
+        List<TimeIntervalDTO> serviceSlotsAvailable = this.getServiceSlotsAvailableUseCase.getServiceSlotsAvailable(serviceId, date);
+
+        return ResponseEntity.ok(serviceSlotsAvailable);
+    }
+
 
 }

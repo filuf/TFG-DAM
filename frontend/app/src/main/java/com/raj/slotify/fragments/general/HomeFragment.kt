@@ -49,12 +49,27 @@ class HomeFragment : Fragment() {
 
         layoutViewModel.setCenterIconTitle(true)
 
+        val accessToken = userDataViewModel.userToken.value?.accessToken ?: ""
+        reservesViewModel.getReserves("Bearer $accessToken", 0, null, null, null)
+
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val intervalButton = binding.createIntervalButton
+        userDataViewModel.userType.observe(viewLifecycleOwner) { userType ->
+            if (userType.equals("USER")) {
+                intervalButton.visibility = View.GONE
+            } else {
+                intervalButton.visibility = View.VISIBLE
+            }
+        }
+        intervalButton.setOnClickListener {
+            // TODO: NAVEGAR A LA PÁGINA DE INTERVALOS
+        }
 
         userDataViewModel.name.observe(viewLifecycleOwner) { name ->
             viewModel.setSecondTitle(name)
@@ -80,14 +95,20 @@ class HomeFragment : Fragment() {
                     if (response.isSuccessful && response.body() != null) {
                         val reservesSummary = response.body()!!.content
 
-                        val numberOfReserves = reservesSummary.size
+                        clientReservesViewModel.setReserves(reservesSummary.toMutableList())
+                        val numberOfReserves = response.body()!!.totalElements.toInt()
+
+                        // Set visibility of see more reserves button
+                        if (numberOfReserves == 0) {
+                            binding.seeMoreLayout.visibility = View.GONE
+                        } else {
+                            binding.seeMoreLayout.visibility = View.VISIBLE
+                        }
 
                         binding.numberReservesRemainingText.text = numberOfReserves.toString()
-                        val reserveText = if (numberOfReserves == 1) getString(R.string.reserve) else getString(R.string.reserves)
+                        val reserveText = if (numberOfReserves == 1) "${getString(R.string.reserve)} ${getString(R.string.pending_word)}" else "${getString(R.string.reserves)} ${getString(R.string.pending_plural)}"
 
-                        binding.remaingText.text = "$reserveText ${getString(R.string.pending_word)}"
-
-                        clientReservesViewModel.setReserves(reservesSummary.toMutableList())
+                        binding.remaingText.text = reserveText
 
                         val reservesSummarySelection: MutableList<ReserveSummary> =
                             reservesSummary.take(2).toMutableList()

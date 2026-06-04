@@ -1,6 +1,5 @@
 package com.raj.slotify.activities
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
@@ -8,7 +7,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.raj.slotify.R
 import com.raj.slotify.databinding.ActivityMainBinding
 import com.raj.slotify.room.database.TokenEntity
@@ -123,30 +121,6 @@ class MainActivity : AppCompatActivity() {
                 userDataViewModel.setEmail(email)
                 userDataViewModel.setName(username)
                 userDataViewModel.setUuid(UUID.fromString(sub))
-
-                reservesViewModel.getReserves("Bearer $accessToken", null, null, null, null)
-                reservesViewModel.reservesSummary.observe(this) { response ->
-                    if (response != null) {
-                        if (response.isSuccessful) {
-                            val reserves = response.body()?.content
-                            if (reserves != null) {
-                                clientReservesViewModel.setReserves(reserves.toMutableList())
-                            }
-                        } else {
-                            if (response.code() == 401 && response.message().equals("Unauthorized")) {
-                                MaterialAlertDialogBuilder(this)
-                                    .setTitle(getString(R.string.sesion_expired_title))
-                                    .setMessage(getString(R.string.sesion_expired_explication))
-                                    .setPositiveButton(getString(R.string.dialog_ok)) { _, _ ->
-                                        val intent = Intent(this, LogInActivity::class.java)
-                                        startActivity(intent)
-                                        finish()
-                                    }.show()
-                            }
-                            Log.e("ERROR", "Error al obtener reservas: ${response.code()}: ${response.body()}")
-                        }
-                    }
-                }
 
             }
         } catch (e: Exception) {

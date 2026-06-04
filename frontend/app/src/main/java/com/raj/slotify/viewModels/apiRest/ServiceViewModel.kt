@@ -33,14 +33,16 @@ class ServiceViewModel: ViewModel() {
 
     fun createService(authHeader: String, createServiceRequest: CreateServiceRequest) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = service.createService(authHeader, createServiceRequest)
-            if (!response.isSuccessful) {
-                Log.e(
-                    "Error en ServiceViewModel",
-                    "Error intentando crear servicio: ${response.code()}: ${response.message()}"
-                )
+            try {
+                val response = service.createService(authHeader, createServiceRequest)
+                if (!response.isSuccessful) {
+                    Log.e("ServiceViewModel", "Error creando servicio: ${response.code()}: ${response.message()}")
+                }
+                _serviceCreated.postValue(response)
+            } catch (e: Exception) {
+                Log.e("ServiceViewModel", "Excepción al crear servicio: ${e.message}")
+                _serviceCreated.postValue(null)
             }
-            _serviceCreated.postValue(response)
         }
     }
 

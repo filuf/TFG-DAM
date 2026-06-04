@@ -11,4 +11,6 @@ public class SendMailRequest {
     private String sendToEmail;
     private String subject;
     private String text;
+
+    private MailAttachment mailAttachment;
 }

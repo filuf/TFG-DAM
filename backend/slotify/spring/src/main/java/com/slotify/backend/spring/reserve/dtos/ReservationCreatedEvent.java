@@ -16,8 +16,9 @@ import java.util.UUID;
 @ToString
 public class ReservationCreatedEvent {
 
-    private final UUID reserveId;
-    private final UUID userId;
+    private final ReserveEntity reserveEntity;
+    private final UserEntity userEntity;
+    private final CompanyEntity companyEntity;
     private final UUID companyId;
 
     private final String userEmail;
@@ -28,8 +29,9 @@ public class ReservationCreatedEvent {
 
     public static ReservationCreatedEvent from(ReserveEntity reserve, UserEntity userEntity, CompanyEntity companyEntity, ServiceEntity serviceEntity) {
         return ReservationCreatedEvent.builder()
-                .reserveId(reserve.getReserveId())
-                .userId(userEntity.getUserId())
+                .reserveEntity(reserve)
+                .userEntity(userEntity)
+                .companyEntity(companyEntity)
                 .companyId(companyEntity.getUserId())
                 .userEmail(userEntity.getEmailAddress())
                 .companyEmail(companyEntity.getEmailAddress())

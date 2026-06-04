@@ -29,24 +29,29 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="${GOOGLE_MAPS_KEY}"/>
 
-        <activity    android:name="net.openid.appauth.RedirectUriReceiverActivity"
-            android:exported="true">
+        <activity
+            android:name="net.openid.appauth.RedirectUriReceiverActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="com.raj.slotify" />
+                <data android:scheme="com.raj.slotify"/>
             </intent-filter>
         </activity>
 
         <activity
             android:name=".activities.company.AddEditServiceActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".activities.client.MakeReserveActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".activities.MainActivity"
+            android:windowSoftInputMode="adjustNothing"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -56,10 +61,12 @@
         </activity>
         <activity
             android:name=".activities.RegistryActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".activities.LogInActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"

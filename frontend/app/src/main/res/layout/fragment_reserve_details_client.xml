@@ -194,7 +194,7 @@
 
                         <TextView
                             android:id="@+id/reserveDirection"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:ems="2"

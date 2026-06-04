@@ -3,11 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/settingsFragment"
-        android:icon="@drawable/outline_construction_24"
-        android:title="@string/settings"
-        app:showAsAction="always" />
-    <item
         android:id="@+id/homeFragment"
         android:title="@string/home" />
     <item
@@ -17,9 +12,12 @@
         android:id="@+id/viewAllReservesFragment"
         android:title="@string/search_reserves" />
     <item
-        android:id="@+id/viewAllReservesFragment"
-        android:title="@string/cancel_a_reserve" />
-    <item
-        android:id="@+id/addServiceFragment"
+        android:id="@+id/addService"
         android:title="@string/add_service" />
+    <item
+        android:id="@+id/manageExceptions"
+        android:title="@string/manage_exceptions" />
+    <item
+        android:id="@+id/closeSesion"
+        android:title="@string/close_sesion" />
 </menu>
