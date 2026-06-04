@@ -73,7 +73,7 @@ public class ReservationCreatedEventListener {
                 );
 
         String price = NumberFormat.getCurrencyInstance(new Locale("es", "ES"))
-                .format(event.getReserveEntity().getService().getServicePriceCent());
+                .format(event.getReserveEntity().getService().getServicePriceCent() / 100);
 
         SendMailRequest userRequest = builder.sendToEmail(event.getUserEmail())
                 .text(generateUserTemplate(
