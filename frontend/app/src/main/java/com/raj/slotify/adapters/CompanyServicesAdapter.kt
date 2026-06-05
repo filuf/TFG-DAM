@@ -9,7 +9,7 @@ import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.raj.slotify.R
 import com.raj.slotify.dtos.company.GetServicesResponse
-import com.raj.slotify.tools.FormatUtils
+import com.raj.slotify.tools.TextUtils
 
 class CompanyServicesAdapter (private val dataSet: MutableList<GetServicesResponse>,
                               private val onClick: (GetServicesResponse) -> Unit) :
@@ -58,7 +58,7 @@ class CompanyServicesAdapter (private val dataSet: MutableList<GetServicesRespon
 
         viewHolder.serviceImageView.setImageURI(serviceData.s3ImageKey?.toUri())
         viewHolder.serviceNameText.text = serviceData.serviceName
-        viewHolder.servicePriceText.text = FormatUtils.formatPrice(serviceData.servicePriceCent)
+        viewHolder.servicePriceText.text = TextUtils.formatPrice(serviceData.servicePriceCent)
 
         viewHolder.itemView.setOnClickListener {
             onClick(serviceData)

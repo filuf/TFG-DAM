@@ -14,8 +14,7 @@ import java.time.LocalTime
 
 object RetrofitInstance {
 
-    private val baseUrl: String = if (BuildConfig.DEBUG_MODE)
-        BuildConfig.SPRING_TEST_URL else BuildConfig.SPRING_BASE_URL
+    private val baseUrl: String = BuildConfig.SPRING_BASE_URL
 
     private val gson: Gson = GsonBuilder()
         .registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeAdapter())

@@ -228,4 +228,15 @@
     <string name="no_slot_text">There are not any service to reserve at this day</string>
     <string name="select_interval">Select an interval</string>
     <string name="reserve_successfully_canceled">The reserve was successfully canceled</string>
+    <string name="candeled_reserve">Reserve canceled</string>
+    <string name="reserve_pending_word">Pending</string>
+    <string name="reserve_all_word">All</string>
+    <string name="show_canceled_word">Show canceled reserves</string>
+    <string name="reserves_past_word">Past</string>
+    <string name="in_total_word">in total</string>
+    <string name="completed_word">completed</string>
+    <string name="completeds_word">completed</string>
+    <string name="show_canceled">Show canceled appointments</string>
+    <string name="canceled_word">Canceled</string>
+    <string name="completed_reserve">Reserve completed</string>
 </resources>

@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.raj.slotify.R
 import com.raj.slotify.dtos.reserves.TimeIntervalDTO
-import com.raj.slotify.tools.FormatUtils
+import com.raj.slotify.tools.TextUtils
 
 class ListScheduleIntervalsAdapter (private val dataSet: MutableList<TimeIntervalDTO>,
                                     private val onClick: (TimeIntervalDTO) -> Unit) :
@@ -47,7 +47,7 @@ class ListScheduleIntervalsAdapter (private val dataSet: MutableList<TimeInterva
         // contents of the view with that element
         val interval = dataSet[position]
 
-        viewHolder.intervalText.text = "${FormatUtils.formatTime(interval.startTime)} - ${FormatUtils.formatTime(interval.endTime)}"
+        viewHolder.intervalText.text = "${TextUtils.formatTime(interval.startTime)} - ${TextUtils.formatTime(interval.endTime)}"
         viewHolder.itemView.setOnClickListener {
             selectItem(viewHolder)
             onClick(interval)

@@ -222,4 +222,15 @@
     <string name="no_slot_text">No hay servicios para reservar este día</string>
     <string name="select_interval">Seleccione un intervalo</string>
     <string name="reserve_successfully_canceled">La reserva ha sido cancelada satisfactoriamente</string>
+    <string name="candeled_reserve">Reserva cancelada</string>
+    <string name="reserve_pending_word">Pendientes</string>
+    <string name="reserve_all_word">Todas</string>
+    <string name="show_canceled_word">Canceladas</string>
+    <string name="reserves_past_word">Pasadas</string>
+    <string name="in_total_word">en total</string>
+    <string name="completed_word">completada</string>
+    <string name="completeds_word">completadas</string>
+    <string name="show_canceled">Mostrar citas canceladas</string>
+    <string name="canceled_word">Cancelada</string>
+    <string name="completed_reserve">Reserva completada</string>
 </resources>

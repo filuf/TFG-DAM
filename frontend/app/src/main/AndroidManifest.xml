@@ -23,11 +23,7 @@
         android:theme="@style/Theme.Slotify"
         android:usesCleartextTraffic="true" >
         <activity
-            android:name=".activities.client.CompanyReserveDetailsActivity"
-            android:exported="false"
-            android:theme="@style/Theme.Slotify" />
-        <activity
-            android:name=".activities.client.ClientReserveDetailsActivity"
+            android:name=".activities.ReserveDetailsActivity"
             android:exported="false" />
         <activity
             android:name=".activities.LogOutActivity"

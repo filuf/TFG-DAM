@@ -73,7 +73,7 @@ object Verifier {
             return false
         }
 
-        if (response.body() == null) {
+        if (response.code() != 204 && response.body() == null) {
             Log.e("ERROR", "Response body es null")
             return false
         }

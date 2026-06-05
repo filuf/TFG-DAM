@@ -14,13 +14,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.raj.slotify.R
 import com.raj.slotify.activities.LogInActivity
-import com.raj.slotify.activities.client.ClientReserveDetailsActivity
-import com.raj.slotify.activities.client.CompanyReserveDetailsActivity
+import com.raj.slotify.activities.ReserveDetailsActivity
 import com.raj.slotify.adapters.ReservesListCustomAdapter
 import com.raj.slotify.databinding.FragmentHomeBinding
-import com.raj.slotify.dtos.reserves.CompanyReserveSummary
 import com.raj.slotify.dtos.reserves.ReserveSummary
-import com.raj.slotify.dtos.reserves.UserReserveSummary
 import com.raj.slotify.models.TextModel
 import com.raj.slotify.tools.Navigation
 import com.raj.slotify.viewModels.apiRest.ReservesViewModel
@@ -60,10 +57,13 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.homeProgressBar.visibility = View.VISIBLE
+        binding.homeReservesLayout.visibility = View.GONE
+
         // OBSERVE USER TOKEN AND GET RESERVES
         userDataViewModel.userToken.observe(viewLifecycleOwner) { token ->
             val accessToken = token.accessToken
-            reservesViewModel.getReserves("Bearer $accessToken", 0, null, null, null)
+            reservesViewModel.getReserves("Bearer $accessToken", 0, null, null, "PRESENT")
         }
 
         val intervalButton = binding.createIntervalButton
@@ -91,15 +91,9 @@ class HomeFragment : Fragment() {
         val customAdapter = ReservesListCustomAdapter(
             clientReservesViewModel.reserves.value ?: mutableListOf()
         ) { reserve: ReserveSummary ->
-            if (reserve is UserReserveSummary) {
-                val intent = Intent(requireActivity(), ClientReserveDetailsActivity::class.java)
-                intent.putExtra("EXTRA_RESERVE", reserve)
-                startActivity(intent)
-            } else if (reserve is CompanyReserveSummary) {
-                val intent = Intent(requireActivity(), CompanyReserveDetailsActivity::class.java)
-                intent.putExtra("EXTRA_RESERVE", reserve)
-                startActivity(intent)
-            }
+            val intent = Intent(requireActivity(), ReserveDetailsActivity::class.java)
+            intent.putExtra("EXTRA_RESERVE", reserve)
+            startActivity(intent)
         }
 
         recyclerView.adapter = customAdapter
@@ -111,8 +105,10 @@ class HomeFragment : Fragment() {
                     if (response.isSuccessful && response.body() != null) {
                         val reservesSummary = response.body()!!.content
 
-                        clientReservesViewModel.setReserves(reservesSummary.toMutableList())
-                        val numberOfReserves = response.body()!!.totalElements.toInt()
+                        val totalReservesCount = response.body()!!.totalElements.toInt()
+                        val canceledReservesCount = reservesSummary.count { reserve -> reserve.isCanceled }
+
+                        val numberOfReserves = totalReservesCount - canceledReservesCount
 
                         // Set visibility of see more reserves button
                         if (numberOfReserves == 0) {
@@ -126,10 +122,15 @@ class HomeFragment : Fragment() {
 
                         binding.remaingText.text = reserveText
 
-                        val reservesSummarySelection: MutableList<ReserveSummary> =
-                            reservesSummary.take(2).toMutableList()
+                        val noCanceledReserves = reservesSummary
+                            .filter { reserve -> !reserve.isCanceled }
+                            .toMutableList()
 
-                        customAdapter.setItems(reservesSummarySelection)
+                        customAdapter.setItems(noCanceledReserves.take(2))
+
+                        binding.homeProgressBar.visibility = View.GONE
+                        binding.homeReservesLayout.visibility = View.VISIBLE
+
                     } else {
                         if (response.code() == 401 && response.message().equals("Unauthorized")) {
                             MaterialAlertDialogBuilder(requireContext())

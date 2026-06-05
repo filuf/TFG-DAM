@@ -41,18 +41,13 @@
     </fragment>
     <fragment
         android:id="@+id/viewAllReservesFragment"
-        android:name="com.raj.slotify.fragments.general.ViewAllReservesFragment"
+        android:name="com.raj.slotify.fragments.general.ViewReservesFragment"
         android:label="fragment_view_all_reserves"
-        tools:layout="@layout/fragment_view_all_reserves" >
+        tools:layout="@layout/fragment_view_reserves" >
         <action
             android:id="@+id/action_viewAllReservesFragment_to_reserveDetailsFragment"
             app:destination="@id/reserveDetailsFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/chatForInqueriesFragment"
-        android:name="com.raj.slotify.fragments.client.ChatForInqueriesFragment"
-        android:label="fragment_chat_for_inqueries"
-        tools:layout="@layout/fragment_chat_for_inqueries" />
     <fragment
         android:id="@+id/languageFragment"
         android:name="com.raj.slotify.fragments.general.LanguageFragment"
