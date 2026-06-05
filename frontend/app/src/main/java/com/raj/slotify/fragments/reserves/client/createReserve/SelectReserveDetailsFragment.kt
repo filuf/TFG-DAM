@@ -18,7 +18,7 @@ import com.raj.slotify.databinding.FragmentSelectReserveDetailsBinding
 import com.raj.slotify.dtos.company.GetServicesResponse
 import com.raj.slotify.dtos.reserves.TimeIntervalDTO
 import com.raj.slotify.models.TextModel
-import com.raj.slotify.tools.FormatUtils
+import com.raj.slotify.tools.TextUtils
 import com.raj.slotify.tools.Verifier
 import com.raj.slotify.viewModels.apiRest.ServiceViewModel
 import com.raj.slotify.viewModels.frontend.ClientReservesViewModel
@@ -94,7 +94,7 @@ class SelectReserveDetailsFragment : Fragment() {
             }
 
             val slotsList = slots.map{ slot ->
-                "${FormatUtils.formatTime(slot.startTime)} - ${FormatUtils.formatTime(slot.endTime)}"
+                "${TextUtils.formatTime(slot.startTime)} - ${TextUtils.formatTime(slot.endTime)}"
             }.toTypedArray()
 
             val slotIsValid = slots.any { slot -> (
@@ -111,7 +111,7 @@ class SelectReserveDetailsFragment : Fragment() {
                     .setItems(slotsList) { _, which ->
                         val selectedSlot = slots[which]
                         selectedTime = selectedSlot.startTime
-                        binding.selectedHourText.text = FormatUtils.formatTime(selectedTime)
+                        binding.selectedHourText.text = TextUtils.formatTime(selectedTime)
                         binding.slotsSeekBar.progress = selectedTime.toSecondOfDay() - start.toSecondOfDay()
                     }
                     .setPositiveButton(R.string.dialog_ok, null)
@@ -175,7 +175,7 @@ class SelectReserveDetailsFragment : Fragment() {
 
                 this@SelectReserveDetailsFragment.selectedTime = selectedTime
 
-                binding.selectedHourText.text = FormatUtils.formatTime(selectedTime)
+                binding.selectedHourText.text = TextUtils.formatTime(selectedTime)
                 binding.confirmDateTimeButton.isEnabled = true
             }
 
@@ -189,7 +189,7 @@ class SelectReserveDetailsFragment : Fragment() {
             this.service = service
 
             mainViewModel.setTitle(TextModel(customText = service.serviceName))
-            mainViewModel.setSubtitle(TextModel(customText = FormatUtils.formatPrice(service.servicePriceCent)))
+            mainViewModel.setSubtitle(TextModel(customText = TextUtils.formatPrice(service.servicePriceCent)))
 
             val company = clientReservesViewModel.companyToReserve.value
             if (company != null) {
@@ -228,7 +228,7 @@ class SelectReserveDetailsFragment : Fragment() {
 
             // SHOW TEXT
             selectedTime = start
-            binding.selectedHourText.text = FormatUtils.formatTime(start)
+            binding.selectedHourText.text = TextUtils.formatTime(start)
 
             //SHOW LAYOUT
             binding.layoutSectedHour.visibility = View.VISIBLE

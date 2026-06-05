@@ -12,27 +12,19 @@ import com.applandeo.materialcalendarview.CalendarDay
 import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentCalendarBinding
 import com.raj.slotify.viewModels.apiRest.ReservesViewModel
-import com.raj.slotify.viewModels.frontend.LayoutViewModel
-import com.raj.slotify.viewModels.frontend.MainViewModel
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.Calendar
 import java.util.Date
 import com.applandeo.materialcalendarview.listeners.OnCalendarDayClickListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.raj.slotify.activities.client.ClientReserveDetailsActivity
-import com.raj.slotify.activities.client.CompanyReserveDetailsActivity
+import com.raj.slotify.activities.ReserveDetailsActivity
 import com.raj.slotify.activities.client.MakeReserveActivity
-import com.raj.slotify.dtos.reserves.CompanyReserveSummary
 import com.raj.slotify.dtos.reserves.ReserveSummary
-import com.raj.slotify.dtos.reserves.UserReserveSummary
 import com.raj.slotify.viewModels.frontend.ClientReservesViewModel
 import com.raj.slotify.viewModels.frontend.UserDataViewModel
 
 class CalendarFragment : Fragment(), OnCalendarDayClickListener {
-
-    private val viewModel: MainViewModel by activityViewModels()
-    private val layoutViewModel: LayoutViewModel by activityViewModels()
     private val userDataViewModel: UserDataViewModel by activityViewModels()
     private val clientReservesViewModel: ClientReservesViewModel by activityViewModels()
 
@@ -133,15 +125,10 @@ class CalendarFragment : Fragment(), OnCalendarDayClickListener {
             .setItems(items) { _, which ->
                 val reserve = reserves[which]
 
-                if (reserve is UserReserveSummary) {
-                    val intent = Intent(requireActivity(), ClientReserveDetailsActivity::class.java)
-                    intent.putExtra("EXTRA_RESERVE", reserve)
-                    startActivity(intent)
-                } else if (reserve is CompanyReserveSummary) {
-                    val intent = Intent(requireActivity(), CompanyReserveDetailsActivity::class.java)
-                    intent.putExtra("EXTRA_RESERVE", reserve)
-                    startActivity(intent)
-                }
+                val intent = Intent(requireActivity(), ReserveDetailsActivity::class.java)
+                intent.putExtra("EXTRA_RESERVE", reserve)
+                startActivity(intent)
+
             }
             .setNegativeButton(R.string.dialog_close, null)
             .show()

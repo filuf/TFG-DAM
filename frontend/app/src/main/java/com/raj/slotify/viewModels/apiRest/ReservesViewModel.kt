@@ -52,6 +52,8 @@ class ReservesViewModel: ViewModel() {
 
     fun getReserves(authHeader: String, page: Int?, size: Int?, sort: String?, fetchType: String?) {
         viewModelScope.launch(Dispatchers.IO) {
+            _reservesSummary.postValue(null)
+
             try {
                 val response = service.getReserves(authHeader, page, size, sort, fetchType)
                 Log.i("DEBUG GET RESERVES", "url: ")

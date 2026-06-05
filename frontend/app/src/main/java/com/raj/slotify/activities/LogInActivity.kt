@@ -12,6 +12,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.raj.slotify.BuildConfig
 import com.raj.slotify.R
 import com.raj.slotify.viewModels.room.TokenViewModel
 import net.openid.appauth.AppAuthConfiguration
@@ -32,6 +33,8 @@ class LogInActivity : AppCompatActivity() {
 
     private lateinit var authService: AuthorizationService
     private val tokenViewModel: TokenViewModel by viewModels()
+
+    val keycloakUrl = BuildConfig.KEYCLOAK_BASE_URL
 
     // 1. Definimos una configuración que permita HTTP (esto es lo que evita el Crash)
     private val appAuthConfiguration = AppAuthConfiguration.Builder()
@@ -160,8 +163,8 @@ class LogInActivity : AppCompatActivity() {
         //Para saber de dónde salen las URLS, debemos dirigirnos a http://auth.127.0.0.1.nip.io/realms/master/.well-known/openid-configuration
         //Esto sirve para configurar los puertos de conexión (como el propio nombre indica)
         val serviceConfig = AuthorizationServiceConfiguration(
-            "http://auth.10.0.2.2.nip.io/realms/slotify/protocol/openid-connect/auth".toUri(),
-            "http://auth.10.0.2.2.nip.io/realms/slotify/protocol/openid-connect/token".toUri()
+            "$keycloakUrl/realms/slotify/protocol/openid-connect/auth".toUri(),
+            "$keycloakUrl/realms/slotify/protocol/openid-connect/token".toUri()
         )
 
         //Creamos la petición
@@ -183,7 +186,9 @@ class LogInActivity : AppCompatActivity() {
     object HttpConnectionBuilder : ConnectionBuilder {
         override fun openConnection(uri: Uri): HttpURLConnection {
             val conn = URL(uri.toString()).openConnection() as HttpURLConnection
-            conn.setRequestProperty("Host", "auth.127.0.0.1.nip.io")
+            val ipAuth = BuildConfig.KEYCLOAK_IP_AUTH_ADRESS
+
+            conn.setRequestProperty("Host", "auth.$ipAuth.nip.io")
             conn.connectTimeout = 15000
             conn.readTimeout = 10000
             conn.instanceFollowRedirects = false

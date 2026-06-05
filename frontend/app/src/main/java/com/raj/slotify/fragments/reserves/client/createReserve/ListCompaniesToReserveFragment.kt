@@ -14,15 +14,12 @@ import com.raj.slotify.R
 import com.raj.slotify.adapters.CompaniesListAdapter
 import com.raj.slotify.databinding.FragmentListCompaniesToReserveBinding
 import com.raj.slotify.dtos.company.GetCompanyResponse
-import com.raj.slotify.dtos.service.ScheduleSummary
-import com.raj.slotify.dtos.service.ServiceSummary
 import com.raj.slotify.models.TextModel
 import com.raj.slotify.viewModels.apiRest.CompanyViewModel
 import com.raj.slotify.viewModels.frontend.ClientReservesViewModel
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
 import com.raj.slotify.viewModels.frontend.UserDataViewModel
-import java.time.LocalTime
 import java.util.UUID
 import kotlin.getValue
 
@@ -35,7 +32,7 @@ class ListCompaniesToReserveFragment : Fragment() {
     private val companyViewModel: CompanyViewModel by activityViewModels()
     private lateinit var listOfCompanies: MutableList<GetCompanyResponse>
     private lateinit var binding: FragmentListCompaniesToReserveBinding
-    private lateinit var testEnterprise: GetCompanyResponse
+    private lateinit var testEnterprises: MutableList<GetCompanyResponse>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,8 +58,9 @@ class ListCompaniesToReserveFragment : Fragment() {
         // companyViewModel.getCompanies("Bearer ${userDataViewModel.userToken.value?.accessToken ?: ""}")
 
         if (!::listOfCompanies.isInitialized) {
-            testEnterprise = createTestEnterprise()
-            listOfCompanies = mutableListOf(testEnterprise)
+            testEnterprises = createTestEnterprises()
+
+            listOfCompanies = testEnterprises
         }
 
         val adapter = setUpRecycler(view)
@@ -86,7 +84,7 @@ class ListCompaniesToReserveFragment : Fragment() {
             val responseBody = response.body()!!
 
             listOfCompanies.clear()
-            listOfCompanies.add(testEnterprise)
+            listOfCompanies.addAll(testEnterprises)
 
             // TODO: DESCOMENTAR ESTO CUANDO SE HAGA LA PETICION REAL
             // listOfCompanies.addAll(responseBody.content)
@@ -122,31 +120,31 @@ class ListCompaniesToReserveFragment : Fragment() {
         return customAdapter
     }
 
-    fun createTestEnterprise(): GetCompanyResponse {
-        return GetCompanyResponse(
-            UUID.fromString("87ce0fc5-616c-4b69-8c58-c5b8557a1a1a"),
-            3,
-            "empresa",
-            "645345843",
-            "rodriYJesusDeLaManoEmpresa@emilio.com",
-            "C. Monte Naranco, 10, Puente de Vallecas, 28053 Madrid",
-            "",
-            "descripcion muy bonita",
-            "4.5",
-            listOf(ServiceSummary(
-                UUID.fromString("82cdc47d-9f38-4ff2-9614-a9dc3f72faf4"),
-                "miServicio90",
-                50,
-                30,
+    fun createTestEnterprises(): MutableList<GetCompanyResponse> {
+        return mutableListOf(
+            GetCompanyResponse(
+                UUID.fromString("87ce0fc5-616c-4b69-8c58-c5b8557a1a1a"),
+                3,
+                "empresaMadrid",
+                "645345843",
+                "rodriYJesusDeLaManoEmpresa@emilio.com",
+                "C. Monte Naranco, 10, Puente de Vallecas, 28053 Madrid",
                 "",
-                "servicio muy interesente",
-                listOf(ScheduleSummary(
-                    UUID.fromString("87ce0fc5-616c-4b69-8c58-c5b8557a1a1b"),
-                    1,
-                    LocalTime.of(14, 30),
-                    LocalTime.of(22, 30)
-                ))
-            ))
+                "descripcion muy bonita",
+                "4.5",
+                listOf()),
+            GetCompanyResponse(
+                UUID.fromString("0802f476-68c1-41e4-a5d6-81ca818a6725"),
+                5,
+                "empresaPueblo",
+                "645345843",
+                "rodriYJesusDeLaManoEmpresa@emilio.com",
+                "C. Monte Naranco, 10, Puente de Vallecas, 28053 Madrid",
+                "",
+                "descripcion muy bonita",
+                "4.5",
+                listOf()
+            )
         )
     }
 

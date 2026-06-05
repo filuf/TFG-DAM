@@ -1,4 +1,4 @@
-package com.raj.slotify.activities.client
+package com.raj.slotify.activities
 
 import android.os.Build
 import android.os.Bundle
@@ -12,27 +12,27 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.raj.slotify.R
-import com.raj.slotify.databinding.ActivityClientReserveDetailsBinding
+import com.raj.slotify.databinding.ActivityReserveDetailsBinding
+import com.raj.slotify.dtos.reserves.CompanyReserveSummary
+import com.raj.slotify.dtos.reserves.ReserveSummary
 import com.raj.slotify.dtos.reserves.UserReserveSummary
 import com.raj.slotify.dtos.service.ServiceSummary
-import com.raj.slotify.tools.FormatUtils
+import com.raj.slotify.tools.TextUtils
 import com.raj.slotify.tools.Verifier
 import com.raj.slotify.viewModels.apiRest.ReservesViewModel
 import com.raj.slotify.viewModels.apiRest.ServiceViewModel
 import com.raj.slotify.viewModels.frontend.UserDataViewModel
 import com.raj.slotify.viewModels.room.TokenViewModel
-import java.time.Duration
 import java.time.LocalDateTime
-import kotlin.getValue
 
-class ClientReserveDetailsActivity : AppCompatActivity() {
+class ReserveDetailsActivity : AppCompatActivity() {
 
     private val tokenViewModel: TokenViewModel by viewModels()
     private val serviceViewModel: ServiceViewModel by viewModels()
     private val reservesViewModel: ReservesViewModel by viewModels()
     private val userDataViewModel: UserDataViewModel by viewModels()
 
-    private lateinit var binding: ActivityClientReserveDetailsBinding
+    private lateinit var binding: ActivityReserveDetailsBinding
     private lateinit var authHeader: String
 
     private var serviceWithSchedules: ServiceSummary? = null
@@ -41,7 +41,7 @@ class ClientReserveDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        binding = ActivityClientReserveDetailsBinding.inflate(layoutInflater)
+        binding = ActivityReserveDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
@@ -59,19 +59,55 @@ class ClientReserveDetailsActivity : AppCompatActivity() {
             window.isNavigationBarContrastEnforced = false
         }
 
+        binding.detailsProgressBar.visibility = View.VISIBLE
+        binding.detailsLayout.visibility = View.GONE
+
         setUpToolbar()
         observeService()
 
         val reserveSummary = getReserveSummary()
 
         if(reserveSummary != null) {
+            setReserveCanceledBehaviour(reserveSummary)
+            setReserveCompletedBehaviour(reserveSummary)
+
             obtainServiceDetails(reserveSummary)
             setCardViewDetails(reserveSummary)
             setCancelBehaviour(reserveSummary)
         }
     }
 
-    private fun setCancelBehaviour(reserveSummary: UserReserveSummary) {
+    private fun getReserveSummary(): ReserveSummary? {
+        val reserveSummary = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra("EXTRA_RESERVE", ReserveSummary::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getParcelableExtra<ReserveSummary>("EXTRA_RESERVE")
+        }
+        return reserveSummary
+    }
+
+    private fun setReserveCompletedBehaviour(reserveSummary: ReserveSummary) {
+        if (TextUtils.calculateCompletedReserve(reserveSummary.endDateTime)) {
+            val button = binding.cancelReserveButton
+            button.isEnabled = false
+            button.text = getString(R.string.completed_reserve)
+
+            binding.reserveCompletedCardView.visibility = View.VISIBLE
+        }
+    }
+
+    private fun setReserveCanceledBehaviour(reserveSummary: ReserveSummary) {
+        if (reserveSummary.isCanceled) {
+            val button = binding.cancelReserveButton
+            button.isEnabled = false
+            button.text = getString(R.string.candeled_reserve)
+
+            binding.reserveCanceledCardView.visibility = View.VISIBLE
+        }
+    }
+
+    private fun setCancelBehaviour(reserveSummary: ReserveSummary) {
         binding.cancelReserveButton.setOnClickListener {
             reservesViewModel.cancelReserve(reserveSummary.reserveId, authHeader)
         }
@@ -79,14 +115,14 @@ class ClientReserveDetailsActivity : AppCompatActivity() {
         reservesViewModel.reserveCanceledResponse.observe(this) { response ->
             if (response == null)
                 return@observe
-            else if (!Verifier.verifySuccessfulResponse(response, this, positiveActionText = getString(R.string.dialog_ok)))
+            else if (!Verifier.verifySuccessfulResponse(response, this, positiveActionText = getString(
+                    R.string.dialog_ok)))
                 return@observe
 
             Log.i("RESERVE CANCELED, RESPONSE: ", "message: ${response.message()}, body: ${response.body()}")
 
             MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.reserve_successfully_canceled)
-                .setMessage(R.string.reserve_successfully_canceled)
                 .setPositiveButton(R.string.dialog_ok) { dialog, _ ->
                     finish()
                 }.show()
@@ -100,71 +136,54 @@ class ClientReserveDetailsActivity : AppCompatActivity() {
         toolbar.setNavigationOnClickListener { finish() }
     }
 
-    private fun setCardViewDetails(reserveSummary: UserReserveSummary) {
-        // COMPANY CARD VIEW
-        val imageView = binding.companyImage
-        val s3ImageUrl: String? = reserveSummary.companyImageUrl
+    private fun setCardViewDetails(reserveSummary: ReserveSummary) {
 
-        if (s3ImageUrl != null)
-            imageView.setImageURI(s3ImageUrl.toUri())
+        when(reserveSummary) {
+            is UserReserveSummary -> {
+                // SET IMAGE VIEW
+                val imageView = binding.companyImage
+                val s3ImageUrl: String? = reserveSummary.companyImageUrl
 
-        binding.priceText.text = FormatUtils.formatPrice(reserveSummary.servicePriceCent)
+                if (s3ImageUrl != null)
+                    imageView.setImageURI(s3ImageUrl.toUri())
 
-        // MAP
-        userDataViewModel.setServiceLocation(reserveSummary.companyPhysicalAddress)
+                // MAP
+                binding.clientDataLayout.visibility = View.GONE
+                binding.enterpriseDataLoyout.visibility = View.VISIBLE
 
-        // MAP CARD DATA
-        binding.reserveSite.text = reserveSummary.companyName
-        binding.reserveDirection.text = reserveSummary.companyPhysicalAddress
+                userDataViewModel.setServiceLocation(reserveSummary.companyPhysicalAddress)
+
+                // MAP CARD DATA
+                binding.reserveSite.text = reserveSummary.companyName
+                binding.reserveDirection.text = reserveSummary.companyPhysicalAddress
+            }
+            is CompanyReserveSummary -> {
+                // CLIENT NAME TEXT
+                binding.enterpriseDataLoyout.visibility = View.GONE
+                binding.clientDataLayout.visibility = View.VISIBLE
+
+                binding.clientName.text = reserveSummary.userName
+            }
+        }
+
+        binding.priceText.text = TextUtils.formatPrice(reserveSummary.servicePriceCent)
 
         // SET TEXT VIEWS
         val startTime: LocalDateTime = reserveSummary.startDateTime
-        binding.timeText.text = FormatUtils.formatTime(startTime.toLocalTime())
-        binding.dateText.text = FormatUtils.formatDate(startTime.toLocalDate())
+        val endTime: LocalDateTime = reserveSummary.endDateTime
+
+        binding.timeText.text = TextUtils.formatTime(startTime.toLocalTime())
+        binding.dateText.text = TextUtils.formatDate(startTime.toLocalDate())
 
         val duration = reserveSummary.minutesDuration
 
         binding.reserveDurationText.text =
             "$duration ${if (duration == 1) getString(R.string.minute_word) else getString(R.string.minutes_word)}"
 
-        fun calculateRemainingText(startTime: LocalDateTime): String {
-            // SET REMAINING TEXT
-            val now: LocalDateTime = LocalDateTime.now()
-
-            val duration = Duration.between(now, startTime)
-            if (duration.isNegative || duration.isZero) {
-                return getString(R.string.already_started)
-            }
-
-            val remainingDays = duration.toDays()
-            val remainingHours = duration.toHours()
-            val remainingMinutes = duration.toMinutes()
-
-            return when {
-                remainingDays > 0 -> " $remainingDays ${
-                    if (remainingDays > 1) getString(R.string.days_word) else getString(
-                        R.string.day_word
-                    )
-                } ${getString(R.string.left_after)} "
-
-                remainingHours > 0 -> " $remainingHours ${
-                    if (remainingHours > 1) getString(R.string.hours_word) else getString(
-                        R.string.hour_word
-                    )
-                } ${getString(R.string.left_after)} "
-
-                else -> " $remainingMinutes ${
-                    if (remainingMinutes > 1) getString(R.string.minutes_word) else getString(
-                        R.string.minute_word
-                    )
-                } ${getString(R.string.left_after)} "
-            }
-        }
-
-        binding.remainingText.text = "(${calculateRemainingText(startTime).trim()})"
+        binding.remainingText.text = "(${TextUtils.formatRemainingText(startTime, endTime, this).trim()})"
     }
 
-    private fun obtainServiceDetails(reserveSummary: UserReserveSummary) {
+    private fun obtainServiceDetails(reserveSummary: ReserveSummary) {
         tokenViewModel.getLastToken()
         tokenViewModel.token.observe(this) { token ->
             if (token == null) {
@@ -190,6 +209,9 @@ class ClientReserveDetailsActivity : AppCompatActivity() {
                     if (response.isSuccessful && response.body() != null) {
                         val serviceWithSchedules = response.body()!!
                         binding.descText.text = serviceWithSchedules.description
+
+                        binding.detailsProgressBar.visibility = View.GONE
+                        binding.detailsLayout.visibility = View.VISIBLE
                     } else {
                         Log.e(
                             "ERROR",
@@ -201,17 +223,8 @@ class ClientReserveDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun getReserveSummary(): UserReserveSummary? {
-        val reserveSummary = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra("EXTRA_RESERVE", UserReserveSummary::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            intent.getParcelableExtra<UserReserveSummary>("EXTRA_RESERVE")
-        }
-        return reserveSummary
-    }
-
     private fun observeService() {
+
         serviceViewModel.serviceWithSchedules.observe(this) { response ->
             if (response != null) {
                 if (response.isSuccessful && response.body() != null) {

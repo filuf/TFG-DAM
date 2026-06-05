@@ -16,13 +16,14 @@ import com.raj.slotify.dtos.company.GetCompanyResponse
 import com.raj.slotify.dtos.company.GetServicesResponse
 import com.raj.slotify.dtos.reserves.CreateReserveRequest
 import com.raj.slotify.models.TextModel
-import com.raj.slotify.tools.FormatUtils
+import com.raj.slotify.tools.TextUtils
 import com.raj.slotify.viewModels.apiRest.ReservesViewModel
 import com.raj.slotify.viewModels.frontend.ClientReservesViewModel
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
 import com.raj.slotify.viewModels.room.TokenViewModel
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
 class AssureCorrectReserveInformationFragment : Fragment() {
 
@@ -33,6 +34,7 @@ class AssureCorrectReserveInformationFragment : Fragment() {
     private val reservesViewModel: ReservesViewModel by activityViewModels()
 
     private lateinit var binding: FragmentAssureCorrectReserveInformationBinding
+    private lateinit var startDateTime: LocalDateTime
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +72,7 @@ class AssureCorrectReserveInformationFragment : Fragment() {
         val minutesText = if (minutes == 1) getString(R.string.minute_word) else getString(R.string.minutes_word)
 
         binding.reserveServiceText.text = service.serviceName
-        binding.reservePriceText.text = FormatUtils.formatPrice(service.servicePriceCent)
+        binding.reservePriceText.text = TextUtils.formatPrice(service.servicePriceCent)
         binding.reserveServiceDurationText.text = "$minutes $minutesText"
 
         binding.companyNameText.text = company.companyName
@@ -82,11 +84,13 @@ class AssureCorrectReserveInformationFragment : Fragment() {
             if (startTime == null)
                 return@observe
 
-            val timeText = FormatUtils.formatTime(startTime.toLocalTime())
-            val dateText = FormatUtils.formatDate(startTime.toLocalDate())
+            val timeText = TextUtils.formatTime(startTime.toLocalTime())
+            val dateText = TextUtils.formatDate(startTime.toLocalDate())
 
             binding.reserveServiceTime.text = timeText
             binding.reserveServiceDateText.text = dateText
+
+            startDateTime = startTime
         }
     }
 
@@ -96,11 +100,10 @@ class AssureCorrectReserveInformationFragment : Fragment() {
                 layoutViewModel.setConfirmButtonVisibility(View.GONE)
                 Log.i("CONFIRM", "Confirm button clicked")
 
-                val dateTime = clientReservesViewModel.dateTimeReserve.value
                 val serviceId = clientReservesViewModel.serviceToReserve.value?.serviceId
 
-                if (dateTime == null || serviceId == null) {
-                    Toast.makeText(requireContext(), "datetime: $dateTime | serviceId: $serviceId", Toast.LENGTH_SHORT)
+                if (serviceId == null) {
+                    Toast.makeText(requireContext(), "datetime: $startDateTime | serviceId: $serviceId", Toast.LENGTH_SHORT)
                         .show()
 
                     return@collect
@@ -108,7 +111,7 @@ class AssureCorrectReserveInformationFragment : Fragment() {
 
                 reservesViewModel.createReserve(
                     authHeader = "Bearer ${tokenViewModel.token.value?.accessToken?:""}",
-                    createReserveRequest = CreateReserveRequest(dateTime, serviceId)
+                    createReserveRequest = CreateReserveRequest(startDateTime, serviceId)
                 )
 
                 view?.findNavController()?.navigate(R.id.action_assureCorrectReserveInformationFragment_to_reserveLastScreenFragment)

@@ -14,7 +14,7 @@ import com.raj.slotify.databinding.FragmentReserveDetailsClientBinding
 import com.raj.slotify.dtos.reserves.CompanyReserveSummary
 import com.raj.slotify.dtos.reserves.UserReserveSummary
 import com.raj.slotify.dtos.service.ServiceSummary
-import com.raj.slotify.tools.FormatUtils
+import com.raj.slotify.tools.TextUtils
 import com.raj.slotify.viewModels.apiRest.ReservesViewModel
 import com.raj.slotify.viewModels.apiRest.ServiceViewModel
 import com.raj.slotify.viewModels.frontend.ClientReservesViewModel
@@ -106,7 +106,7 @@ class ReserveDetailsFragment : Fragment() {
                     if (s3ImageUrl != null)
                         imageView.setImageURI(s3ImageUrl.toUri())
 
-                    binding.priceText.text = FormatUtils.formatPrice(reserveSummary.servicePriceCent)
+                    binding.priceText.text = TextUtils.formatPrice(reserveSummary.servicePriceCent)
 
                     // MAP
                     userDataViewModel.setServiceLocation(reserveSummary.companyPhysicalAddress)
@@ -125,8 +125,8 @@ class ReserveDetailsFragment : Fragment() {
 
             // SET TEXT VIEWS
             val startTime: LocalDateTime = reserveSummary.startDateTime
-            binding.timeText.text = FormatUtils.formatTime(startTime.toLocalTime())
-            binding.dateText.text = FormatUtils.formatDate(startTime.toLocalDate())
+            binding.timeText.text = TextUtils.formatTime(startTime.toLocalTime())
+            binding.dateText.text = TextUtils.formatDate(startTime.toLocalDate())
 
             val duration = reserveSummary.minutesDuration
 
