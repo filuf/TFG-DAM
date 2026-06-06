@@ -39,6 +39,38 @@ spec:
           - name: KEYCLOAK_REALM
             value: "slotify"
 
+          # --- MAIL ---
+          - name: MAIL_ADDRESS
+            valueFrom:
+              secretKeyRef:
+                name: mail-secret
+                key: email
+          - name: MAIL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mail-secret
+                key: password
+
+          # --- AWS ---
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: aws-lab-credentials
+                key: aws-access-key-id
+
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: aws-lab-credentials
+                key: aws-secret-access-key
+                
+          - name: AWS_SESSION_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: aws-lab-credentials
+                key: aws-session-token
+            
+
           - name: JAVA_TOOL_OPTIONS
             value: "-XX:+UseZGC -XX:+ZGenerational" # ZGC Generacional
         

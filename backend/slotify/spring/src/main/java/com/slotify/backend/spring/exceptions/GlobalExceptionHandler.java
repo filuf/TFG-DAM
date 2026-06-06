@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.FieldError;
@@ -71,6 +72,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Map<String, String>> handleAccessDeniedException(AccessDeniedException exc) {
+        log.warn("Intento de acceso no autorizado: {}", exc.getMessage());
+
+        Map<String, String> error = new HashMap<>();
+        error.put("error", "Prohibido");
+        error.put("message", exc.getMessage());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
     @ExceptionHandler(AlreadyExistsException.class)
     public ResponseEntity<Map<String, String>> handleAlreadyExistsException(AlreadyExistsException exc) {
         Map<String, String> error = new HashMap<>();
@@ -120,6 +132,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .ifPresent(reserveId -> error.put("reserveId", reserveId));
 
         return ResponseEntity.status(exc.getHttpStatus()).body(error);
+    }
+
+    @ExceptionHandler(InvalidImageException.class)
+    public ResponseEntity<Map<String, Object>> handleInvalidImageException(InvalidImageException exc) {
+        Map<String, Object> error = new HashMap<>();
+        error.put("error", "imagen invalida");
+        error.put("message", exc.getMessage());
+
+        return ResponseEntity.badRequest().body(error);
     }
 
     @ExceptionHandler(AuthorizationDeniedException.class)

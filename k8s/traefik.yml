@@ -79,7 +79,7 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`api.127.0.0.1.nip.io`)
+    - match: Host(`api.127.0.0.1.nip.io`) || Host(`api.10.0.2.2.nip.io`)
       kind: Rule
       services:
         - name: spring
