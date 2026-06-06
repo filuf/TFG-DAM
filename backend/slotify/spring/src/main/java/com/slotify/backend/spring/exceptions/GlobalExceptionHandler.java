@@ -110,7 +110,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         error.put("error", "Conflicto en intervalo");
         error.put("message", exc.getMessage());
         exc.getOptOverlap()
-                .ifPresent(overlap -> error.put("overlap", overlap));
+                .ifPresent(overlap -> {
+                    error.put("intervalId", overlap.getIntervalId());
+                    error.put("stardDateTime", overlap.getStartDatetime());
+                    error.put("endDateTime", overlap.getEndDatetime());
+                    error.put("maxConcurrentServices", overlap.getMaxConcurrentServices());
+                });
 
         return ResponseEntity.status(exc.getHttpStatus()).body(error);
     }
