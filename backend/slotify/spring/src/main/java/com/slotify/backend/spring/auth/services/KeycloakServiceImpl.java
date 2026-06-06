@@ -32,6 +32,9 @@ public class KeycloakServiceImpl implements KeycloakService {
     public UUID createUser(String username, String email, String password, AccountType accountType) {
         Keycloak keycloak = keycloakAdminProvider.getInstance();
 
+        // keycloak no soporta usuarios con espacios sin una config extra y por falta de tiempo se hace este ajuste
+        username = String.join("_", username.split(" "));
+
         UserRepresentation user = new UserRepresentation();
         user.setUsername(username);
         user.setEmail(email);
