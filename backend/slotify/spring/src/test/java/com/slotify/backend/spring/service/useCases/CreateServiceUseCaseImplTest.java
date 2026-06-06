@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -32,13 +33,16 @@ class CreateServiceUseCaseImplTest {
     private ServiceService serviceService;
     @Mock
     private CompanyService companyService;
+    @Mock
+    private ApplicationEventPublisher applicationEventPublisher;
 
     @BeforeEach
     void setUp() {
         this.createServiceUseCase = new CreateServiceUseCaseImpl(
                 serviceMapper,
                 serviceService,
-                companyService
+                companyService,
+                applicationEventPublisher
         );
     }
 
