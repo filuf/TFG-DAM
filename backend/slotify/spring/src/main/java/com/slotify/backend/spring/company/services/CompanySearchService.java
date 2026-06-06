@@ -6,5 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface CompanySearchService {
     void indexCompany(CompanyDocument document);
-    Page<CompanyDocument> searchByNameOrAddress(String query, Pageable pageable);
+    Page<CompanyDocument> searchCompany(String query, Pageable pageable);
+
+    CompanyDocument findCompanyById(String companyId);
 }
