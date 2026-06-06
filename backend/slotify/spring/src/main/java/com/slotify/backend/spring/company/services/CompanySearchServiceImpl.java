@@ -24,12 +24,35 @@ public class CompanySearchServiceImpl implements CompanySearchService {
     }
 
     @Override
-    public Page<CompanyDocument> searchByNameOrAddress(String query, Pageable pageable) {
+    public Page<CompanyDocument> searchCompany(String query, Pageable pageable) {
+
         NativeQuery nativeQuery = NativeQuery.builder()
-                .withQuery(q -> q.multiMatch(mm -> mm
-                        .fields("companyName", "physicalAddress")
-                        .query(query)
-                        .fuzziness("AUTO")
+                .withQuery(q -> q.bool(b -> b
+                        .should(s -> s.matchPhrasePrefix(mpp -> mpp
+                                .field("companyName")
+                                .query(query)
+                                .boost(3.0f)
+                        ))
+                        .should(s -> s.matchPhrasePrefix(mpp -> mpp
+                                .field("services.serviceName")
+                                .query(query)
+                                .boost(2.5f)
+                        ))
+                        .should(s -> s.matchPhrasePrefix(mpp -> mpp
+                                .field("physicalAddress")
+                                .query(query)
+                                .boost(1.0f)
+                        ))
+                        .should(s -> s.matchPhrasePrefix(mpp -> mpp
+                                .field("description")
+                                .query(query)
+                                .boost(0.5f)
+                        ))
+                        .should(s -> s.matchPhrasePrefix(mpp -> mpp
+                                .field("services.description")
+                                .query(query)
+                                .boost(0.5f)
+                        ))
                 ))
                 .withPageable(pageable)
                 .build();
@@ -40,5 +63,10 @@ public class CompanySearchServiceImpl implements CompanySearchService {
         );
 
         return (Page<CompanyDocument>) SearchHitSupport.unwrapSearchHits(searchPage);
+    }
+
+    @Override
+    public CompanyDocument findCompanyById(String companyId) {
+        return elasticsearchOperations.get(companyId, CompanyDocument.class);
     }
 }

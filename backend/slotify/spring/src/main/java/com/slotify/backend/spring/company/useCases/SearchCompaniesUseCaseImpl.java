@@ -16,7 +16,7 @@ public class SearchCompaniesUseCaseImpl implements SearchCompaniesUseCase {
     @Override
     public Page<SearchCompaniesResponse> search(String query, Pageable pageable) {
         return this.companySearchService
-                .searchByNameOrAddress(query, pageable)
+                .searchCompany(query, pageable)
                 .map(SearchCompaniesResponse::from);
     }
 }
