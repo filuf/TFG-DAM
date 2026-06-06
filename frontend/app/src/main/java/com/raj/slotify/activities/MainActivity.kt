@@ -78,12 +78,13 @@ class MainActivity : AppCompatActivity() {
             Log.w("MainActivity", "No se ha recibido ningún token, intentando cogerlo de Room")
             tokenViewModel.getLastToken()
             tokenViewModel.token.observe(this) { token ->
-                if (token != null) {
+                if (token != null && System.currentTimeMillis() < token.expiresIn) {
                     Log.i("MainActivity", "Token obtenido de Room: ${token.accessToken}")
                     extractTokenComponents(token.accessToken)
                     uploadToken(token)
                     graph.setStartDestination(R.id.mainFragment)
                 } else {
+                    Log.w("MainActivity", "Token de Room expirado, redirigiendo a login")
                     graph.setStartDestination(R.id.firstFragment)
                 }
                 navController.graph = graph

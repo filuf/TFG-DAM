@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_homeFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_exceptionsListFragment"
+            app:destination="@id/exceptionsListFragment" />
     </fragment>
     <fragment
         android:id="@+id/servicesFragment"
@@ -63,4 +66,18 @@
         android:name="com.raj.slotify.fragments.reserves.client.ReserveDetailsFragment"
         android:label="fragment_reserve_details_client"
         tools:layout="@layout/fragment_reserve_details_client" />
+    <fragment
+        android:id="@+id/exceptionsListFragment"
+        android:name="com.raj.slotify.fragments.company.intervals.ExceptionsListFragment"
+        android:label="fragment_exceptions_list"
+        tools:layout="@layout/fragment_exceptions_list">
+        <action
+            android:id="@+id/action_exceptionsListFragment_to_addExceptionFragment"
+            app:destination="@id/addExceptionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addExceptionFragment"
+        android:name="com.raj.slotify.fragments.company.intervals.AddExceptionFragment"
+        android:label="fragment_add_exception"
+        tools:layout="@layout/fragment_add_exception" />
 </navigation>

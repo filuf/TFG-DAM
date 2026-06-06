@@ -97,6 +97,17 @@ class MainFragment : Fragment() {
             binding.bottomNavigationView.setupWithNavController(navController)
             binding.navigationView.setupWithNavController(navController)
 
+            // Override Home tab: always pop back to homeFragment root, never restore sub-navigation
+            // (prevents ExceptionsListFragment from being "restored" when switching tabs back to Home)
+            binding.bottomNavigationView.setOnItemSelectedListener { item ->
+                if (item.itemId == R.id.homeFragment) {
+                    navController.popBackStack(R.id.homeFragment, false)
+                    true
+                } else {
+                    androidx.navigation.ui.NavigationUI.onNavDestinationSelected(item, navController)
+                }
+            }
+
             setupDrawerClickListeners(navController)
 
             drawerToggle.syncState()
@@ -143,6 +154,15 @@ class MainFragment : Fragment() {
         val window = requireActivity().window
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
             window.isNavigationBarContrastEnforced = false
+        }
+
+        // KEEP HOME TAB SELECTED WHEN NAVIGATING TO EXCEPTION SUB-SCREENS
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.exceptionsListFragment, R.id.addExceptionFragment -> {
+                    binding.bottomNavigationView.menu.findItem(R.id.homeFragment)?.isChecked = true
+                }
+            }
         }
 
         // BLOCK SYSTEM BACK BUTTON OR GO BACK IN NAV

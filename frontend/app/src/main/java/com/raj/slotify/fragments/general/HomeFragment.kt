@@ -46,11 +46,7 @@ class HomeFragment : Fragment() {
     ): View {
         viewModel.setTitle(TextModel(R.string.welcome_greeting))
         layoutViewModel.setSecondTextVisibility(View.VISIBLE)
-
         layoutViewModel.setCenterIconTitle(true)
-
-        val accessToken = userDataViewModel.userToken.value?.accessToken ?: ""
-        reservesViewModel.getReserves("Bearer $accessToken", 0, null, null, null)
 
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
@@ -58,6 +54,12 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        userDataViewModel.userToken.observe(viewLifecycleOwner) { token ->
+            if (token != null) {
+                reservesViewModel.getReserves("Bearer ${token.accessToken}", 0, null, null, null)
+            }
+        }
 
         val intervalButton = binding.createIntervalButton
         userDataViewModel.userType.observe(viewLifecycleOwner) { userType ->
@@ -68,7 +70,7 @@ class HomeFragment : Fragment() {
             }
         }
         intervalButton.setOnClickListener {
-            // TODO: NAVEGAR A LA PÁGINA DE INTERVALOS
+            view.findNavController().navigate(R.id.action_homeFragment_to_exceptionsListFragment)
         }
 
         userDataViewModel.name.observe(viewLifecycleOwner) { name ->
