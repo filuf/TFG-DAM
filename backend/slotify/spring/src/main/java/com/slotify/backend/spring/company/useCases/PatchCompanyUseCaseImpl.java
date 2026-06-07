@@ -31,7 +31,6 @@ public class PatchCompanyUseCaseImpl implements PatchCompanyUseCase {
             UUID companyId,
             MultipartFile file,
             JsonNullable<Integer> defaultMaxConcurrentServices,
-            JsonNullable<String> companyName,
             JsonNullable<String> phoneNumber,
             JsonNullable<String> physicalAddress,
             JsonNullable<String> description
@@ -40,7 +39,7 @@ public class PatchCompanyUseCaseImpl implements PatchCompanyUseCase {
         CompanyEntity company = this.companyService.findCompanyById(companyId)
                 .orElseThrow(() -> new EntityNotFoundException("No existe una empresa en la base de datos con el id: " + companyId));
 
-        this.patchEntity(file, defaultMaxConcurrentServices, companyName, phoneNumber, physicalAddress, description, company);
+        this.patchEntity(file, defaultMaxConcurrentServices, phoneNumber, physicalAddress, description, company);
 
         String s3ImageUrl = this.s3Service.getTemporalUrl(company.getS3ImageKey());
 
@@ -50,7 +49,6 @@ public class PatchCompanyUseCaseImpl implements PatchCompanyUseCase {
     private void patchEntity(
             MultipartFile file,
             JsonNullable<Integer> defaultMaxConcurrentServices,
-            JsonNullable<String> companyName,
             JsonNullable<String> phoneNumber,
             JsonNullable<String> physicalAddress,
             JsonNullable<String> description,
@@ -66,10 +64,6 @@ public class PatchCompanyUseCaseImpl implements PatchCompanyUseCase {
 
         if (defaultMaxConcurrentServices.isPresent()) {
             company.setDefaultMaxConcurrentServices(defaultMaxConcurrentServices.get());
-        }
-
-        if (companyName.isPresent()) {
-            company.setCompanyName(companyName.get());
         }
 
         if (phoneNumber.isPresent()) {

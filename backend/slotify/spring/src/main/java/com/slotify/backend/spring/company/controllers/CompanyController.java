@@ -51,7 +51,6 @@ public class CompanyController {
                 UUID.fromString(jwt.getSubject()),
                 file,
                 request.getDefaultMaxConcurrentServicesJsonNullable(),
-                request.getCompanyNameJsonNullable(),
                 request.getPhoneNumberJsonNullable(),
                 request.getPhysicalAddressJsonNullable(),
                 request.getDescriptionJsonNullable()

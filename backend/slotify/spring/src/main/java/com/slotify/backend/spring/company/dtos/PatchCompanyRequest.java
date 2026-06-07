@@ -17,7 +17,6 @@ import org.openapitools.jackson.nullable.JsonNullable;
 public class PatchCompanyRequest {
 
     private JsonNullable<Integer> defaultMaxConcurrentServices = JsonNullable.undefined();
-    private JsonNullable<String> companyName = JsonNullable.undefined();
     private JsonNullable<String> phoneNumber = JsonNullable.undefined();
     private JsonNullable<String> physicalAddress = JsonNullable.undefined();
     private JsonNullable<String> description = JsonNullable.undefined();
@@ -30,16 +29,6 @@ public class PatchCompanyRequest {
     @JsonProperty("defaultMaxConcurrentServices")
     public JsonNullable<Integer> getDefaultMaxConcurrentServicesJsonNullable() {
         return defaultMaxConcurrentServices;
-    }
-
-    @Size(min = 1, max = 200)
-    public String getCompanyName() {
-        return companyName.orElse(null);
-    }
-
-    @JsonProperty("companyName")
-    public JsonNullable<String> getCompanyNameJsonNullable() {
-        return companyName;
     }
 
     @Size(min = 1, max = 15)

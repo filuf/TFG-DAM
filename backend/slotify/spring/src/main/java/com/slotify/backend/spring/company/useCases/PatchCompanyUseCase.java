@@ -13,7 +13,6 @@ public interface PatchCompanyUseCase {
             UUID companyId,
             MultipartFile file,
             JsonNullable<Integer> defaultMaxConcurrentServices,
-            JsonNullable<String> companyName,
             JsonNullable<String> phoneNumber,
             JsonNullable<String> physicalAddress,
             JsonNullable<String> description
