@@ -1,5 +1,6 @@
 package com.slotify.backend.spring.company.useCases;
 
+import com.slotify.backend.spring.company.dtos.PatchCompanyEvent;
 import com.slotify.backend.spring.company.dtos.PatchCompanyResponse;
 import com.slotify.backend.spring.company.mappers.CompanyMapper;
 import com.slotify.backend.spring.company.models.CompanyEntity;
@@ -9,6 +10,7 @@ import com.slotify.backend.spring.s3.S3Service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.jackson.nullable.JsonNullable;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +26,7 @@ public class PatchCompanyUseCaseImpl implements PatchCompanyUseCase {
     private final CompanyMapper companyMapper;
     private final ImageFormatValidator imageFormatValidator;
     private final S3Service s3Service;
+    private final ApplicationEventPublisher publisher;
 
     @Override
     @Transactional
@@ -42,6 +45,8 @@ public class PatchCompanyUseCaseImpl implements PatchCompanyUseCase {
         this.patchEntity(file, defaultMaxConcurrentServices, phoneNumber, physicalAddress, description, company);
 
         String s3ImageUrl = this.s3Service.getTemporalUrl(company.getS3ImageKey());
+
+        this.publisher.publishEvent(new PatchCompanyEvent(company));
 
         return this.companyMapper.toPatchCompanyResponse(company, s3ImageUrl);
     }
