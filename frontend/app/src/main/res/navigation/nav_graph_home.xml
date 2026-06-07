@@ -29,7 +29,11 @@
         android:id="@+id/settingsFragment"
         android:name="com.raj.slotify.fragments.general.SettingsFragment"
         android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_languageFragment"
+            app:destination="@id/languageFragment" />
+    </fragment>
     <fragment
         android:id="@+id/calendarFragment"
         android:name="com.raj.slotify.fragments.general.CalendarFragment"
