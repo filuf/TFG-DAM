@@ -13,14 +13,14 @@ import androidx.navigation.fragment.NavHostFragment
 import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentRegistryBinding
 import com.raj.slotify.models.TextModel
-import com.raj.slotify.viewModels.frontend.EnterpriseRegistryViewModel
+import com.raj.slotify.viewModels.frontend.EnterpriseDataViewModel
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
 
 class RegistryFragment : Fragment() {
 
     private val viewModel: MainViewModel by activityViewModels()
-    private val enterpriseViewModel: EnterpriseRegistryViewModel by activityViewModels()
+    private val enterpriseViewModel: EnterpriseDataViewModel by activityViewModels()
     private val layoutViewModel: LayoutViewModel by activityViewModels()
 
     private lateinit var binding: FragmentRegistryBinding

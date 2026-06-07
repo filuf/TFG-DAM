@@ -20,7 +20,6 @@ import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentSelectPhysicalDirectionBinding
 import com.raj.slotify.dtos.maps.PlaceSuggestion
 import com.raj.slotify.adapters.SuggestionAdapter
-import com.raj.slotify.viewModels.frontend.EnterpriseRegistryViewModel
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
 import com.raj.slotify.viewModels.frontend.MapViewModel
@@ -32,6 +31,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.raj.slotify.models.TextModel
+import com.raj.slotify.viewModels.frontend.EnterpriseDataViewModel
 import kotlinx.coroutines.launch
 
 class SelectPhysicalDirectionFragment : Fragment(), OnMapReadyCallback {
@@ -39,7 +39,7 @@ class SelectPhysicalDirectionFragment : Fragment(), OnMapReadyCallback {
     private val viewModel: MainViewModel by activityViewModels()
     private val userViewModel: UserDataViewModel by activityViewModels()
     private val layoutViewModel: LayoutViewModel by activityViewModels()
-    private val enterpriseViewModel: EnterpriseRegistryViewModel by activityViewModels()
+    private val enterpriseViewModel: EnterpriseDataViewModel by activityViewModels()
     private val mapViewModel: MapViewModel by activityViewModels()
 
     private lateinit var binding: FragmentSelectPhysicalDirectionBinding

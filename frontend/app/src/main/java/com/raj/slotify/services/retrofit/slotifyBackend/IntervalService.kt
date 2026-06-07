@@ -2,11 +2,18 @@ package com.raj.slotify.services.retrofit.slotifyBackend
 
 import com.raj.slotify.dtos.company.CreateIntervalRequest
 import com.raj.slotify.dtos.company.CreateIntervalResponse
+import com.raj.slotify.dtos.company.IntervalSummary
 import retrofit2.Response
 import retrofit2.http.*
 import java.util.UUID
 
 interface IntervalService {
+
+    @GET("intervals")
+    suspend fun getIntervals(
+        @Header("Authorization") authHeader: String,
+        @Query("fetchMode") fetchMode: String = "ALL"
+    ): Response<List<IntervalSummary>>
 
     @POST("intervals")
     suspend fun createInterval(

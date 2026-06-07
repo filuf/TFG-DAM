@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
+import coil.load
+import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentCenterTextNormalIconBinding
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
@@ -43,7 +45,10 @@ class CenterTextNormalIconFragment : Fragment() {
             image.setImageResource(icon)
         }
         userDataViewModel.imageUri.observe(viewLifecycleOwner) { imageUri ->
-            image.setImageURI(imageUri)
+            image.load(imageUri) {
+                crossfade(true)
+                error(R.drawable._logoslotify_retocado)
+            }
         }
         viewModel.title.observe(viewLifecycleOwner) { title ->
             titleText.text = if (title.stringId != null) getString(title.stringId) else title.customText?: ""

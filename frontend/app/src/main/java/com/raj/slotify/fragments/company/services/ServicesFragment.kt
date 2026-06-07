@@ -50,11 +50,6 @@ class ServicesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val intervalButton = binding.manageExceptionsButton
-        intervalButton.setOnClickListener {
-            // TODO: NAVEGAR A LA PÁGINA DE INTERVALOS
-        }
-
         setupRecycler()
         setupFab()
         loadServices()
