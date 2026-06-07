@@ -290,13 +290,6 @@ class MainFragment : Fragment() {
                     true
                 }
 
-                R.id.manageExceptions -> {
-                    // TODO: NAVEGAR A LA PÁGINA DE INTERVALOS
-
-                    binding.drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START)
-                    true
-                }
-
                 else -> {
                     val handled = androidx.navigation.ui.NavigationUI.onNavDestinationSelected(menuItem, navController)
                     if (handled) {

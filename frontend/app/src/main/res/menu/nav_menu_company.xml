@@ -15,7 +15,7 @@
         android:id="@+id/addService"
         android:title="@string/add_service" />
     <item
-        android:id="@+id/manageExceptions"
+        android:id="@+id/exceptionsListFragment"
         android:title="@string/manage_exceptions" />
     <item
         android:id="@+id/closeSesion"
