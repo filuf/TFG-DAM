@@ -46,6 +46,7 @@ public class RegisterCompanyUseCaseImpl implements RegisterCompanyUseCase {
                 .companyId(companyEntity.getUserId().toString())
                 .companyName(companyEntity.getCompanyName())
                 .physicalAddress(companyEntity.getPhysicalAddress())
+                .s3ImageKey(companyEntity.getS3ImageKey())
                 .build();
         this.companySearchService.indexCompany(document);
 

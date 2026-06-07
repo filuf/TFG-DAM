@@ -26,6 +26,9 @@ public class CompanyDocument {
     @Field(type = FieldType.Text)
     private String physicalAddress;
 
+    @Field(type = FieldType.Keyword)
+    private String s3ImageKey;
+
 
     @Field(type = FieldType.Text, analyzer = "spanish")
     private String description;
