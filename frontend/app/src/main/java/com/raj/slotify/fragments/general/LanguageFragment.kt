@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.Button
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.fragment.app.Fragment
@@ -39,7 +39,7 @@ class LanguageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val returnToMain: TextView = binding.returnToMainText
+        val returnToMain: Button = binding.confirmLanguageButton
         val currentAppLocales = AppCompatDelegate.getApplicationLocales()
         var selectedLanguageCode: String? = if (!currentAppLocales.isEmpty) currentAppLocales[0]?.language else null
 
@@ -68,7 +68,7 @@ class LanguageFragment : Fragment() {
             }
         }
 
-        returnToMain.setOnClickListener {
+        fun returnToPreviousPage() {
             val appLocale: LocaleListCompat = if (selectedLanguageCode == null) {
                 LocaleListCompat.getEmptyLocaleList()
             } else {
@@ -92,6 +92,10 @@ class LanguageFragment : Fragment() {
 
             viewModel.setLanguage(selectedLanguageCode?:"en")
             view.findNavController().popBackStack()
+        }
+
+        returnToMain.setOnClickListener {
+            returnToPreviousPage()
         }
     }
 
