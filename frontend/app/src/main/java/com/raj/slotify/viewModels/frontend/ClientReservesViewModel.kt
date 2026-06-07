@@ -3,8 +3,8 @@ package com.raj.slotify.viewModels.frontend
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.raj.slotify.dtos.company.GetCompanyResponse
 import com.raj.slotify.dtos.company.GetServicesResponse
+import com.raj.slotify.dtos.company.SearchCompaniesResponse
 import com.raj.slotify.dtos.reserves.ReserveSummary
 import com.raj.slotify.models.api.PageResponse
 import java.time.LocalDateTime
@@ -15,7 +15,7 @@ class ClientReservesViewModel: ViewModel() {
     private val _reservesPage = MutableLiveData<PageResponse<ReserveSummary>>()
     private val _lastReserveSelected = MutableLiveData<ReserveSummary>()
     private val _fetchType = MutableLiveData<String>()
-    private val _companyToReserve = MutableLiveData<GetCompanyResponse>()
+    private val _companyToReserve = MutableLiveData<SearchCompaniesResponse>()
     private val _serviceToReserve = MutableLiveData<GetServicesResponse>()
     private val _categoryToReserve = MutableLiveData<String>()
     private val _dateTimeReserve = MutableLiveData<LocalDateTime?>()
@@ -25,7 +25,7 @@ class ClientReservesViewModel: ViewModel() {
     val fetchType: LiveData<String> = _fetchType
     val lastReserveSelected: LiveData<ReserveSummary> = _lastReserveSelected
     val serviceToReserve: LiveData<GetServicesResponse> = _serviceToReserve
-    val companyToReserve: LiveData<GetCompanyResponse> = _companyToReserve
+    val companyToReserve: LiveData<SearchCompaniesResponse> = _companyToReserve
     val categoryToReserve: LiveData<String> = _categoryToReserve
     val dateTimeReserve: LiveData<LocalDateTime?> = _dateTimeReserve
 
@@ -51,7 +51,7 @@ class ClientReservesViewModel: ViewModel() {
         _lastReserveSelected.postValue(lastReserveSelected)
     }
 
-    fun setCompanyToReserve(companyToReserve: GetCompanyResponse) {
+    fun setCompanyToReserve(companyToReserve: SearchCompaniesResponse) {
         _companyToReserve.postValue(companyToReserve)
     }
 

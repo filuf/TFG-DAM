@@ -6,11 +6,15 @@ import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.navigation.fragment.NavHostFragment
 import com.raj.slotify.R
 import com.raj.slotify.databinding.ActivityMainBinding
 import com.raj.slotify.room.database.TokenEntity
+import com.raj.slotify.tools.Verifier
+import com.raj.slotify.viewModels.apiRest.CompanyViewModel
 import com.raj.slotify.viewModels.apiRest.ReservesViewModel
+import com.raj.slotify.viewModels.apiRest.UserViewModel
 import com.raj.slotify.viewModels.frontend.ClientReservesViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
 import com.raj.slotify.viewModels.frontend.UserDataViewModel
@@ -26,6 +30,8 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
     private val userDataViewModel: UserDataViewModel by viewModels()
     private val clientReservesViewModel: ClientReservesViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
+    private val companyViewModel: CompanyViewModel by viewModels()
     private val tokenViewModel: TokenViewModel by viewModels()
     private val reservesViewModel: ReservesViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
@@ -119,9 +125,42 @@ class MainActivity : AppCompatActivity() {
                 Log.d("JWT_DECODE", "Email: $email")
 
                 userDataViewModel.setUserType(accountType)
-                userDataViewModel.setEmail(email)
                 userDataViewModel.setName(username)
                 userDataViewModel.setUuid(UUID.fromString(sub))
+                userDataViewModel.setEmail(email)
+
+                // UPDATE USER DATA
+                if (accountType == "USER") {
+                    userViewModel.getUser(UUID.fromString(sub), "Bearer $accessToken")
+                    userViewModel.userSearched.observe(this) { response ->
+                        if (response == null) {
+                            return@observe
+                        }
+                        if (!Verifier.verifySuccessfulResponse(response, this, positiveActionText = getString(R.string.dialog_ok))) {
+                            return@observe
+                        }
+                        val user = response.body()
+                        userDataViewModel.setName(user?.username?:username)
+
+                        if (!user?.s3ImageUrl.isNullOrEmpty())
+                            userDataViewModel.setImageUri(user.s3ImageUrl.toUri())
+                    }
+                } else {
+                    companyViewModel.getCompanyById(UUID.fromString(sub), "Bearer $accessToken")
+                    userViewModel.userSearched.observe(this) { response ->
+                        if (response == null) {
+                            return@observe
+                        }
+                        if (!Verifier.verifySuccessfulResponse(response, this, positiveActionText = getString(R.string.dialog_ok))) {
+                            return@observe
+                        }
+                        val company = response.body()
+                        userDataViewModel.setName(company?.username?:username)
+
+                        if (!company?.s3ImageUrl.isNullOrEmpty())
+                            userDataViewModel.setImageUri(company.s3ImageUrl.toUri())
+                    }
+                }
             }
         } catch (e: Exception) {
             Log.e("ERROR", "Error al decodificar el token: ${e.message}")
