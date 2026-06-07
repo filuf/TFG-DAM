@@ -13,26 +13,30 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.raj.slotify.R
 import com.raj.slotify.adapters.CompaniesListAdapter
 import com.raj.slotify.databinding.FragmentListCompaniesToReserveBinding
-import com.raj.slotify.dtos.company.GetCompanyResponse
+import com.raj.slotify.dtos.company.SearchCompaniesResponse
 import com.raj.slotify.models.TextModel
 import com.raj.slotify.viewModels.apiRest.CompanyViewModel
 import com.raj.slotify.viewModels.frontend.ClientReservesViewModel
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
-import com.raj.slotify.viewModels.frontend.UserDataViewModel
-import java.util.UUID
+import com.raj.slotify.viewModels.room.TokenViewModel
 import kotlin.getValue
 
 class ListCompaniesToReserveFragment : Fragment() {
 
     private val mainViewModel: MainViewModel by activityViewModels()
     private val layoutViewModel: LayoutViewModel by activityViewModels()
-    private val userDataViewModel: UserDataViewModel by activityViewModels()
+    private val tokenViewModel: TokenViewModel by activityViewModels()
     private val clientReservesViewModel: ClientReservesViewModel by activityViewModels()
     private val companyViewModel: CompanyViewModel by activityViewModels()
-    private lateinit var listOfCompanies: MutableList<GetCompanyResponse>
+    private lateinit var listOfCompanies: MutableList<SearchCompaniesResponse>
     private lateinit var binding: FragmentListCompaniesToReserveBinding
-    private lateinit var testEnterprises: MutableList<GetCompanyResponse>
+    private lateinit var authHeader: String
+
+    private var currentPage = 0
+    private var isLastPage = false
+    private var isLoading = false
+    private var currentCategory: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +48,8 @@ class ListCompaniesToReserveFragment : Fragment() {
     ): View {
         mainViewModel.setSubtitle(TextModel(R.string.site_where_reserve))
 
+        tokenViewModel.getLastToken()
+
         layoutViewModel.setExplicationVisibility(View.GONE)
         layoutViewModel.setBackButtonVisibility(View.VISIBLE)
 
@@ -54,21 +60,37 @@ class ListCompaniesToReserveFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // TODO: IMPLEMENTAR LA PETICION REAL A LA API
-        // companyViewModel.getCompanies("Bearer ${userDataViewModel.userToken.value?.accessToken ?: ""}")
-
-        if (!::listOfCompanies.isInitialized) {
-            testEnterprises = createTestEnterprises()
-
-            listOfCompanies = testEnterprises
-        }
+        listenToken()
 
         val adapter = setUpRecycler(view)
         configSearchBar(adapter)
         listenToCompanies(adapter)
     }
 
-    fun listenToCompanies(adapter: CompaniesListAdapter) {
+    private fun listenToken() {
+        tokenViewModel.token.observe(viewLifecycleOwner) { tokenEntity ->
+            if (tokenEntity == null)
+                return@observe
+
+            authHeader = "Bearer ${tokenEntity.accessToken}"
+            Log.i("AuthHeader en getServices", authHeader)
+
+            listenCategory()
+        }
+    }
+
+    private fun listenCategory() {
+        clientReservesViewModel.categoryToReserve.observe(viewLifecycleOwner) { category ->
+            if (category != null) {
+                currentCategory = category
+                currentPage = 0
+                isLastPage = false
+                companyViewModel.getCompanies(authHeader, category, currentPage)
+            }
+        }
+    }
+
+    private fun listenToCompanies(adapter: CompaniesListAdapter) {
         companyViewModel.companies.observe(viewLifecycleOwner) { response ->
             // DISCARD UNSUCCESSFULLY CASES
             if (response == null)
@@ -82,18 +104,21 @@ class ListCompaniesToReserveFragment : Fragment() {
                 return@observe
 
             val responseBody = response.body()!!
+            val newCompanies = responseBody.content
 
-            listOfCompanies.clear()
-            listOfCompanies.addAll(testEnterprises)
+            isLastPage = responseBody.number == responseBody.totalPages - 1
 
-            // TODO: DESCOMENTAR ESTO CUANDO SE HAGA LA PETICION REAL
-            // listOfCompanies.addAll(responseBody.content)
-
-            adapter.setItems(listOfCompanies)
+            if (currentPage == 0) {
+                listOfCompanies = newCompanies.toMutableList()
+                adapter.setItems(newCompanies)
+            } else {
+                listOfCompanies.addAll(newCompanies)
+                adapter.addItems(newCompanies)
+            }
         }
     }
 
-    fun configSearchBar(adapter: CompaniesListAdapter) {
+    private fun configSearchBar(adapter: CompaniesListAdapter) {
         binding.searchEnterpriseText.doOnTextChanged { text, _, _, _ ->
             if (text.isNullOrEmpty()) {
                 adapter.setItems(listOfCompanies)
@@ -109,43 +134,41 @@ class ListCompaniesToReserveFragment : Fragment() {
         }
     }
 
-    fun setUpRecycler(view: View): CompaniesListAdapter {
+    private fun setUpRecycler(view: View): CompaniesListAdapter {
         val recyclerView = binding.companiesRecycler
-        val customAdapter = CompaniesListAdapter(listOfCompanies) { enterprise ->
+        val customAdapter = CompaniesListAdapter(mutableListOf()) { enterprise ->
             clientReservesViewModel.setCompanyToReserve(enterprise)
             view.findNavController().navigate(R.id.action_listCompaniesToReserveFragment_to_listCompanyServicesFragment)
         }
         recyclerView.adapter = customAdapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager = layoutManager
+
+        recyclerView.addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val visibleItemCount = layoutManager.childCount
+                val totalItemCount = layoutManager.itemCount
+                val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+                if (!isLoading && !isLastPage) {
+                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                        && firstVisibleItemPosition >= 0) {
+
+                        loadMoreCompanies()
+                    }
+                }
+            }
+        })
+
         return customAdapter
     }
-
-    fun createTestEnterprises(): MutableList<GetCompanyResponse> {
-        return mutableListOf(
-            GetCompanyResponse(
-                UUID.fromString("87ce0fc5-616c-4b69-8c58-c5b8557a1a1a"),
-                3,
-                "empresaMadrid",
-                "645345843",
-                "rodriYJesusDeLaManoEmpresa@emilio.com",
-                "C. Monte Naranco, 10, Puente de Vallecas, 28053 Madrid",
-                "",
-                "descripcion muy bonita",
-                "4.5",
-                listOf()),
-            GetCompanyResponse(
-                UUID.fromString("0802f476-68c1-41e4-a5d6-81ca818a6725"),
-                5,
-                "empresaPueblo",
-                "645345843",
-                "rodriYJesusDeLaManoEmpresa@emilio.com",
-                "C. Monte Naranco, 10, Puente de Vallecas, 28053 Madrid",
-                "",
-                "descripcion muy bonita",
-                "4.5",
-                listOf()
-            )
-        )
+    private fun loadMoreCompanies() {
+        isLoading = true
+        currentPage++
+        currentCategory?.let {
+            companyViewModel.getCompanies(authHeader, it, currentPage)
+        }
     }
-
 }

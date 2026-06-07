@@ -87,6 +87,9 @@ dependencies {
     implementation("com.applandeo:material-calendar-view:1.9.2")
     implementation(libs.androidx.coordinatorlayout)
     implementation(libs.androidx.viewpager2)
+    implementation(libs.androidx.cardview)
+    implementation(libs.cardview.v7)
+    implementation(libs.androidx.legacy.support.v4)
 
     // Retrofit
     val retrofit_version = "2.9.0"

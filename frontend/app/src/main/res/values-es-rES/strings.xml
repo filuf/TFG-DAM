@@ -233,4 +233,15 @@
     <string name="show_canceled">Mostrar citas canceladas</string>
     <string name="canceled_word">Cancelada</string>
     <string name="completed_reserve">Reserva completada</string>
+    <string name="edit_account_data">Editar los datos de la cuenta</string>
+    <string name="modify_company_data">Modifica los datos de la empresa</string>
+    <string name="company_image_edit">Edite la imagen de su empresa</string>
+    <string name="enter_phone_number">Ingresa un número de teléfono válido</string>
+    <string name="user_name_empty">El nombre de usuario no puede estar vacío</string>
+    <string name="edit_the_place">Edite la direccción de su empresa</string>
+    <string name="selected_direction">"Dirección seleccionada: "</string>
+    <string name="data_changued">Datos de usuario cambiados satisfactoriamente</string>
+    <string name="cancel_changes_title">Cancelar cambios</string>
+    <string name="cancel_changes_question">¿Está seguro de cancelar los cambios?</string>
+    <string name="no_word">NO</string>
 </resources>

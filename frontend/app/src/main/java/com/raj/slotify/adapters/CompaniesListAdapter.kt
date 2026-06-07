@@ -6,19 +6,25 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.raj.slotify.R
-import com.raj.slotify.dtos.company.GetCompanyResponse
+import com.raj.slotify.dtos.company.SearchCompaniesResponse
 
-class CompaniesListAdapter(private val dataSet: MutableList<GetCompanyResponse>,
-                           private val onClick: (GetCompanyResponse) -> Unit) :
+class CompaniesListAdapter(private val dataSet: MutableList<SearchCompaniesResponse>,
+                           private val onClick: (SearchCompaniesResponse) -> Unit) :
     RecyclerView.Adapter<CompaniesListAdapter.ViewHolder>() {
 
-    fun setItems(newItems: List<GetCompanyResponse>) {
+    fun setItems(newItems: List<SearchCompaniesResponse>) {
         dataSet.clear()
         dataSet.addAll(newItems)
         notifyDataSetChanged()
+    }
+
+    fun addItems(newItems: List<SearchCompaniesResponse>) {
+        val startPos = dataSet.size
+        dataSet.addAll(newItems)
+        notifyItemRangeInserted(startPos, newItems.size)
     }
 
     /**
@@ -55,8 +61,18 @@ class CompaniesListAdapter(private val dataSet: MutableList<GetCompanyResponse>,
         val companyData = dataSet[position]
 
         viewHolder.companyName.text = companyData.companyName
-        viewHolder.ratingBar.rating = companyData.rattingAvg.toFloat()
-        viewHolder.imageCompany.setImageURI(companyData.s3ImageKey.toUri())
+
+        if (companyData.rattingAvg == null)
+            viewHolder.ratingBar.visibility = View.GONE
+        else
+            viewHolder.ratingBar.rating = companyData.rattingAvg.toFloat()
+
+        if (companyData.s3ImageKey != null) {
+            viewHolder.imageCompany.load(companyData.s3ImageKey) {
+                crossfade(true)
+                error(R.drawable._logoslotify_retocado)
+            }
+        }
 
         viewHolder.itemView.setOnClickListener {
             onClick(companyData)

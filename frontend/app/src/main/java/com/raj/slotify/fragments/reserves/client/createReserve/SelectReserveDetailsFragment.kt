@@ -7,10 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
-import androidx.core.net.toUri
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import coil.load
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.raj.slotify.R
 import com.raj.slotify.adapters.ListScheduleIntervalsAdapter
@@ -193,7 +193,13 @@ class SelectReserveDetailsFragment : Fragment() {
 
             val company = clientReservesViewModel.companyToReserve.value
             if (company != null) {
-                binding.companyImage.setImageURI(company.s3ImageKey.toUri())
+
+                if (company.s3ImageKey != null)
+                    binding.companyImage.load(company.s3ImageKey) {
+                        crossfade(true)
+                        placeholder(R.drawable._logoslotify_retocado) // Pon un placeholder si tienes
+                    }
+
                 binding.serviceCompanyName.text = company.companyName
 
                 val address = company.physicalAddress

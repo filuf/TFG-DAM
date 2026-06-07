@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.raj.slotify.R
 import com.raj.slotify.dtos.company.GetServicesResponse
 import com.raj.slotify.tools.TextUtils
@@ -56,7 +56,13 @@ class CompanyServicesAdapter (private val dataSet: MutableList<GetServicesRespon
         // contents of the view with that element
         val serviceData = dataSet[position]
 
-        viewHolder.serviceImageView.setImageURI(serviceData.s3ImageKey?.toUri())
+        if (serviceData.s3ImageKey != null) {
+            viewHolder.serviceImageView.load(serviceData.s3ImageKey) {
+                crossfade(true)
+                error(R.drawable._logoslotify_retocado)
+            }
+        }
+
         viewHolder.serviceNameText.text = serviceData.serviceName
         viewHolder.servicePriceText.text = TextUtils.formatPrice(serviceData.servicePriceCent)
 

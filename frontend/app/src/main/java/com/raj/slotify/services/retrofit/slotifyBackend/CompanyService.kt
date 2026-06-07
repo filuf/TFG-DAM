@@ -2,6 +2,7 @@ package com.raj.slotify.services.retrofit.slotifyBackend
 
 import com.raj.slotify.dtos.company.GetCompanyResponse
 import com.raj.slotify.dtos.company.GetServicesResponse
+import com.raj.slotify.dtos.company.SearchCompaniesResponse
 import com.raj.slotify.models.api.PageResponse
 import retrofit2.Response
 import retrofit2.http.*
@@ -9,15 +10,12 @@ import java.util.UUID
 
 interface CompanyService {
 
-    @GET("companies")
-    suspend fun getCompanies(
-        // TODO: ADD THE REST
+    @GET("companies/search")
+    suspend fun getCompaniesByQuery(
         @Header("Authorization") authHeader: String,
-        @Query("fetchMode") fetchMode: String?,
-        @Query("page") page: Int?,
-        @Query("sortBy") sortBy: String?,
-        @Query("order") order: String?
-    ): Response<PageResponse<GetCompanyResponse>>
+        @Query("q") q: String,
+        @Query("page") page: Int,
+    ): Response<PageResponse<SearchCompaniesResponse>>
 
     @GET("companies/{companyId}")
     suspend fun getCompanyById(

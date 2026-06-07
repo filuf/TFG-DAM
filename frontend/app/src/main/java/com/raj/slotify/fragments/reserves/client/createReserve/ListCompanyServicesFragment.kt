@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.raj.slotify.R
 import com.raj.slotify.adapters.CompanyServicesAdapter
 import com.raj.slotify.databinding.FragmentListCompanyServicesBinding
-import com.raj.slotify.dtos.company.GetCompanyResponse
 import com.raj.slotify.dtos.company.GetServicesResponse
+import com.raj.slotify.dtos.company.SearchCompaniesResponse
 import com.raj.slotify.models.TextModel
 import com.raj.slotify.tools.Verifier
 import com.raj.slotify.viewModels.apiRest.CompanyViewModel
@@ -38,7 +38,7 @@ class ListCompanyServicesFragment : Fragment() {
     private var actualPage: Int = 0
     private var totalPages: Int = 0
     private lateinit var binding: FragmentListCompanyServicesBinding
-    private lateinit var company: GetCompanyResponse
+    private lateinit var company: SearchCompaniesResponse
     private lateinit var services: List<GetServicesResponse>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,8 +51,6 @@ class ListCompanyServicesFragment : Fragment() {
     ): View {
         mainViewModel.setSubtitle(TextModel(R.string.service_to_reserve_question))
         layoutViewModel.setExplicationVisibility(View.VISIBLE)
-
-        tokenViewModel.getLastToken()
 
         binding = FragmentListCompanyServicesBinding.inflate(inflater, container, false)
         return binding.root

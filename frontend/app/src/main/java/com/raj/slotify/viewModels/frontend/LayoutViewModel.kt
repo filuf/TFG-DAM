@@ -41,6 +41,8 @@ class LayoutViewModel: ViewModel() {
     val nextButtonClicked = _nextButtonClicked.asSharedFlow()
     private val _confirmButtonClicked = MutableSharedFlow<Unit>(replay = 0)
     val confirmButtonClicked = _confirmButtonClicked.asSharedFlow()
+    private val _backButtonClicked = MutableSharedFlow<Unit>(replay = 0)
+    val backButtonClicked = _backButtonClicked.asSharedFlow()
 
     // TOOLBAR
     // En MainViewModel.kt o LayoutViewModel.kt
@@ -104,6 +106,10 @@ class LayoutViewModel: ViewModel() {
 
     fun onConfirmClicked() {
         viewModelScope.launch { _confirmButtonClicked.emit(Unit) }
+    }
+
+    fun onBackClicked() {
+        viewModelScope.launch { _backButtonClicked.emit(Unit) }
     }
 
     fun updateToolbar(title: String, iconRes: Int?) {

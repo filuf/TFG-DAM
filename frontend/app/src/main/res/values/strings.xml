@@ -239,4 +239,15 @@
     <string name="show_canceled">Show canceled appointments</string>
     <string name="canceled_word">Canceled</string>
     <string name="completed_reserve">Reserve completed</string>
+    <string name="edit_account_data">Edit the account data</string>
+    <string name="modify_company_data">Modify company data</string>
+    <string name="company_image_edit">Edit your company image</string>
+    <string name="enter_phone_number">Enter a valid phone number</string>
+    <string name="user_name_empty">The user name can not be empty</string>
+    <string name="edit_the_place">Edit the direction of your company</string>
+    <string name="selected_direction">Selected direction:</string>
+    <string name="data_changued">User data changued successfully</string>
+    <string name="cancel_changes_title">Cancel changues</string>
+    <string name="cancel_changes_question">You are sure about cancel the changues?</string>
+    <string name="no_word">NO</string>
 </resources>

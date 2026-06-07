@@ -9,6 +9,7 @@ import com.raj.slotify.dtos.company.GetCompanyResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.raj.slotify.dtos.company.GetServicesResponse
+import com.raj.slotify.dtos.company.SearchCompaniesResponse
 import com.raj.slotify.models.api.PageResponse
 import com.raj.slotify.services.retrofit.RetrofitInstance
 import com.raj.slotify.services.retrofit.slotifyBackend.CompanyService
@@ -19,21 +20,22 @@ class CompanyViewModel: ViewModel() {
 
     private val service = RetrofitInstance.getService(CompanyService::class.java)
 
-    private val _companies = MutableLiveData<Response<PageResponse<GetCompanyResponse>>?>(null)
+    private val _companies = MutableLiveData<Response<PageResponse<SearchCompaniesResponse>>?>(null)
     private val _company = MutableLiveData<Response<GetCompanyResponse>?>(null)
     private val _listOfServices = MutableLiveData<Response<PageResponse<GetServicesResponse>>?>(null)
 
-    var companies: LiveData<Response<PageResponse<GetCompanyResponse>>?> = _companies
+    var companies: LiveData<Response<PageResponse<SearchCompaniesResponse>>?> = _companies
     var company: LiveData<Response<GetCompanyResponse>?> = _company
     var listOfServices: LiveData<Response<PageResponse<GetServicesResponse>>?> = _listOfServices
 
-    fun getCompanies(authHeader: String, fetchMode: String? = null, page: Int? = null, sortBy: String? = null, order: String? = null) {
-
-        // TODO: ACTUALIZAR ESTO
-
+    fun getCompanies(authHeader: String, q: String, page: Int = 0) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val response = service.getCompanies(authHeader, fetchMode, page, sortBy, order)
+                Log.i("CompanyViewModel", "getCompanies called with authHeader: $authHeader")
+                Log.i("CompanyViewModel", "getCompanies called with q: $q")
+                Log.i("CompanyViewModel", "getCompanies called with page: $page")
+
+                val response = service.getCompaniesByQuery(authHeader, q, page)
                 if (!response.isSuccessful) {
                     Log.e("CompanyViewModel", "Error obteniendo empresas: ${response.code()}: ${response.message()}")
                 }
@@ -53,8 +55,10 @@ class CompanyViewModel: ViewModel() {
                 if (!response.isSuccessful) {
                     Log.e("CompanyViewModel", "Error obteniendo empresa: ${response.code()}: ${response.message()}")
                 }
+                _company.postValue(response)
             } catch (e: Exception) {
                 Log.e("CompanyViewModel", "Excepción al obtener empresa: ${e.message}")
+                _company.postValue(null)
             }
         }
     }

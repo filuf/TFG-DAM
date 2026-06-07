@@ -12,8 +12,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentAssureCorrectReserveInformationBinding
-import com.raj.slotify.dtos.company.GetCompanyResponse
 import com.raj.slotify.dtos.company.GetServicesResponse
+import com.raj.slotify.dtos.company.SearchCompaniesResponse
 import com.raj.slotify.dtos.reserves.CreateReserveRequest
 import com.raj.slotify.models.TextModel
 import com.raj.slotify.tools.TextUtils
@@ -67,7 +67,7 @@ class AssureCorrectReserveInformationFragment : Fragment() {
 
     fun setReserveDetailsTexts() {
         val service: GetServicesResponse = clientReservesViewModel.serviceToReserve.value ?: return
-        val company: GetCompanyResponse = clientReservesViewModel.companyToReserve.value?: return
+        val company: SearchCompaniesResponse = clientReservesViewModel.companyToReserve.value?: return
         val minutes = service.serviceMinutesDuration
         val minutesText = if (minutes == 1) getString(R.string.minute_word) else getString(R.string.minutes_word)
 
