@@ -18,7 +18,7 @@ public class CompanyMapper {
 
     private final ServiceMapper serviceMapper;
 
-    public GetCompanyResponse toGetCompanyResponse(CompanyEntity company, CompanyFetchMode fetchMode) {
+    public GetCompanyResponse toGetCompanyResponse(CompanyEntity company, String s3ImageUrl, CompanyFetchMode fetchMode) {
         GetCompanyResponse.GetCompanyResponseBuilder builder = GetCompanyResponse.builder()
                 .companyId(company.getUserId())
                 .defaultMaxConcurrentServices(company.getDefaultMaxConcurrentServices())
@@ -26,7 +26,7 @@ public class CompanyMapper {
                 .phoneNumber(company.getPhoneNumber())
                 .emailAddress(company.getEmailAddress())
                 .physicalAddress(company.getPhysicalAddress())
-                .s3ImageKey(company.getS3ImageKey())
+                .s3ImageUrl(s3ImageUrl)
                 .description(company.getDescription())
                 .rattingAvg(company.getRattingAvg());
 
