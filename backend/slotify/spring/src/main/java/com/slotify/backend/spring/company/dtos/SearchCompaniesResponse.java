@@ -14,16 +14,14 @@ public class SearchCompaniesResponse {
     private String physicalAddress;
     private String description;
     private Short rattingAvg;
-    private String s3ImageUrl;
 
-    public static SearchCompaniesResponse from(CompanyDocument doc, String s3ImageUrl) {
+    public static SearchCompaniesResponse from(CompanyDocument doc) {
         return SearchCompaniesResponse.builder()
                 .companyId(UUID.fromString(doc.getCompanyId()))
                 .companyName(doc.getCompanyName())
                 .physicalAddress(doc.getPhysicalAddress())
                 .description(doc.getDescription())
                 .rattingAvg(doc.getRattingAvg())
-                .s3ImageUrl(s3ImageUrl)
                 .build();
     }
 }

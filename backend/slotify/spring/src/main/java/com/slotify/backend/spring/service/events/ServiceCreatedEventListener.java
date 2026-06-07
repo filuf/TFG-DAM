@@ -60,7 +60,6 @@ public class ServiceCreatedEventListener {
                 .companyName(companyDocument.getCompanyName())
                 .description(companyDocument.getDescription())
                 .physicalAddress(companyDocument.getPhysicalAddress())
-                .s3ImageKey(companyDocument.getS3ImageKey())
                 .services(serviceList)
                 .build();
 
