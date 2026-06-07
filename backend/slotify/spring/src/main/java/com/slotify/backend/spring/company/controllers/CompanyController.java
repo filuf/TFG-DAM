@@ -2,21 +2,30 @@ package com.slotify.backend.spring.company.controllers;
 
 import com.slotify.backend.spring.company.dtos.GetCompanyResponse;
 import com.slotify.backend.spring.company.dtos.GetServicesResponse;
+import com.slotify.backend.spring.company.dtos.PatchCompanyRequest;
+import com.slotify.backend.spring.company.dtos.PatchCompanyResponse;
 import com.slotify.backend.spring.company.dtos.SearchCompaniesResponse;
 import com.slotify.backend.spring.company.enums.CompanyFetchMode;
 import com.slotify.backend.spring.company.useCases.GetCompanyUseCase;
 import com.slotify.backend.spring.company.useCases.GetServicesUseCase;
+import com.slotify.backend.spring.company.useCases.PatchCompanyUseCase;
 import com.slotify.backend.spring.company.useCases.SearchCompaniesUseCase;
 import com.slotify.backend.spring.service.enums.ServiceFetchMode;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 
@@ -29,6 +38,27 @@ public class CompanyController {
     private final GetServicesUseCase getServicesUseCase;
     private final SearchCompaniesUseCase searchCompaniesUseCase;
     private final GetCompanyUseCase getCompanyUseCase;
+    private final PatchCompanyUseCase patchCompanyUseCase;
+
+    @PatchMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasRole('COMPANY')")
+    public ResponseEntity<PatchCompanyResponse> patchCompany(
+            @RequestPart(value = "file", required = false) MultipartFile file,
+            @RequestPart("request") @Valid PatchCompanyRequest request,
+            @AuthenticationPrincipal Jwt jwt
+    ) throws IOException {
+        PatchCompanyResponse response = this.patchCompanyUseCase.patchCompany(
+                UUID.fromString(jwt.getSubject()),
+                file,
+                request.getDefaultMaxConcurrentServicesJsonNullable(),
+                request.getCompanyNameJsonNullable(),
+                request.getPhoneNumberJsonNullable(),
+                request.getPhysicalAddressJsonNullable(),
+                request.getDescriptionJsonNullable()
+        );
+
+        return ResponseEntity.ok(response);
+    }
 
 
     @GetMapping("/{companyId}")
