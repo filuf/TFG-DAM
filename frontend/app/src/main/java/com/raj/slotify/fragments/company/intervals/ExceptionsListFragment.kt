@@ -54,10 +54,28 @@ class ExceptionsListFragment : Fragment() {
                 loadIntervals()
             }
         }
+
+        intervalViewModel.intervalUpdated.observe(viewLifecycleOwner) { response ->
+            if (response != null) {
+                intervalViewModel.clearUpdated()
+                loadIntervals()
+            }
+        }
+
+        intervalViewModel.intervalDeletedResponse.observe(viewLifecycleOwner) { response ->
+            if (response != null) {
+                intervalViewModel.clearDeleted()
+                loadIntervals()
+            }
+        }
     }
 
     private fun setupRecyclerView(view: View) {
-        adapter = IntervalsListAdapter(mutableListOf()) { }
+        adapter = IntervalsListAdapter(mutableListOf()) { interval ->
+            intervalViewModel.selectInterval(interval)
+            view.findNavController()
+                .navigate(R.id.action_exceptionsListFragment_to_editExceptionFragment)
+        }
         binding.exceptionsRecycler.adapter = adapter
         binding.exceptionsRecycler.layoutManager = LinearLayoutManager(requireContext())
     }

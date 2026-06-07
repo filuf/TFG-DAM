@@ -73,10 +73,18 @@
         <action
             android:id="@+id/action_exceptionsListFragment_to_addExceptionFragment"
             app:destination="@id/addExceptionFragment" />
+        <action
+            android:id="@+id/action_exceptionsListFragment_to_editExceptionFragment"
+            app:destination="@id/editExceptionFragment" />
     </fragment>
     <fragment
         android:id="@+id/addExceptionFragment"
         android:name="com.raj.slotify.fragments.company.intervals.AddExceptionFragment"
         android:label="fragment_add_exception"
         tools:layout="@layout/fragment_add_exception" />
+    <fragment
+        android:id="@+id/editExceptionFragment"
+        android:name="com.raj.slotify.fragments.company.intervals.EditExceptionFragment"
+        android:label="fragment_edit_exception"
+        tools:layout="@layout/fragment_edit_exception" />
 </navigation>

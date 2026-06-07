@@ -126,11 +126,13 @@
     <string name="start_word">Inicio</string>
     <string name="end_word">Fin</string>
     <string name="add_exception">Agregar una excepción</string>
+    <string name="edit_exception">Editar una excepción</string>
     <string name="establish_a_period">Establezca el período correspondiente</string>
     <string name="establish_period_button">ESTABLECE EL PERIODO</string>
     <string name="number_of_services_with_exception">Número de servicios simultáneos con la excepción aplicada</string>
     <string name="established_period">Periodo establecido</string>
     <string name="discard_word">Descartar</string>
+    <string name="discard_changes_link">&#8592; Descartar cambios</string>
     <string name="select_service_to_edit">Seleccione un servicio para editarlo</string>
     <string name="enter_name_description_photo">Escoja el nombre, descripción y una foto</string>
     <string name="edit_the_service">Edite el servicio</string>
@@ -142,6 +144,8 @@
     <string name="set_shedules_button">SELECCIONE HORARIOS</string>
     <string name="selected_days">Días seleccionados</string>
     <string name="delete_word">Eliminar</string>
+    <string name="delete_exception_title">Eliminar excepción</string>
+    <string name="delete_exception_confirmation">¿Está seguro de que desea eliminar esta excepción?</string>
     <string name="return_to_service_settings">Volver a la configuración del servicio</string>
     <string name="edit_the_schedule">Editar el horario</string>
     <string name="schedule_explication">Seleccione los días de la semana que desee ofrecer servicio</string>
