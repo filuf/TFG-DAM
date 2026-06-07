@@ -1,6 +1,7 @@
 package com.slotify.backend.spring.company.dtos;
 
 import com.slotify.backend.spring.company.models.CompanyDocument;
+import com.slotify.backend.spring.company.models.CompanyEntity;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -14,14 +15,5 @@ public class SearchCompaniesResponse {
     private String physicalAddress;
     private String description;
     private Short rattingAvg;
-
-    public static SearchCompaniesResponse from(CompanyDocument doc) {
-        return SearchCompaniesResponse.builder()
-                .companyId(UUID.fromString(doc.getCompanyId()))
-                .companyName(doc.getCompanyName())
-                .physicalAddress(doc.getPhysicalAddress())
-                .description(doc.getDescription())
-                .rattingAvg(doc.getRattingAvg())
-                .build();
-    }
+    private String s3ImageUrl;
 }

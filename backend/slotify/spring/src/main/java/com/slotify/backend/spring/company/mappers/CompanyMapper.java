@@ -1,6 +1,7 @@
 package com.slotify.backend.spring.company.mappers;
 
 import com.slotify.backend.spring.company.dtos.GetCompanyResponse;
+import com.slotify.backend.spring.company.dtos.SearchCompaniesResponse;
 import com.slotify.backend.spring.company.enums.CompanyFetchMode;
 import com.slotify.backend.spring.company.models.CompanyEntity;
 import com.slotify.backend.spring.service.dtos.ServiceSummary;
@@ -41,5 +42,16 @@ public class CompanyMapper {
         }
 
         return builder.build();
+    }
+
+    public SearchCompaniesResponse toSearchCompaniesResponse(CompanyEntity companyEntity, String s3ImageUrl) {
+        return SearchCompaniesResponse.builder()
+                .companyId(companyEntity.getUserId())
+                .companyName(companyEntity.getCompanyName())
+                .physicalAddress(companyEntity.getPhysicalAddress())
+                .description(companyEntity.getDescription())
+                .rattingAvg(companyEntity.getRattingAvg())
+                .s3ImageUrl(s3ImageUrl)
+                .build();
     }
 }
