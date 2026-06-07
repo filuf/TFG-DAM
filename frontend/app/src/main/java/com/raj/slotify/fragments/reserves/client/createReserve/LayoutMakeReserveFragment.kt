@@ -5,13 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.NavHostFragment
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentLayoutMakeReserveBinding
+import com.raj.slotify.tools.MessageAlerts.showCancelAppointmentButton
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
 
@@ -46,13 +45,13 @@ class LayoutMakeReserveFragment : Fragment() {
         val confirmButton = binding.confirmNewReserveButton
 
         cancelButton.setOnClickListener {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle(getString(R.string.reserve_cancelation_title))
-                .setMessage(getString(R.string.reserve_cancelation_confirmation))
-                .setNegativeButton(getString(R.string.negation_word), null)
-                .setPositiveButton(getString(R.string.yes_word)) { dialog, which ->
+            showCancelAppointmentButton(
+                requireContext(),
+                onCancel = null,
+                onConfirm = {
                     requireActivity().finish()
-                }.show()
+                }
+            )
         }
 
         goBackButton.setOnClickListener {
@@ -68,7 +67,10 @@ class LayoutMakeReserveFragment : Fragment() {
         }
 
         confirmButton.setOnClickListener {
-            Toast.makeText(requireContext(), "Has confirmado", Toast.LENGTH_SHORT).show()
+            confirmButton.isEnabled = false
+            layoutViewModel.onConfirmClicked()
+
+            confirmButton.postDelayed({ confirmButton.isEnabled = true }, 2000)
         }
 
         // Set buttons visibility observers

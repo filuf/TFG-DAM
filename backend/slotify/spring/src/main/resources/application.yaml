@@ -32,8 +32,6 @@ spring:
     uris: http://${ELASTIC_HOST:elastic-es-http}:9200
     username: elastic
     password: ${ELASTIC_PASSWORD}
-    ssl:
-      verification-mode: none
 
   # KEYCLOAK
   security:

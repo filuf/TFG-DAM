@@ -13,10 +13,10 @@
 
         <TextView
             android:id="@+id/textTitleServices"
+            style="@style/TextAppearance.Slotify.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/services_word"
-            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

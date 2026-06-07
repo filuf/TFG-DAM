@@ -10,8 +10,14 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -19,6 +25,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import coil.load
 import com.raj.slotify.R
 import com.raj.slotify.activities.LogOutActivity
 import com.raj.slotify.activities.client.MakeReserveActivity
@@ -64,22 +71,120 @@ class MainFragment : Fragment() {
         val navHostFragment = childFragmentManager.findFragmentById(R.id.navHostFragmentHome) as NavHostFragment
         val navController = navHostFragment.navController
 
-        // SET TOOLBAR
-        val activity = requireActivity() as androidx.appcompat.app.AppCompatActivity
-        activity.setSupportActionBar(binding.toolbar)
+        val activity = requireActivity() as AppCompatActivity
 
-        // SET DRAWER TOGGLE
-        drawerToggle = ActionBarDrawerToggle(
-            activity,
-            binding.drawerLayout,
-            binding.toolbar,
-            R.string.open_drawer,
-            R.string.close_drawer
+        setUpToolbar(activity)
+
+        observeUserType(navController)
+
+        configViewPaddings()
+
+        setUpNavController(navController)
+
+        overrideBackButtonBehaviour(activity, navController)
+
+        setNavViewHeader()
+    }
+
+    private fun setNavViewHeader() {
+        val headerView = binding.navigationView.getHeaderView(0)
+
+        if (headerView == null) {
+            Log.e("MainFragment", "No se encontró el Header del NavigationView")
+            return
+        }
+
+        val userNameHeader = headerView.findViewById<TextView>(R.id.tv_user_name_header)
+        val userImageHeader = headerView.findViewById<ImageView>(R.id.iv_user_profile)
+
+        userDataViewModel.name.observe(viewLifecycleOwner) { name ->
+            if (name != null) {
+                userNameHeader?.text = name
+            }
+        }
+
+        userDataViewModel.imageUri.observe(viewLifecycleOwner) { imageUri ->
+            if (imageUri != null) {
+                userImageHeader.load(imageUri) {
+                    crossfade(true)
+                    error(R.drawable._logoslotify_retocado)
+                }
+            }
+        }
+    }
+
+    private fun overrideBackButtonBehaviour(
+        activity: AppCompatActivity,
+        navController: NavController
+    ) {
+        activity.onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    // IF LATERAL MENU IS OPEN CLOSE IT
+                    if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                        binding.drawerLayout.closeDrawer(GravityCompat.START)
+                    }
+                    // IF NAV CONTROLLER CAN GO BACK
+                    else if (navController.previousBackStackEntry != null) {
+                        navController.popBackStack()
+                    }
+                    // IF NAV CONTROLLER CANNOT GO BACK
+                    else {
+                        requireActivity().finishAffinity()
+                    }
+                }
+            }
         )
-        binding.drawerLayout.addDrawerListener(drawerToggle)
-        drawerToggle.syncState()
+    }
 
-        // OBSERVE USER TYPE
+    private fun setUpNavController(navController: NavController) {
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.main_toolbar_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.settingsFragment -> {
+                        navigateSafely(navController, R.id.settingsFragment)
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner)
+
+        // SET UP MENUS
+        val hamburgerIcon = drawerToggle.drawerArrowDrawable
+        hamburgerIcon.progress = 0f // 0 is hamburger icon
+        binding.toolbar.navigationIcon = hamburgerIcon
+
+        layoutViewModel.bottomNavVisibility.observe(viewLifecycleOwner) { visibility ->
+            binding.bottomNavigationView.visibility = visibility
+        }
+    }
+
+    private fun configViewPaddings() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, 0, systemBars.right, 0)
+
+            binding.toolbar.setPadding(0, systemBars.top, 0, 0)
+            binding.navigationView.setPadding(0, systemBars.top, 0, 0)
+
+            binding.bottomNavigationView.updatePadding(bottom = systemBars.bottom)
+            insets
+        }
+        val window = requireActivity().window
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            window.isNavigationBarContrastEnforced = false
+        }
+    }
+
+    private fun observeUserType(navController: NavController) {
         userDataViewModel.userType.observe(viewLifecycleOwner) { userType ->
             Log.i("userType", userType)
 
@@ -97,92 +202,29 @@ class MainFragment : Fragment() {
             binding.bottomNavigationView.setupWithNavController(navController)
             binding.navigationView.setupWithNavController(navController)
 
-            // Override Home tab: always pop back to homeFragment root, never restore sub-navigation
-            // (prevents ExceptionsListFragment from being "restored" when switching tabs back to Home)
-            binding.bottomNavigationView.setOnItemSelectedListener { item ->
-                if (item.itemId == R.id.homeFragment) {
-                    navController.popBackStack(R.id.homeFragment, false)
-                    true
-                } else {
-                    androidx.navigation.ui.NavigationUI.onNavDestinationSelected(item, navController)
-                }
-            }
-
             setupDrawerClickListeners(navController)
 
             drawerToggle.syncState()
         }
+    }
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, 0, systemBars.right, 0)
+    private fun setUpToolbar(activity: AppCompatActivity) {
+        activity.setSupportActionBar(binding.toolbar)
 
-            binding.toolbar.setPadding(0, systemBars.top, 0, 0)
-            binding.navigationView.setPadding(0, systemBars.top, 0, 0)
+        // SET DRAWER TOGGLE
+        drawerToggle = ActionBarDrawerToggle(
+            activity,
+            binding.drawerLayout,
+            binding.toolbar,
+            R.string.open_drawer,
+            R.string.close_drawer
+        )
+        binding.drawerLayout.addDrawerListener(drawerToggle)
+        drawerToggle.syncState()
+    }
 
-            binding.bottomNavigationView.updatePadding(bottom = systemBars.bottom)
-            insets
-        }
-
-        // SET UP TOOLBAR
-        val menuHost: androidx.core.view.MenuHost = requireActivity()
-        menuHost.addMenuProvider(object : androidx.core.view.MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.main_toolbar_menu, menu)
-            }
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
-                    R.id.settingsFragment -> {
-                        navigateSafely(navController, R.id.settingsFragment)
-                        true
-                    }
-                    else -> false
-                }
-            }
-        }, viewLifecycleOwner)
-
-        // SET UP MENUS
-        val hamburgerIcon = drawerToggle.drawerArrowDrawable
-        hamburgerIcon.progress = 0f // 0 is hamburger icon
-        binding.toolbar.navigationIcon = hamburgerIcon
-
-        layoutViewModel.bottomNavVisibility.observe(viewLifecycleOwner) { visibility ->
-            binding.bottomNavigationView.visibility = visibility
-        }
-
-        // EXTEND BOTTOM NAVIGATION IN SYSTEM NAV BAR
-        val window = requireActivity().window
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-            window.isNavigationBarContrastEnforced = false
-        }
-
-        // KEEP HOME TAB SELECTED WHEN NAVIGATING TO EXCEPTION SUB-SCREENS
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.exceptionsListFragment, R.id.addExceptionFragment -> {
-                    binding.bottomNavigationView.menu.findItem(R.id.homeFragment)?.isChecked = true
-                }
-            }
-        }
-
-        // BLOCK SYSTEM BACK BUTTON OR GO BACK IN NAV
-        activity.onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                // IF LATERAL MENU IS OPEN CLOSE IT
-                if (binding.drawerLayout.isDrawerOpen(androidx.core.view.GravityCompat.START)) {
-                    binding.drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START)
-                }
-                // IF NAV CONTROLLER CAN GO BACK
-                else if (navController.previousBackStackEntry != null) {
-                    navController.popBackStack()
-                }
-                // IF NAV CONTROLLER CANNOT GO BACK
-                else {
-                    requireActivity().finishAffinity()
-                }
-            }
-        })
-
+    fun syncToolbar() {
+        drawerToggle.syncState()
     }
 
     private fun navigateSafely(navController: NavController, destinationId: Int) {

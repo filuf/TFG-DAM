@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.raj.slotify.BuildConfig
 import com.raj.slotify.R
 import com.raj.slotify.viewModels.room.TokenViewModel
 import net.openid.appauth.AuthorizationService
@@ -70,12 +71,12 @@ class LogOutActivity : AppCompatActivity() {
             Log.i("Log out activity", "Iniciando proceso de Logout")
 
             // 1. IMPORTANTE: Usamos la URL que configuramos para Keycloak
-            val keycloakUrl = "http://auth.10.0.2.2.nip.io"
+            val keycloakUrl = BuildConfig.KEYCLOAK_BASE_URL
             val serviceConfig = AuthorizationServiceConfiguration(
-                "http://auth.10.0.2.2.nip.io/realms/slotify/protocol/openid-connect/auth".toUri(),
-                "http://auth.10.0.2.2.nip.io/realms/slotify/protocol/openid-connect/token".toUri(),
+                "$keycloakUrl/realms/slotify/protocol/openid-connect/auth".toUri(),
+                "$keycloakUrl/realms/slotify/protocol/openid-connect/token".toUri(),
                 null,
-                "http://auth.10.0.2.2.nip.io/realms/slotify/protocol/openid-connect/logout".toUri()
+                "$keycloakUrl/realms/slotify/protocol/openid-connect/logout".toUri()
             )
 
             val endSessionRequest = EndSessionRequest.Builder(serviceConfig)

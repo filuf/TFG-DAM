@@ -32,7 +32,11 @@
         android:id="@+id/settingsFragment"
         android:name="com.raj.slotify.fragments.general.SettingsFragment"
         android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_languageFragment"
+            app:destination="@id/languageFragment" />
+    </fragment>
     <fragment
         android:id="@+id/calendarFragment"
         android:name="com.raj.slotify.fragments.general.CalendarFragment"
@@ -44,18 +48,13 @@
     </fragment>
     <fragment
         android:id="@+id/viewAllReservesFragment"
-        android:name="com.raj.slotify.fragments.general.ViewAllReservesFragment"
+        android:name="com.raj.slotify.fragments.general.ViewReservesFragment"
         android:label="fragment_view_all_reserves"
-        tools:layout="@layout/fragment_view_all_reserves" >
+        tools:layout="@layout/fragment_view_reserves" >
         <action
             android:id="@+id/action_viewAllReservesFragment_to_reserveDetailsFragment"
             app:destination="@id/reserveDetailsFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/chatForInqueriesFragment"
-        android:name="com.raj.slotify.fragments.client.ChatForInqueriesFragment"
-        android:label="fragment_chat_for_inqueries"
-        tools:layout="@layout/fragment_chat_for_inqueries" />
     <fragment
         android:id="@+id/languageFragment"
         android:name="com.raj.slotify.fragments.general.LanguageFragment"

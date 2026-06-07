@@ -17,7 +17,7 @@ import java.util.UUID
 
 class IntervalViewModel : ViewModel() {
 
-    val service = RetrofitInstance.getService(IntervalService::class.java)
+    private val service = RetrofitInstance.getService(IntervalService::class.java)
 
     private val _intervals = MutableLiveData<Response<List<IntervalSummary>>?>()
     val intervals: LiveData<Response<List<IntervalSummary>>?> = _intervals
@@ -40,21 +40,38 @@ class IntervalViewModel : ViewModel() {
 
     fun createInterval(authHeader: String, createIntervalRequest: CreateIntervalRequest) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = service.createInterval(authHeader, createIntervalRequest)
-            if (!response.isSuccessful) {
-                Log.e("IntervalViewModel", "Error creando intervalo: ${response.code()}: ${response.message()}")
+            try {
+                val response = service.createInterval(authHeader, createIntervalRequest)
+                if (!response.isSuccessful) {
+                    Log.e(
+                        "Error en IntervalViewModel",
+                        "Error intentando crear intervalo: ${response.code()}: ${response.message()}"
+                    )
+                }
+                _intervalCreated.postValue(response)
+            } catch (e: Exception) {
+                Log.e("Error en IntervalViewModel", "Error intentando crear intervalo: ${e.message}")
+                _intervalCreated.postValue(null)
             }
-            _intervalCreated.postValue(response)
+
         }
     }
 
     fun deleteInterval(authHeader: String, intervalId: UUID) {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = service.deleteInterval(authHeader, intervalId)
-            if (!response.isSuccessful) {
-                Log.e("IntervalViewModel", "Error eliminando intervalo: ${response.code()}: ${response.message()}")
+            try {
+                val response = service.deleteInterval(authHeader, intervalId)
+                if (!response.isSuccessful) {
+                    Log.e(
+                        "Error en IntervalViewModel",
+                        "Error intentando eliminar intervalo: ${response.code()}: ${response.message()}"
+                    )
+                }
+                _intervalDeletedResponse.postValue(response)
+            } catch (e: Exception) {
+                Log.e("Error en IntervalViewModel", "Error intentando eliminar intervalo: ${e.message}")
+                _intervalDeletedResponse.postValue(null)
             }
-            _intervalDeletedResponse.postValue(response)
         }
     }
 

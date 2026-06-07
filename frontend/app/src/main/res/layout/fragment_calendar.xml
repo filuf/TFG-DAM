@@ -9,7 +9,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="32dp"
         android:paddingVertical="32dp">
 
         <TextView
@@ -17,17 +16,19 @@
             style="@style/TextAppearance.Slotify.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
             android:text="@string/calendar"
-            android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
             app:cardCornerRadius="15dp"
-            app:cardElevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titleCalendar">
 
@@ -35,7 +36,8 @@
                 android:id="@+id/calendarView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:headerColor="@color/nav_item_color" />
+                app:headerColor="?attr/colorPrimary"
+                app:todayLabelColor="?attr/colorPrimary"/>
         </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
