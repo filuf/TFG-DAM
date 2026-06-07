@@ -18,7 +18,7 @@ import com.raj.slotify.dtos.registry.client.RegisterUserRequest
 import com.raj.slotify.dtos.registry.company.RegisterCompanyRequest
 import com.raj.slotify.models.TextModel
 import com.raj.slotify.viewModels.apiRest.RegisterUserViewModel
-import com.raj.slotify.viewModels.frontend.EnterpriseRegistryViewModel
+import com.raj.slotify.viewModels.frontend.EnterpriseDataViewModel
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
 import com.raj.slotify.viewModels.frontend.UserDataViewModel
@@ -27,7 +27,7 @@ class EndRegistryFragment : Fragment() {
 
     private val viewModel: MainViewModel by activityViewModels()
     private val userDataViewModel: UserDataViewModel by activityViewModels()
-    private val enterpriseViewModel: EnterpriseRegistryViewModel by activityViewModels()
+    private val enterpriseViewModel: EnterpriseDataViewModel by activityViewModels()
     private val layoutViewModel: LayoutViewModel by activityViewModels()
 
     private val registerUserViewModel: RegisterUserViewModel by activityViewModels()

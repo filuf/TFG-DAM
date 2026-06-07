@@ -25,6 +25,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import coil.load
 import com.raj.slotify.R
 import com.raj.slotify.activities.LogOutActivity
 import com.raj.slotify.activities.client.MakeReserveActivity
@@ -104,7 +105,10 @@ class MainFragment : Fragment() {
 
         userDataViewModel.imageUri.observe(viewLifecycleOwner) { imageUri ->
             if (imageUri != null) {
-                userImageHeader?.setImageURI(imageUri)
+                userImageHeader.load(imageUri) {
+                    crossfade(true)
+                    error(R.drawable._logoslotify_retocado)
+                }
             }
         }
     }
@@ -130,7 +134,8 @@ class MainFragment : Fragment() {
                         requireActivity().finishAffinity()
                     }
                 }
-            })
+            }
+        )
     }
 
     private fun setUpNavController(navController: NavController) {
