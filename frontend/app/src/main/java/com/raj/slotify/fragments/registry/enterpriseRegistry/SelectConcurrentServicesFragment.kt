@@ -11,7 +11,7 @@ import androidx.navigation.findNavController
 import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentSelectConcurrentServicesBinding
 import com.raj.slotify.models.TextModel
-import com.raj.slotify.viewModels.frontend.EnterpriseRegistryViewModel
+import com.raj.slotify.viewModels.frontend.EnterpriseDataViewModel
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
 import kotlinx.coroutines.launch
@@ -21,7 +21,7 @@ class SelectConcurrentServicesFragment : Fragment() {
 
     private val viewModel: MainViewModel by activityViewModels()
     private val layoutViewModel: LayoutViewModel by activityViewModels()
-    private val enterpriseViewModel: EnterpriseRegistryViewModel by activityViewModels()
+    private val enterpriseViewModel: EnterpriseDataViewModel by activityViewModels()
 
     private lateinit var binding: FragmentSelectConcurrentServicesBinding
 
@@ -32,7 +32,7 @@ class SelectConcurrentServicesFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         layoutViewModel.setExplicationVisibility(View.VISIBLE)
 
         viewModel.setTitle(TextModel(R.string.enter_simultaneous_services))

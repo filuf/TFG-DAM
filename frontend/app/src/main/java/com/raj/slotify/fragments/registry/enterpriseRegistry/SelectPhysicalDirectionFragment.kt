@@ -20,7 +20,7 @@ import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentSelectPhysicalDirectionBinding
 import com.raj.slotify.dtos.maps.PlaceSuggestion
 import com.raj.slotify.adapters.SuggestionAdapter
-import com.raj.slotify.viewModels.frontend.EnterpriseRegistryViewModel
+import com.raj.slotify.viewModels.frontend.EnterpriseDataViewModel
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
 import com.raj.slotify.viewModels.frontend.MapViewModel
@@ -39,7 +39,7 @@ class SelectPhysicalDirectionFragment : Fragment(), OnMapReadyCallback {
     private val viewModel: MainViewModel by activityViewModels()
     private val userViewModel: UserDataViewModel by activityViewModels()
     private val layoutViewModel: LayoutViewModel by activityViewModels()
-    private val enterpriseViewModel: EnterpriseRegistryViewModel by activityViewModels()
+    private val enterpriseViewModel: EnterpriseDataViewModel by activityViewModels()
     private val mapViewModel: MapViewModel by activityViewModels()
 
     private lateinit var binding: FragmentSelectPhysicalDirectionBinding
@@ -89,7 +89,8 @@ class SelectPhysicalDirectionFragment : Fragment(), OnMapReadyCallback {
         val textUbication = binding.textInputUbication
 
         // SET THE TEXT OF THE VIEWMODEL IF EXITS
-        val textUbicationViewModel: String? = enterpriseViewModel.ubicationPlaceSuggestion.value?.displayName
+        var textUbicationViewModel: String? = enterpriseViewModel.ubicationPlaceSuggestion.value?.displayName
+        textUbicationViewModel = userViewModel.serviceLocation.value?: textUbicationViewModel
 
         if (textUbicationViewModel != null) {
             textUbication.setText(textUbicationViewModel)
@@ -148,6 +149,22 @@ class SelectPhysicalDirectionFragment : Fragment(), OnMapReadyCallback {
             layoutViewModel.nextButtonClicked.collect {
                 enterpriseViewModel.setUbicationCords(placeSuggestion)
                 view.findNavController().navigate(R.id.action_selectPhysicalDirectionFragment_to_selectConcurrentServicesFragment)
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            layoutViewModel.confirmButtonClicked.collect {
+                userViewModel.setServiceLocation(textUbication.text.toString())
+
+                Log.i("TextUbication", textUbication.text.toString())
+
+                view.findNavController().popBackStack(R.id.companyEditDataFragment, false)
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            layoutViewModel.backButtonClicked.collect {
+                view.findNavController().popBackStack()
             }
         }
     }
