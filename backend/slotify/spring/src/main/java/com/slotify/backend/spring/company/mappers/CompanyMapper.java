@@ -54,6 +54,9 @@ public class CompanyMapper {
                 .physicalAddress(company.getPhysicalAddress())
                 .s3ImageUrl(s3ImageUrl)
                 .description(company.getDescription())
+                .build();
+    }
+
     public SearchCompaniesResponse toSearchCompaniesResponse(CompanyEntity companyEntity, String s3ImageUrl) {
         return SearchCompaniesResponse.builder()
                 .companyId(companyEntity.getUserId())
