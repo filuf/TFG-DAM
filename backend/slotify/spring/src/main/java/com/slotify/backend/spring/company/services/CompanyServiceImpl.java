@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,6 +24,11 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public Optional<CompanyEntity> findCompanyById(UUID companyId) {
         return this.companyRepository.findById(companyId);
+    }
+
+    @Override
+    public List<CompanyEntity> findCompaniesById(List<UUID> companiesId) {
+        return this.companyRepository.findAllById(companiesId);
     }
 
     @Override
