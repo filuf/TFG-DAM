@@ -21,50 +21,65 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:layout="@layout/fragment_up" />
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragmentDownCreateReserve"
-            android:name="androidx.navigation.fragment.NavHostFragment"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="32dp"
-            android:paddingBottom="50dp"
-            app:defaultNavHost="true"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="#00FFFFFF"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toTopOf="@id/buttonLayout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fragmentUpMain"
-            app:navGraph="@navigation/nav_graph_make_reserve" />
+            app:layout_constraintTop_toBottomOf="@id/fragmentUpMain">
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/fragmentDownCreateReserve"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:defaultNavHost="true"
+                app:navGraph="@navigation/nav_graph_make_reserve" />
+
+        </androidx.cardview.widget.CardView>
+
+
+
+        <LinearLayout
+            android:id="@+id/buttonLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:layout_marginStart="32dp"
+            android:layout_marginBottom="32dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/cancelNewReserveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="0"
+                android:text="@string/cancel" />
+
+            <Button
+                android:id="@+id/goBackNewReserveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="0"
+                android:text="@string/go_back" />
+
+            <Button
+                android:id="@+id/confirmNewReserveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="@string/confirm" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:layout_marginStart="32dp"
-        android:layout_marginBottom="32dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/cancelNewReserveButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="0"
-            android:text="@string/cancel" />
-
-        <Button
-            android:id="@+id/goBackNewReserveButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="0"
-            android:text="@string/go_back" />
-
-        <Button
-            android:id="@+id/confirmNewReserveButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:text="@string/confirm" />
-    </LinearLayout>
 
 </FrameLayout>

@@ -9,12 +9,18 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.google.devtools.ksp")
+    id("kotlin-parcelize")
     alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
 }
 
 android {
     namespace = "com.raj.slotify"
     compileSdk = 36 // Actualizado a 36 para soportar las nuevas versiones de androidx.activity
+
+    buildFeatures {
+        viewBinding = true
+        buildConfig = true
+    }
 
     defaultConfig {
         applicationId = "com.raj.slotify"
@@ -29,17 +35,16 @@ android {
             "appAuthRedirectScheme" to "com.raj.slotify"
         )
 
-        buildConfigField("Boolean", "DEBUG_MODE", "false")
-        buildConfigField("String", "SPRING_BASE_URL", "\"http://api.10.0.2.2.nip.io/\"")
-        buildConfigField("String", "SPRING_TEST_URL", "\"http://10.0.2.2:8080/\"")
+        // TODO: CAMBIAR IPS
+
+        val APP_IP_ADDRESS = "10.0.2.2"
+        buildConfigField("String", "KEYCLOAK_IP_AUTH_ADRESS", "\"127.0.0.1\"")
+
+        buildConfigField("String", "SPRING_BASE_URL", "\"http://api.$APP_IP_ADDRESS.nip.io/\"")
+        buildConfigField("String", "KEYCLOAK_BASE_URL", "\"http://auth.$APP_IP_ADDRESS.nip.io/\"")
 
         val mapsKey = localProperties.getProperty("GOOGLE_MAPS_KEY") ?: ""
         manifestPlaceholders["GOOGLE_MAPS_KEY"] = mapsKey
-    }
-
-    buildFeatures {
-        viewBinding = true
-        buildConfig = true
     }
 
     buildTypes {
@@ -62,6 +67,7 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/androidx.cardview_cardview.version"
         }
     }
 }
@@ -76,10 +82,14 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.fragment)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.cardview)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.activity)
     implementation("com.applandeo:material-calendar-view:1.9.2")
+    implementation(libs.androidx.coordinatorlayout)
+    implementation(libs.androidx.viewpager2)
+    implementation(libs.androidx.cardview)
+    implementation(libs.cardview.v7)
+    implementation(libs.androidx.legacy.support.v4)
 
     // Retrofit
     val retrofit_version = "2.9.0"

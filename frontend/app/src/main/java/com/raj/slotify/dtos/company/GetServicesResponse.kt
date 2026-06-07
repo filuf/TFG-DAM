@@ -18,9 +18,9 @@ data class GetServicesResponse(
     val servicePriceCent: Int,
 
     @SerializedName("s3ImageKey")
-    val s3ImageKey: String,
+    val s3ImageKey: String?,
 
     @SerializedName("description")
-    val description: String
+    val description: String?
 
 )

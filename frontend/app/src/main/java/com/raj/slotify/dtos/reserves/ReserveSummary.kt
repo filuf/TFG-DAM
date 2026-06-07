@@ -1,9 +1,12 @@
 package com.raj.slotify.dtos.reserves
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
 import java.util.UUID
 
-abstract class ReserveSummary {
+@Parcelize
+sealed class ReserveSummary : Parcelable {
     abstract val reserveId: UUID
     abstract val serviceId: UUID
     abstract val startDateTime: LocalDateTime

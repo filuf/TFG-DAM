@@ -14,6 +14,7 @@ import com.raj.slotify.databinding.FragmentReserveDetailsClientBinding
 import com.raj.slotify.dtos.reserves.CompanyReserveSummary
 import com.raj.slotify.dtos.reserves.UserReserveSummary
 import com.raj.slotify.dtos.service.ServiceSummary
+import com.raj.slotify.tools.TextUtils
 import com.raj.slotify.viewModels.apiRest.ReservesViewModel
 import com.raj.slotify.viewModels.apiRest.ServiceViewModel
 import com.raj.slotify.viewModels.frontend.ClientReservesViewModel
@@ -33,7 +34,6 @@ class ReserveDetailsFragment : Fragment() {
     private val reservesViewModel: ReservesViewModel by activityViewModels()
 
     private lateinit var binding: FragmentReserveDetailsClientBinding
-
     private var serviceWithSchedules: ServiceSummary? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +74,14 @@ class ReserveDetailsFragment : Fragment() {
         clientReservesViewModel.lastReserveSelected.observe(viewLifecycleOwner) { reserveSummary ->
 
             binding.serviceNameText.text = reserveSummary.serviceName
-            binding.descText.text = serviceWithSchedules?.description?:"null"
+            val description = serviceWithSchedules?.description
+
+            if (description.isNullOrEmpty()) {
+                binding.descText.visibility = View.GONE
+            } else {
+                binding.descText.visibility = View.VISIBLE
+                binding.descText.text = description
+            }
 
             // GET SERVICE TO OBTAIN DESCRIPTION
             serviceViewModel.getServiceWithSchedules(reserveSummary.serviceId, userToken)
@@ -97,10 +104,9 @@ class ReserveDetailsFragment : Fragment() {
                     val s3ImageUrl: String? = reserveSummary.companyImageUrl
 
                     if (s3ImageUrl != null)
-                        imageView.setImageURI(reserveSummary.companyImageUrl.toUri())
+                        imageView.setImageURI(s3ImageUrl.toUri())
 
-                    val price: Double = (reserveSummary.servicePriceCent/100).toDouble()
-                    binding.priceText.text = "$price ${getString(R.string.coint_format)}"
+                    binding.priceText.text = TextUtils.formatPrice(reserveSummary.servicePriceCent)
 
                     // MAP
                     userDataViewModel.setServiceLocation(reserveSummary.companyPhysicalAddress)
@@ -118,13 +124,13 @@ class ReserveDetailsFragment : Fragment() {
             }
 
             // SET TEXT VIEWS
-
-
             val startTime: LocalDateTime = reserveSummary.startDateTime
-            binding.timeText.text = "${startTime.hour}:${startTime.minute}"
-            binding.dateText.text = "${startTime.dayOfMonth}/${startTime.monthValue}/${startTime.year}"
+            binding.timeText.text = TextUtils.formatTime(startTime.toLocalTime())
+            binding.dateText.text = TextUtils.formatDate(startTime.toLocalDate())
 
-            binding.reserveDurationText.text = "${reserveSummary.minutesDuration} ${getString(R.string.minutes_word)}"
+            val duration = reserveSummary.minutesDuration
+
+            binding.reserveDurationText.text = "$duration ${if (duration == 1) getString(R.string.minute_word) else getString(R.string.minutes_word)}"
 
             fun calculateRemainingText(startTime: LocalDateTime): String {
                 // SET REMAINING TEXT
@@ -146,7 +152,7 @@ class ReserveDetailsFragment : Fragment() {
                 }
             }
 
-            binding.remainingText.text = "(${calculateRemainingText(startTime)})"
+            binding.remainingText.text = "(${calculateRemainingText(startTime).trim()})"
 
         }
     }

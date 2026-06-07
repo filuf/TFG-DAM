@@ -23,11 +23,24 @@
         android:theme="@style/Theme.Slotify"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".activities.EditUserDataActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.company.EditCompanyDataActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.client.EditClientDataActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ReserveDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.LogOutActivity"
             android:exported="false" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="${GOOGLE_MAPS_KEY}"/>
+            android:value="${GOOGLE_MAPS_KEY}" />
 
         <activity
             android:name="net.openid.appauth.RedirectUriReceiverActivity"
@@ -35,24 +48,25 @@
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="com.raj.slotify"/>
+
+                <data android:scheme="com.raj.slotify" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.company.AddEditServiceActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activities.client.MakeReserveActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activities.MainActivity"
-            android:windowSoftInputMode="adjustNothing"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -62,11 +76,11 @@
         <activity
             android:name=".activities.RegistryActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activities.LogInActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
