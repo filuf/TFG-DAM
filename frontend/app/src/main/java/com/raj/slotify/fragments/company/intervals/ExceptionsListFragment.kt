@@ -74,7 +74,7 @@ class ExceptionsListFragment : Fragment() {
         adapter = IntervalsListAdapter(mutableListOf()) { interval ->
             intervalViewModel.selectInterval(interval)
             view.findNavController()
-                .navigate(R.id.action_exceptionsListFragment_to_editExceptionFragment)
+                .navigate(R.id.action_exceptionsListFragment_to_addExceptionFragment)
         }
         binding.exceptionsRecycler.adapter = adapter
         binding.exceptionsRecycler.layoutManager = LinearLayoutManager(requireContext())

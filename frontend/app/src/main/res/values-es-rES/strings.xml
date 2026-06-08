@@ -250,4 +250,18 @@
     <string name="cancel_changes_title">Cancelar cambios</string>
     <string name="cancel_changes_question">¿Está seguro de cancelar los cambios?</string>
     <string name="no_word">NO</string>
+    <string name="select_service_days">Seleccione los días de la semana que desee ofrecer servicio</string>
+    <string name="specify_day_slot">Por cada día seleccionado, especifica una franja horaria</string>
+    <string name="start_hour">Seleccione la hora de inicio</string>
+    <string name="end_hour">Seleccione la hora de fin</string>
+    <string name="discard_schedule_message">¿Está seguro de descartar los cambios del horario?</string>
+    <string name="time_selection_canceled">Selección de la hora cancelada</string>
+    <string name="shedule_selected_will_not_saved">El horario seleccionado no se va a guardar</string>
+    <string name="invalid_time_message">La hora de incio no puede ser mayor que la de finalizacion</string>
+    <string name="invalid_time">Seleccion de hora incorrecta</string>
+    <string name="modify_service_image">Modifica la imagen del servicio</string>
+    <string name="client_profile_title">Perfil del cliente</string>
+    <string name="company_profile_title">Perfil de la empresa</string>
+    <string name="address_word">Dirección</string>
+    <string name="member_since">Miembro desde</string>
 </resources>

@@ -67,8 +67,8 @@ class CompaniesListAdapter(private val dataSet: MutableList<SearchCompaniesRespo
         else
             viewHolder.ratingBar.rating = companyData.rattingAvg.toFloat()
 
-        if (companyData.s3ImageKey != null) {
-            viewHolder.imageCompany.load(companyData.s3ImageKey) {
+        if (companyData.s3ImageUrl != null) {
+            viewHolder.imageCompany.load(companyData.s3ImageUrl) {
                 crossfade(true)
                 error(R.drawable._logoslotify_retocado)
             }

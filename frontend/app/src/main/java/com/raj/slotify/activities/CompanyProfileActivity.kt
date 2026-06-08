@@ -111,8 +111,8 @@ class CompanyProfileActivity : AppCompatActivity() {
             binding.phoneText.text = company.phoneNumber ?: getString(R.string.empty_string)
             binding.emailText.text = company.emailAddress
 
-            if (company.s3ImageKey != null) {
-                binding.companyImage.load(company.s3ImageKey) {
+            if (company.s3ImageUrl != null) {
+                binding.companyImage.load(company.s3ImageUrl) {
                     crossfade(true)
                     error(R.drawable._logoslotify_retocado)
                 }

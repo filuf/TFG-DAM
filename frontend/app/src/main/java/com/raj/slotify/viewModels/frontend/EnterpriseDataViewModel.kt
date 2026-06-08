@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.raj.slotify.dtos.maps.PlaceSuggestion
+import com.raj.slotify.dtos.service.ScheduleSummary
 
 class EnterpriseDataViewModel: ViewModel() {
 
@@ -13,6 +14,12 @@ class EnterpriseDataViewModel: ViewModel() {
     val concurrentServices: LiveData<Int> = _concurrentServices
     private val _description = MutableLiveData<String>()
     val description: LiveData<String> = _description
+
+    private val _serviceId = MutableLiveData<String>()
+    val serviceId: LiveData<String> = _serviceId
+
+    private val _schedulesOfService = MutableLiveData<List<ScheduleSummary>?>()
+    val schedulesOfService: LiveData<List<ScheduleSummary>?> = _schedulesOfService
 
     fun setUbicationCords(placeSuggestion: PlaceSuggestion?) {
         _ubicationPlaceSuggestion.postValue(placeSuggestion)
@@ -24,6 +31,10 @@ class EnterpriseDataViewModel: ViewModel() {
 
     fun setDescription(description: String) {
         _description.postValue(description)
+    }
+
+    fun setSchedulesOfService(schedules: List<ScheduleSummary>) {
+        _schedulesOfService.postValue(schedules)
     }
 
 }

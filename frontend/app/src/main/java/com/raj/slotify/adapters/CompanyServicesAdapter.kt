@@ -56,8 +56,8 @@ class CompanyServicesAdapter (private val dataSet: MutableList<GetServicesRespon
         // contents of the view with that element
         val serviceData = dataSet[position]
 
-        if (serviceData.s3ImageKey != null) {
-            viewHolder.serviceImageView.load(serviceData.s3ImageKey) {
+        if (serviceData.s3ImageUrl != null) {
+            viewHolder.serviceImageView.load(serviceData.s3ImageUrl) {
                 crossfade(true)
                 error(R.drawable._logoslotify_retocado)
             }

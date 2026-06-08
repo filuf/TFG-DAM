@@ -2,7 +2,6 @@ package com.raj.slotify.dtos.service
 
 import com.google.gson.annotations.SerializedName
 import java.time.DayOfWeek
-import java.time.LocalTime
 
 data class CreateServiceScheduleRequest(
 
@@ -10,9 +9,9 @@ data class CreateServiceScheduleRequest(
     val dayOfWeek: DayOfWeek,
 
     @SerializedName("startTime")
-    val startTime: LocalTime,
+    val startTime: String,
 
     @SerializedName("endTime")
-    val endTime: LocalTime
+    val endTime: String
 
 )

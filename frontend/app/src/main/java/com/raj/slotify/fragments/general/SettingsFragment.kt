@@ -50,6 +50,10 @@ class SettingsFragment : Fragment() {
             view.findNavController().navigate(R.id.action_settingsFragment_to_languageFragment)
         }
 
+        binding.aboutCard.setOnClickListener {
+            view.findNavController().navigate(R.id.action_settingsFragment_to_aboutFragment)
+        }
+
     }
 
 }

@@ -36,6 +36,9 @@
         <action
             android:id="@+id/action_settingsFragment_to_languageFragment"
             app:destination="@id/languageFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment" />
     </fragment>
     <fragment
         android:id="@+id/calendarFragment"
@@ -73,9 +76,6 @@
         <action
             android:id="@+id/action_exceptionsListFragment_to_addExceptionFragment"
             app:destination="@id/addExceptionFragment" />
-        <action
-            android:id="@+id/action_exceptionsListFragment_to_editExceptionFragment"
-            app:destination="@id/editExceptionFragment" />
     </fragment>
     <fragment
         android:id="@+id/addExceptionFragment"
@@ -83,8 +83,8 @@
         android:label="fragment_add_exception"
         tools:layout="@layout/fragment_add_exception" />
     <fragment
-        android:id="@+id/editExceptionFragment"
-        android:name="com.raj.slotify.fragments.company.intervals.EditExceptionFragment"
-        android:label="fragment_edit_exception"
-        tools:layout="@layout/fragment_edit_exception" />
+        android:id="@+id/aboutFragment"
+        android:name="com.raj.slotify.fragments.general.AboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about" />
 </navigation>
