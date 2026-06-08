@@ -45,7 +45,6 @@ public class ServicePatchedEventListener {
                 .companyName(companyEntity.getCompanyName())
                 .description(companyEntity.getDescription())
                 .physicalAddress(companyEntity.getPhysicalAddress())
-                .s3ImageKey(companyEntity.getS3ImageKey())
                 .services(serviceDocuments)
                 .build();
 
