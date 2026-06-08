@@ -256,4 +256,8 @@
     <string name="cancel_changes_title">Cancel changues</string>
     <string name="cancel_changes_question">You are sure about cancel the changues?</string>
     <string name="no_word">NO</string>
+    <string name="company_profile_title">Company profile</string>
+    <string name="client_profile_title">Client profile</string>
+    <string name="address_word">Address</string>
+    <string name="member_since">Client since</string>
 </resources>
