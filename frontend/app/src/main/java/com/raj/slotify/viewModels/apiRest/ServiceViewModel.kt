@@ -15,6 +15,8 @@ import com.raj.slotify.dtos.service.CreateServiceScheduleResponse
 import com.raj.slotify.dtos.service.ServiceSummary
 import com.raj.slotify.services.retrofit.RetrofitInstance
 import com.raj.slotify.services.retrofit.slotifyBackend.ServiceService
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import java.util.UUID
 
@@ -34,6 +36,9 @@ class ServiceViewModel: ViewModel() {
     private val _serviceSlotsAvailable = MutableLiveData<Response<List<TimeIntervalDTO>>?>()
     var serviceSlotsAvailable: LiveData<Response<List<TimeIntervalDTO>>?> = _serviceSlotsAvailable
 
+    private val _servicePatched = MutableLiveData<Response<ServiceSummary>?>()
+    var servicePatched: LiveData<Response<ServiceSummary>?> = _servicePatched
+
     fun createService(authHeader: String, createServiceRequest: CreateServiceRequest) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -45,6 +50,26 @@ class ServiceViewModel: ViewModel() {
             } catch (e: Exception) {
                 Log.e("ServiceViewModel", "Excepción al crear servicio: ${e.message}")
                 _serviceCreated.postValue(null)
+            }
+        }
+    }
+
+    fun patchService(serviceId: UUID, authHeader: String, file: MultipartBody.Part?, patchServiceRequest: RequestBody) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val response = service.patchService(
+                    serviceId,
+                    authHeader,
+                    file,
+                    patchServiceRequest
+                )
+                if (!response.isSuccessful) {
+                    Log.e("ServiceViewModel", "Error actualizando servicio: ${response.code()}: ${response.message()}")
+                }
+                _servicePatched.postValue(response)
+            } catch (e: Exception) {
+                Log.e("ServiceViewModel", "Excepción al actualizar servicio: ${e.message}")
+                _servicePatched.postValue(null)
             }
         }
     }
@@ -70,7 +95,7 @@ class ServiceViewModel: ViewModel() {
     fun createServiceSchedule(authHeader: String, serviceId: String, createServiceScheduleRequest: CreateServiceScheduleRequest) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val response = service.createServiceSchedule(authHeader, serviceId, createServiceScheduleRequest)
+                val response = service.createServiceSchedule(serviceId, authHeader, createServiceScheduleRequest)
                 if (!response.isSuccessful) {
                     Log.e(
                         "Error en ServiceViewModel",

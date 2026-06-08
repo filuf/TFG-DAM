@@ -32,7 +32,7 @@ class ServicesFragment : Fragment() {
 
     companion object {
         const val EXTRA_COMPANY_ID = "EXTRA_COMPANY_ID"
-        const val EXTRA_AUTH_TOKEN = "EXTRA_AUTH_TOKEN"
+        const val EXTRA_AUTH_HEADER = "EXTRA_AUTH_HEADER"
         const val EXTRA_SERVICE_ID = "EXTRA_SERVICE_ID"
         const val EXTRA_SERVICE_NAME = "EXTRA_SERVICE_NAME"
         const val REQUEST_ADD_SERVICE = 1001
@@ -123,12 +123,13 @@ class ServicesFragment : Fragment() {
         val companyId = userDataViewModel.uuid.value ?: return
         val token = userDataViewModel.userToken.value?.accessToken ?: return
 
+        val authHeader = "Bearer $token"
+
         val intent = Intent(requireActivity(), AddEditServiceActivity::class.java).apply {
             putExtra(EXTRA_COMPANY_ID, companyId.toString())
-            putExtra(EXTRA_AUTH_TOKEN, token)
+            putExtra(EXTRA_AUTH_HEADER, authHeader)
             if (service != null) {
                 putExtra(EXTRA_SERVICE_ID, service.serviceId.toString())
-                putExtra(EXTRA_SERVICE_NAME, service.serviceName)
             }
         }
         startActivityForResult(intent, REQUEST_ADD_SERVICE)
