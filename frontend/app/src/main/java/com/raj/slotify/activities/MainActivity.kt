@@ -148,7 +148,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 } else {
                     companyViewModel.getCompanyById(UUID.fromString(sub), "Bearer $accessToken")
-                    userViewModel.userSearched.observe(this) { response ->
+                    companyViewModel.company.observe(this) { response ->
                         if (response == null) {
                             return@observe
                         }
@@ -156,10 +156,14 @@ class MainActivity : AppCompatActivity() {
                             return@observe
                         }
                         val company = response.body()
-                        userDataViewModel.setName(company?.username?:username)
+                        userDataViewModel.setName(company?.companyName?:username)
+
+                        Log.w("MainActivivy", "company: $company")
 
                         if (!company?.s3ImageUrl.isNullOrEmpty())
                             userDataViewModel.setImageUri(company.s3ImageUrl.toUri())
+                        else
+                            Log.w("MainActivity", "No se ha recibido la imagen de la empresa")
                     }
                 }
             }
