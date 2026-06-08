@@ -12,8 +12,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.raj.slotify.R
-import com.raj.slotify.databinding.FragmentAddExceptionBinding
-import com.raj.slotify.dtos.company.CreateIntervalRequest
+import com.raj.slotify.databinding.FragmentEditExceptionBinding
+import com.raj.slotify.dtos.company.IntervalSummary
+import com.raj.slotify.dtos.company.UpdateIntervalRequest
 import com.raj.slotify.models.TextModel
 import com.raj.slotify.viewModels.apiRest.IntervalViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
@@ -25,13 +26,15 @@ import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
 
-class AddExceptionFragment : Fragment() {
+class EditExceptionFragment : Fragment() {
 
     private val mainViewModel: MainViewModel by activityViewModels()
     private val userDataViewModel: UserDataViewModel by activityViewModels()
     private val intervalViewModel: IntervalViewModel by activityViewModels()
 
-    private lateinit var binding: FragmentAddExceptionBinding
+    private lateinit var binding: FragmentEditExceptionBinding
+
+    private var interval: IntervalSummary? = null
 
     private var selectedStart: LocalDateTime? = null
     private var selectedEnd: LocalDateTime? = null
@@ -42,26 +45,43 @@ class AddExceptionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        mainViewModel.setTitle(TextModel(R.string.add_exception))
-        binding = FragmentAddExceptionBinding.inflate(inflater, container, false)
+        mainViewModel.setTitle(TextModel(R.string.edit_exception))
+        binding = FragmentEditExceptionBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        updatePeriodTexts()
+        interval = intervalViewModel.selectedInterval.value
+        loadIntervalData()
         setupNumberPicker()
+        updatePeriodTexts()
 
-        binding.selectPeriodButton.setOnClickListener { showDateRangePicker() }
-
-        binding.discardButton.setOnClickListener {
+        binding.discardChangesLink.setOnClickListener {
             view.findNavController().popBackStack()
         }
 
-        binding.confirmButton.setOnClickListener { onConfirm(view) }
+        binding.selectPeriodButton.setOnClickListener { showDateRangePicker() }
 
-        intervalViewModel.intervalCreated.observe(viewLifecycleOwner) { response ->
+        binding.deleteButton.setOnClickListener { confirmDelete() }
+
+        binding.confirmButton.setOnClickListener { onConfirm() }
+
+        intervalViewModel.intervalUpdated.observe(viewLifecycleOwner) { response ->
+            if (response == null) return@observe
+            if (response.isSuccessful) {
+                view.findNavController().popBackStack()
+            } else {
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(getString(R.string.validation_error_title))
+                    .setMessage("${response.code()}: ${response.message()}")
+                    .setPositiveButton(getString(R.string.dialog_ok), null)
+                    .show()
+            }
+        }
+
+        intervalViewModel.intervalDeletedResponse.observe(viewLifecycleOwner) { response ->
             if (response == null) return@observe
             if (response.isSuccessful) {
                 view.findNavController().popBackStack()
@@ -75,10 +95,21 @@ class AddExceptionFragment : Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        intervalViewModel.clearSelectedInterval()
+    }
+
+    private fun loadIntervalData() {
+        val current = interval ?: return
+        selectedStart = current.startDateTime
+        selectedEnd = current.endDateTime
+    }
+
     private fun setupNumberPicker() {
         binding.concurrentServicesPicker.minValue = 0
         binding.concurrentServicesPicker.maxValue = 20
-        binding.concurrentServicesPicker.value = 1
+        binding.concurrentServicesPicker.value = interval?.maxConcurrentServices ?: 1
         binding.concurrentServicesPicker.wrapSelectorWheel = false
     }
 
@@ -150,11 +181,26 @@ class AddExceptionFragment : Fragment() {
         }
     }
 
-    private fun onConfirm(view: View) {
+    private fun confirmDelete() {
+        val intervalId = interval?.intervalId ?: return
+        val token = userDataViewModel.userToken.value?.accessToken ?: return
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.delete_exception_title))
+            .setMessage(getString(R.string.delete_exception_confirmation))
+            .setNegativeButton(getString(R.string.negation_word), null)
+            .setPositiveButton(getString(R.string.yes_word)) { _, _ ->
+                intervalViewModel.deleteInterval("Bearer $token", intervalId)
+            }
+            .show()
+    }
+
+    private fun onConfirm() {
         val start = selectedStart
         val end = selectedEnd
+        val intervalId = interval?.intervalId
 
-        if (start == null || end == null) {
+        if (start == null || end == null || intervalId == null) {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(getString(R.string.validation_error_title))
                 .setMessage(getString(R.string.establish_a_period))
@@ -166,9 +212,10 @@ class AddExceptionFragment : Fragment() {
         val token = userDataViewModel.userToken.value?.accessToken ?: return
         val concurrentServices = binding.concurrentServicesPicker.value
 
-        intervalViewModel.createInterval(
+        intervalViewModel.updateInterval(
             "Bearer $token",
-            CreateIntervalRequest(
+            intervalId,
+            UpdateIntervalRequest(
                 startDateTime = start,
                 endDateTime = end,
                 maxConcurrentService = concurrentServices

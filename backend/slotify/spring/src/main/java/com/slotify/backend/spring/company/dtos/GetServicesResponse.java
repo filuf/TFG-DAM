@@ -18,7 +18,7 @@ public class GetServicesResponse {
     private String serviceName;
     private Integer serviceMinutesDuration;
     private Integer servicePriceCent;
-    private String s3ImageKey;
+    private String s3ImageUrl;
     private String description;
 
     private List<ScheduleSummary> schedules = new ArrayList<>();

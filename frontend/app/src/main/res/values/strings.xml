@@ -260,4 +260,8 @@
     <string name="invalid_time_message">The start hour can not be greater than the end hour</string>
     <string name="invalid_time">Invalid time selection</string>
     <string name="modify_service_image">Modify the service image</string>
+    <string name="client_profile_title">Client profile</string>
+    <string name="company_profile_title">Company profile</string>
+    <string name="address_word">Adress</string>
+    <string name="member_since">Member since</string>
 </resources>

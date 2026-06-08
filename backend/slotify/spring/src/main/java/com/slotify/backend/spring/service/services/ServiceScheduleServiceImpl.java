@@ -30,4 +30,9 @@ public class ServiceScheduleServiceImpl implements ServiceScheduleService {
     public Optional<ServiceScheduleEntity> findById(UUID scheduleId) {
         return this.serviceScheduleRepository.findById(scheduleId);
     }
+
+    @Override
+    public void deleteIntervalById(UUID scheduleId) {
+        this.serviceScheduleRepository.deleteById(scheduleId);
+    }
 }

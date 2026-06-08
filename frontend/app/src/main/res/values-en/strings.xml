@@ -126,11 +126,15 @@
     <string name="start_word">Start</string>
     <string name="end_word">End</string>
     <string name="add_exception">Add an exception</string>
+    <string name="edit_exception">Edit an exception</string>
     <string name="establish_a_period">Establish the corresponding period</string>
     <string name="establish_period_button">ESTABLISH THE PERIOD</string>
+    <string name="select_start_time">Select the start time</string>
+    <string name="select_end_time">Select the end time</string>
     <string name="number_of_services_with_exception">Number of simultanean services with the exception applied</string>
     <string name="established_period">Established_period</string>
     <string name="discard_word">Discard</string>
+    <string name="discard_changes_link">&#8592; Discard changes</string>
     <string name="select_service_to_edit">Sellect a service to edit</string>
     <string name="enter_name_description_photo">Sellect name, description and photo</string>
     <string name="edit_the_service">Edit the service</string>
@@ -142,6 +146,8 @@
     <string name="set_shedules_button">SELECT SCHEDULES</string>
     <string name="selected_days">Selected days</string>
     <string name="delete_word">Delete</string>
+    <string name="delete_exception_title">Delete exception</string>
+    <string name="delete_exception_confirmation">Are you sure you want to delete this exception?</string>
     <string name="return_to_service_settings">Return to service settings</string>
     <string name="edit_the_schedule">Edit the schedule</string>
     <string name="schedule_explication">Select the days of the week you wish to offer service</string>

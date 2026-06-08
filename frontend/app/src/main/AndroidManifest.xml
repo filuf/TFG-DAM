@@ -29,6 +29,12 @@
             android:name=".activities.ReserveDetailsActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.CompanyProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ClientProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.LogOutActivity"
             android:exported="false" />
 

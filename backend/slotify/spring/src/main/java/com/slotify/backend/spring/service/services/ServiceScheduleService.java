@@ -13,4 +13,6 @@ public interface ServiceScheduleService {
     ServiceScheduleEntity saveSchedule(ServiceScheduleEntity scheduleEntity);
 
     Optional<ServiceScheduleEntity> findById(UUID scheduleId);
+
+    void deleteIntervalById(UUID scheduleId);
 }
