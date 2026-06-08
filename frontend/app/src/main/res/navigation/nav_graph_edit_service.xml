@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_edit_service"
+    app:startDestination="@id/addEditServiceFragment">
+
+    <fragment
+        android:id="@+id/addEditServiceFragment"
+        android:name="com.raj.slotify.fragments.company.services.AddEditServiceFragment"
+        android:label="AddEditServiceFragment"
+        tools:layout="@layout/fragment_add_edit_service">
+        <action
+            android:id="@+id/action_addEditServiceFragment_to_addEditSchedulesFragment"
+            app:destination="@id/addEditSchedulesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addEditSchedulesFragment"
+        android:name="com.raj.slotify.fragments.company.services.AddEditSchedulesFragment"
+        android:label="fragment_add_edit_schedules"
+        tools:layout="@layout/fragment_add_edit_schedules" />
+</navigation>

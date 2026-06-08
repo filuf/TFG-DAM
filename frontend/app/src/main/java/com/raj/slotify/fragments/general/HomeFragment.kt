@@ -47,7 +47,6 @@ class HomeFragment : Fragment() {
     ): View {
         viewModel.setTitle(TextModel(R.string.welcome_greeting))
         layoutViewModel.setSecondTextVisibility(View.VISIBLE)
-
         layoutViewModel.setCenterIconTitle(true)
 
         binding = FragmentHomeBinding.inflate(inflater, container, false)
@@ -75,7 +74,7 @@ class HomeFragment : Fragment() {
             }
         }
         intervalButton.setOnClickListener {
-            // TODO: NAVEGAR A LA PÁGINA DE INTERVALOS
+            view.findNavController().navigate(R.id.action_homeFragment_to_exceptionsListFragment)
         }
 
         userDataViewModel.name.observe(viewLifecycleOwner) { name ->

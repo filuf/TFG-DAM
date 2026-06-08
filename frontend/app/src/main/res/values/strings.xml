@@ -111,10 +111,10 @@
     <string name="version_word">Version</string>
     <string name="_version_number" translatable="false">ALFA 0.1.0</string>
     <string name="authors_word">Authors</string>
-    <string name="_app_authors" translatable="false">Aitor Pascual ______, Jesús García ______ y Rodrigo Fernández Sabadías</string>
+    <string name="_app_authors" translatable="false">Aitor Pascual Jiménez\nJesús García González\nRodrigo Fernández Sabadías</string>
     <string name="used_tools_words">Used tools</string>
-    <string name="_used_tools" translatable="false">Keycloak\\nElasticSearch\\nOllama 3.1\\nPostgreSQL\\nSpring Boot\\nKubernetes\\nDocker Desktop</string>
-    <string name="buy_us_a_coffee" translatable="false">Buy us a coffee!</string>
+    <string name="_used_tools" translatable="false">Keycloak\nElasticSearch\nPostgreSQL\nSpring Boot\nKubernetes\nJira\nGitHub</string>
+    <string name="buy_us_a_coffee" translatable="false"><u>Buy us a coffee!</u></string>
     <string name="upcoming_reserves">upcoming reserves</string>
     <string name="manage_exceptions">Manage exceptions</string>
     <string name="search_reserves">Search reserves</string>
@@ -250,4 +250,24 @@
     <string name="cancel_changes_title">Cancel changues</string>
     <string name="cancel_changes_question">You are sure about cancel the changues?</string>
     <string name="no_word">NO</string>
+    <string name="select_service_days">Select the days of the week you wish to offer service</string>
+    <string name="specify_day_slot">For each selected day, specify a time slot</string>
+    <string name="start_hour">Select the start hour</string>
+    <string name="end_hour">Select the end time</string>
+    <string name="discard_schedule_message">You are sure to discard the schedule changues?</string>
+    <string name="time_selection_canceled">Time selection canceled</string>
+    <string name="shedule_selected_will_not_saved">The selected schedule will not be saved</string>
+    <string name="invalid_time_message">The start hour can not be greater than the end hour</string>
+    <string name="invalid_time">Invalid time selection</string>
+    <string name="modify_service_image">Modify the service image</string>
+    <string name="client_profile_title">Client profile</string>
+    <string name="company_profile_title">Company profile</string>
+    <string name="address_word">Address</string>
+    <string name="member_since">Member since</string>
+    <string name="discard_changes_link">Discard changes</string>
+    <string name="edit_exception">Edit exception</string>
+    <string name="delete_exception_confirmation">You are sure to delete?</string>
+    <string name="delete_exception_title">Delete exception</string>
+    <string name="select_start_time">Select start time</string>
+    <string name="select_end_time">Select end time</string>
 </resources>

@@ -9,10 +9,13 @@ import com.raj.slotify.dtos.company.GetCompanyResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.raj.slotify.dtos.company.GetServicesResponse
+import com.raj.slotify.dtos.company.PatchCompanyResponse
 import com.raj.slotify.dtos.company.SearchCompaniesResponse
 import com.raj.slotify.models.api.PageResponse
 import com.raj.slotify.services.retrofit.RetrofitInstance
 import com.raj.slotify.services.retrofit.slotifyBackend.CompanyService
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import java.util.UUID
 
@@ -22,10 +25,12 @@ class CompanyViewModel: ViewModel() {
 
     private val _companies = MutableLiveData<Response<PageResponse<SearchCompaniesResponse>>?>(null)
     private val _company = MutableLiveData<Response<GetCompanyResponse>?>(null)
+    private val _patchedCompany = MutableLiveData<Response<PatchCompanyResponse>?>(null)
     private val _listOfServices = MutableLiveData<Response<PageResponse<GetServicesResponse>>?>(null)
 
     var companies: LiveData<Response<PageResponse<SearchCompaniesResponse>>?> = _companies
     var company: LiveData<Response<GetCompanyResponse>?> = _company
+    var patchedCompany: LiveData<Response<PatchCompanyResponse>?> = _patchedCompany
     var listOfServices: LiveData<Response<PageResponse<GetServicesResponse>>?> = _listOfServices
 
     fun getCompanies(authHeader: String, q: String, page: Int = 0) {
@@ -47,6 +52,19 @@ class CompanyViewModel: ViewModel() {
         }
     }
 
+    fun patchCompany(authHeader: String, file: MultipartBody.Part?, request: RequestBody) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val response = service.patchCompany(authHeader, file, request)
+                if (!response.isSuccessful) {
+                    Log.e("CompanyViewModel", "Error actualizando empresa: ${response.code()}: ${response.message()}")
+                }
+                _patchedCompany.postValue(response)
+            } catch (e: Exception) {
+                Log.e("CompanyViewModel", "Excepción al actualizar empresa: ${e.message}")
+            }
+        }
+    }
 
     fun getCompanyById(companyId: UUID, authHeader: String, fetchMode: String? = null) {
         viewModelScope.launch(Dispatchers.IO) {

@@ -19,7 +19,7 @@ public class GetCompanyResponse {
     private String phoneNumber;
     private String emailAddress;
     private String physicalAddress;
-    private String s3ImageKey;
+    private String s3ImageUrl;
     private String description;
     private Short rattingAvg;
 

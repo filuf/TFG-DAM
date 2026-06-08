@@ -49,14 +49,13 @@ class ServiceListAdapter(
 
         viewHolder.serviceDescription.text = service.description
 
-        if (!service.s3ImageKey.isNullOrEmpty()) {
-            viewHolder.serviceImage.load(service.s3ImageKey) {
+        if (!service.s3ImageUrl.isNullOrEmpty()) {
+            viewHolder.serviceImage.load(service.s3ImageUrl) {
                 crossfade(true)
-                placeholder(R.drawable.ic_launcher_background)
-                error(R.drawable.ic_launcher_background)
+                error(R.drawable._logoslotify_retocado)
             }
         } else {
-            viewHolder.serviceImage.setImageResource(R.drawable.ic_launcher_background)
+            viewHolder.serviceImage.setImageResource(R.drawable._logoslotify_retocado)
         }
 
         viewHolder.itemView.setOnClickListener {

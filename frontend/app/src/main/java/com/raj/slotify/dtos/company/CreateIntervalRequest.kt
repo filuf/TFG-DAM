@@ -1,17 +1,17 @@
 package com.raj.slotify.dtos.company
 
 import com.google.gson.annotations.SerializedName
-import java.time.LocalTime
+import java.time.LocalDateTime
 
 data class CreateIntervalRequest(
 
     @SerializedName("startDateTime")
-    val startDateTime: LocalTime,
+    val startDateTime: LocalDateTime,
 
     @SerializedName("endDateTime")
-    val endDateTime: LocalTime,
+    val endDateTime: LocalDateTime,
 
-    @SerializedName("maxConcurrentServices")
-    val maxConcurrentServices: Int
+    @SerializedName("maxConcurrentService")
+    val maxConcurrentService: Int
 
 )

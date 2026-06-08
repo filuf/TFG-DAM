@@ -21,7 +21,11 @@ import coil.load
 import com.hbb20.CountryCodePicker
 import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentCompanyEditDataBinding
+import com.raj.slotify.dtos.company.PatchCompanyRequest
 import com.raj.slotify.models.TextModel
+import com.raj.slotify.tools.Formater.getMediaType
+import com.raj.slotify.tools.Formater.toRequestBody
+import com.raj.slotify.tools.Formater.uriToFile
 import com.raj.slotify.tools.Verifier
 import com.raj.slotify.viewModels.apiRest.CompanyViewModel
 import com.raj.slotify.viewModels.frontend.EnterpriseDataViewModel
@@ -30,6 +34,9 @@ import com.raj.slotify.viewModels.frontend.MainViewModel
 import com.raj.slotify.viewModels.frontend.UserDataViewModel
 import com.raj.slotify.viewModels.room.TokenViewModel
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
 class CompanyEditDataFragment : Fragment() {
@@ -136,8 +143,9 @@ class CompanyEditDataFragment : Fragment() {
 
             binding.editCompanyNameText.setText(companyData.companyName)
             binding.editCompanyDescriptionText.setText(companyData.description)
+            binding.companyPhoneInput.setText(companyData.phoneNumber.toString())
 
-            val s3Key = companyData.s3ImageKey
+            val s3Key = companyData.s3ImageUrl
             if (!s3Key.isNullOrEmpty()) {
                 binding.editCompanyImage.load(s3Key) {
                     crossfade(true)
@@ -185,7 +193,7 @@ class CompanyEditDataFragment : Fragment() {
                 val enterpriseName = binding.editCompanyNameText.text
                 val description = binding.editCompanyDescriptionText.text
 
-                val phone: String = ccp.fullNumberWithPlus
+                val phone: String = binding.companyPhoneInput.text.toString().filter { it.isDigit() }
                 val isValid = ccp.isValidFullNumber
 
                 var valid = true
@@ -227,8 +235,64 @@ class CompanyEditDataFragment : Fragment() {
                     enterpriseDataViewModel.setConcurrentServices(simultaneousServices!!)
 
                     imageUri?.let { userDataViewModel.setImageUri(it) }
+
+                    var imageFile: File? = null
+                    if (imageUri != null) {
+                        imageFile = imageUri!!.uriToFile(requireContext())!!
+                    }
+
+                    val patchCompanyRequest = PatchCompanyRequest(
+                        simultaneousServices!!,
+                        phone,
+                        userDataViewModel.serviceLocation.value,
+                        enterpriseDataViewModel.description.value
+                    )
+
+                    uploadCompanyData(imageFile, patchCompanyRequest)
                 }
             }
+        }
+    }
+
+    private fun uploadCompanyData(imageFile: File?, patchCompanyRequest: PatchCompanyRequest) {
+        var filePart: MultipartBody.Part? = null
+
+        imageFile?.let { file ->
+            val mediaType = imageUri?.getMediaType(requireContext())
+                ?: "image/jpeg".toMediaTypeOrNull()
+
+            val requestFile = file.asRequestBody(mediaType)
+
+            filePart = MultipartBody.Part.createFormData(
+                "file",
+                file.name,
+                requestFile
+            )
+        }
+        val request = patchCompanyRequest.toRequestBody()
+
+        companyViewModel.patchCompany(authHeader, filePart, request)
+        listenCompanyUpdated()
+    }
+
+    private fun listenCompanyUpdated() {
+        companyViewModel.patchedCompany.observe(viewLifecycleOwner) { response ->
+            if (response == null) {
+                binding.editCompanyLayout.visibility = View.VISIBLE
+                binding.companyDataProgressBar.visibility = View.GONE
+
+                return@observe
+            }
+            if (!Verifier.verifySuccessfulResponse(response, requireContext(), positiveActionText = getString(R.string.dialog_ok))) {
+                binding.editCompanyLayout.visibility = View.VISIBLE
+                binding.companyDataProgressBar.visibility = View.GONE
+
+                return@observe
+            }
+
+            val company = response.body()!!
+            Log.i("CompanyEditDataFragment", "Company: $company")
+            requireActivity().finish()
         }
     }
 

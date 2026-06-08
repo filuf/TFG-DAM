@@ -2,6 +2,7 @@ package com.slotify.backend.spring.service.controllers;
 
 import com.slotify.backend.spring.service.dtos.PatchScheduleRequest;
 import com.slotify.backend.spring.service.dtos.ScheduleSummary;
+import com.slotify.backend.spring.service.useCases.DeleteScheduleUseCase;
 import com.slotify.backend.spring.service.useCases.PatchScheduleUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.util.UUID;
 public class ScheduleController {
 
     private final PatchScheduleUseCase patchScheduleUseCase;
+    private final DeleteScheduleUseCase deleteScheduleUseCase;
 
     @PreAuthorize("hasRole('COMPANY')")
     @PatchMapping("/{scheduleId}")
@@ -35,5 +37,19 @@ public class ScheduleController {
         );
 
         return ResponseEntity.ok(response);
+    }
+
+    @PreAuthorize("hasRole('COMPANY')")
+    @DeleteMapping("/{scheduleId}")
+    public ResponseEntity<Void> deleteSchedule(
+            @PathVariable UUID scheduleId,
+            @AuthenticationPrincipal Jwt jwt
+    ) {
+        this.deleteScheduleUseCase.deleteSchedule(
+                scheduleId,
+                UUID.fromString(jwt.getSubject())
+        );
+
+        return ResponseEntity.noContent().build();
     }
 }

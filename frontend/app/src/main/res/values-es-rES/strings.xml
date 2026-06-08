@@ -126,11 +126,15 @@
     <string name="start_word">Inicio</string>
     <string name="end_word">Fin</string>
     <string name="add_exception">Agregar una excepción</string>
+    <string name="edit_exception">Editar una excepción</string>
     <string name="establish_a_period">Establezca el período correspondiente</string>
     <string name="establish_period_button">ESTABLECE EL PERIODO</string>
+    <string name="select_start_time">Selecciona la hora de inicio</string>
+    <string name="select_end_time">Selecciona la hora de fin</string>
     <string name="number_of_services_with_exception">Número de servicios simultáneos con la excepción aplicada</string>
     <string name="established_period">Periodo establecido</string>
     <string name="discard_word">Descartar</string>
+    <string name="discard_changes_link">&#8592; Descartar cambios</string>
     <string name="select_service_to_edit">Seleccione un servicio para editarlo</string>
     <string name="enter_name_description_photo">Escoja el nombre, descripción y una foto</string>
     <string name="edit_the_service">Edite el servicio</string>
@@ -142,6 +146,8 @@
     <string name="set_shedules_button">SELECCIONE HORARIOS</string>
     <string name="selected_days">Días seleccionados</string>
     <string name="delete_word">Eliminar</string>
+    <string name="delete_exception_title">Eliminar excepción</string>
+    <string name="delete_exception_confirmation">¿Está seguro de que desea eliminar esta excepción?</string>
     <string name="return_to_service_settings">Volver a la configuración del servicio</string>
     <string name="edit_the_schedule">Editar el horario</string>
     <string name="schedule_explication">Seleccione los días de la semana que desee ofrecer servicio</string>
@@ -244,4 +250,18 @@
     <string name="cancel_changes_title">Cancelar cambios</string>
     <string name="cancel_changes_question">¿Está seguro de cancelar los cambios?</string>
     <string name="no_word">NO</string>
+    <string name="select_service_days">Seleccione los días de la semana que desee ofrecer servicio</string>
+    <string name="specify_day_slot">Por cada día seleccionado, especifica una franja horaria</string>
+    <string name="start_hour">Seleccione la hora de inicio</string>
+    <string name="end_hour">Seleccione la hora de fin</string>
+    <string name="discard_schedule_message">¿Está seguro de descartar los cambios del horario?</string>
+    <string name="time_selection_canceled">Selección de la hora cancelada</string>
+    <string name="shedule_selected_will_not_saved">El horario seleccionado no se va a guardar</string>
+    <string name="invalid_time_message">La hora de incio no puede ser mayor que la de finalizacion</string>
+    <string name="invalid_time">Seleccion de hora incorrecta</string>
+    <string name="modify_service_image">Modifica la imagen del servicio</string>
+    <string name="client_profile_title">Perfil del cliente</string>
+    <string name="company_profile_title">Perfil de la empresa</string>
+    <string name="address_word">Dirección</string>
+    <string name="member_since">Miembro desde</string>
 </resources>

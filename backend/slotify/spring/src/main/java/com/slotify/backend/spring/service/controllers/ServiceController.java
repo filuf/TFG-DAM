@@ -6,14 +6,18 @@ import com.slotify.backend.spring.service.useCases.CreateServiceScheduleUseCase;
 import com.slotify.backend.spring.service.useCases.CreateServiceUseCase;
 import com.slotify.backend.spring.service.useCases.GetServiceSchedulesUseCase;
 import com.slotify.backend.spring.service.useCases.GetServiceSlotsAvailableUseCase;
+import com.slotify.backend.spring.service.useCases.PatchServiceUseCase;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,6 +32,7 @@ public class ServiceController {
     private final CreateServiceScheduleUseCase createServiceScheduleUseCase;
     private final GetServiceSchedulesUseCase getServiceSchedulesUseCase;
     private final GetServiceSlotsAvailableUseCase getServiceSlotsAvailableUseCase;
+    private final PatchServiceUseCase patchServiceUseCase;
 
     @PostMapping()
     @PreAuthorize("hasRole('COMPANY')")
@@ -45,6 +50,27 @@ public class ServiceController {
 
         return ResponseEntity.created(URI.create("/service/" + createServiceResponse.getServiceId()))
                 .body(createServiceResponse);
+    }
+
+    @PreAuthorize("hasRole('COMPANY')")
+    @PatchMapping(value = "/{serviceId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ServiceSummary> patchService(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable UUID serviceId,
+            @RequestPart(value = "file", required = false) MultipartFile file,
+            @RequestPart("request") @Valid PatchServiceRequest patchServiceRequest
+    ) throws IOException {
+        ServiceSummary serviceSummary = this.patchServiceUseCase.patchService(
+                serviceId,
+                UUID.fromString(jwt.getSubject()),
+                file,
+                patchServiceRequest.getServiceNameJsonNullable(),
+                patchServiceRequest.getMinutesDurationJsonNullable(),
+                patchServiceRequest.getPriceCentJsonNullable(),
+                patchServiceRequest.getDescriptionJsonNullable()
+        );
+
+        return ResponseEntity.ok(serviceSummary);
     }
 
     @PreAuthorize("hasAnyRole('USER','COMPANY')")

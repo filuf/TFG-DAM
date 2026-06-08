@@ -20,7 +20,6 @@ import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentSelectPhysicalDirectionBinding
 import com.raj.slotify.dtos.maps.PlaceSuggestion
 import com.raj.slotify.adapters.SuggestionAdapter
-import com.raj.slotify.viewModels.frontend.EnterpriseDataViewModel
 import com.raj.slotify.viewModels.frontend.LayoutViewModel
 import com.raj.slotify.viewModels.frontend.MainViewModel
 import com.raj.slotify.viewModels.frontend.MapViewModel
@@ -32,6 +31,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.raj.slotify.models.TextModel
+import com.raj.slotify.viewModels.frontend.EnterpriseDataViewModel
 import kotlinx.coroutines.launch
 
 class SelectPhysicalDirectionFragment : Fragment(), OnMapReadyCallback {
@@ -89,8 +89,7 @@ class SelectPhysicalDirectionFragment : Fragment(), OnMapReadyCallback {
         val textUbication = binding.textInputUbication
 
         // SET THE TEXT OF THE VIEWMODEL IF EXITS
-        var textUbicationViewModel: String? = enterpriseViewModel.ubicationPlaceSuggestion.value?.displayName
-        textUbicationViewModel = userViewModel.serviceLocation.value?: textUbicationViewModel
+        val textUbicationViewModel: String? = enterpriseViewModel.ubicationPlaceSuggestion.value?.displayName
 
         if (textUbicationViewModel != null) {
             textUbication.setText(textUbicationViewModel)
@@ -149,22 +148,6 @@ class SelectPhysicalDirectionFragment : Fragment(), OnMapReadyCallback {
             layoutViewModel.nextButtonClicked.collect {
                 enterpriseViewModel.setUbicationCords(placeSuggestion)
                 view.findNavController().navigate(R.id.action_selectPhysicalDirectionFragment_to_selectConcurrentServicesFragment)
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            layoutViewModel.confirmButtonClicked.collect {
-                userViewModel.setServiceLocation(textUbication.text.toString())
-
-                Log.i("TextUbication", textUbication.text.toString())
-
-                view.findNavController().popBackStack(R.id.companyEditDataFragment, false)
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            layoutViewModel.backButtonClicked.collect {
-                view.findNavController().popBackStack()
             }
         }
     }

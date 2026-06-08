@@ -9,21 +9,46 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.raj.slotify.dtos.company.CreateIntervalRequest
 import com.raj.slotify.dtos.company.CreateIntervalResponse
+import com.raj.slotify.dtos.company.IntervalSummary
+import com.raj.slotify.dtos.company.UpdateIntervalRequest
+import com.raj.slotify.dtos.company.UpdateIntervalResponse
 import com.raj.slotify.services.retrofit.RetrofitInstance
 import com.raj.slotify.services.retrofit.slotifyBackend.IntervalService
 import retrofit2.Response
 import java.util.UUID
 
-class IntervalViewModel: ViewModel() {
+class IntervalViewModel : ViewModel() {
 
     private val service = RetrofitInstance.getService(IntervalService::class.java)
 
+    private val _intervals = MutableLiveData<Response<List<IntervalSummary>>?>()
+    val intervals: LiveData<Response<List<IntervalSummary>>?> = _intervals
+
     private val _intervalCreated = MutableLiveData<Response<CreateIntervalResponse>?>()
-    var intervalCreated: LiveData<Response<CreateIntervalResponse>?> = _intervalCreated
+    val intervalCreated: LiveData<Response<CreateIntervalResponse>?> = _intervalCreated
 
     private val _intervalDeletedResponse = MutableLiveData<Response<Void>?>()
-    var intervalDeletedResponse: LiveData<Response<Void>?> = _intervalDeletedResponse
+    val intervalDeletedResponse: LiveData<Response<Void>?> = _intervalDeletedResponse
 
+    private val _intervalUpdated = MutableLiveData<Response<UpdateIntervalResponse>?>()
+    val intervalUpdated: LiveData<Response<UpdateIntervalResponse>?> = _intervalUpdated
+
+    private val _selectedInterval = MutableLiveData<IntervalSummary?>()
+    val selectedInterval: LiveData<IntervalSummary?> = _selectedInterval
+
+    fun selectInterval(interval: IntervalSummary) {
+        _selectedInterval.postValue(interval)
+    }
+
+    fun getIntervals(authHeader: String, fetchMode: String = "ALL") {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = service.getIntervals(authHeader, fetchMode)
+            if (!response.isSuccessful) {
+                Log.e("IntervalViewModel", "Error obteniendo intervalos: ${response.code()}: ${response.message()}")
+            }
+            _intervals.postValue(response)
+        }
+    }
 
     fun createInterval(authHeader: String, createIntervalRequest: CreateIntervalRequest) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -41,6 +66,24 @@ class IntervalViewModel: ViewModel() {
                 _intervalCreated.postValue(null)
             }
 
+        }
+    }
+
+    fun updateInterval(authHeader: String, intervalId: UUID, updateIntervalRequest: UpdateIntervalRequest) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val response = service.updateInterval(authHeader, intervalId, updateIntervalRequest)
+                if (!response.isSuccessful) {
+                    Log.e(
+                        "Error en IntervalViewModel",
+                        "Error intentando editar intervalo: ${response.code()}: ${response.message()}"
+                    )
+                }
+                _intervalUpdated.postValue(response)
+            } catch (e: Exception) {
+                Log.e("Error en IntervalViewModel", "Error intentando editar intervalo: ${e.message}")
+                _intervalUpdated.postValue(null)
+            }
         }
     }
 
@@ -62,4 +105,8 @@ class IntervalViewModel: ViewModel() {
         }
     }
 
+    fun clearCreated() { _intervalCreated.postValue(null) }
+    fun clearUpdated() { _intervalUpdated.postValue(null) }
+    fun clearDeleted() { _intervalDeletedResponse.postValue(null) }
+    fun clearSelectedInterval() { _selectedInterval.postValue(null) }
 }

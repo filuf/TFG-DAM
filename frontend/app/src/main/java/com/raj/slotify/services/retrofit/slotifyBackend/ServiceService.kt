@@ -6,6 +6,8 @@ import com.raj.slotify.dtos.service.CreateServiceResponse
 import com.raj.slotify.dtos.service.CreateServiceScheduleRequest
 import com.raj.slotify.dtos.service.CreateServiceScheduleResponse
 import com.raj.slotify.dtos.service.ServiceSummary
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 import java.util.UUID
@@ -17,6 +19,15 @@ interface ServiceService {
         @Header("Authorization") authHeader: String,
         @Body createServiceRequest: CreateServiceRequest
     ): Response<CreateServiceResponse>
+
+    @Multipart
+    @PATCH("services/{serviceId}")
+    suspend fun patchService(
+        @Path("serviceId") serviceId: UUID,
+        @Header("Authorization") authHeader: String,
+        @Part file: MultipartBody.Part?,
+        @Part("request") patchServiceRequest: RequestBody
+    ): Response<ServiceSummary>
 
     @GET("services/{serviceId}/schedules")
     suspend fun getServiceSchedules(

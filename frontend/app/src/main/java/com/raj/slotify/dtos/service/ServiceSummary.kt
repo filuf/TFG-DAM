@@ -16,8 +16,8 @@ data class ServiceSummary(
     @SerializedName("servicePriceCent")
     val servicePriceCent: Int,
 
-    @SerializedName("s3ImageKey")
-    val s3ImageKey: String?,
+    @SerializedName("s3ImageUrl")
+    val s3ImageUrl: String?,
 
     @SerializedName("description")
     val description: String?,

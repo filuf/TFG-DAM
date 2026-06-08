@@ -32,7 +32,7 @@ import com.raj.slotify.activities.client.MakeReserveActivity
 import com.raj.slotify.activities.company.AddEditServiceActivity
 import com.raj.slotify.databinding.FragmentMainBinding
 import com.raj.slotify.dtos.company.GetServicesResponse
-import com.raj.slotify.fragments.company.services.ServicesFragment.Companion.EXTRA_AUTH_TOKEN
+import com.raj.slotify.fragments.company.services.ServicesFragment.Companion.EXTRA_AUTH_HEADER
 import com.raj.slotify.fragments.company.services.ServicesFragment.Companion.EXTRA_COMPANY_ID
 import com.raj.slotify.fragments.company.services.ServicesFragment.Companion.EXTRA_SERVICE_ID
 import com.raj.slotify.fragments.company.services.ServicesFragment.Companion.EXTRA_SERVICE_NAME
@@ -251,7 +251,7 @@ class MainFragment : Fragment() {
 
         val intent = Intent(requireActivity(), AddEditServiceActivity::class.java).apply {
             putExtra(EXTRA_COMPANY_ID, companyId.toString())
-            putExtra(EXTRA_AUTH_TOKEN, token)
+            putExtra(EXTRA_AUTH_HEADER, token)
             if (service != null) {
                 putExtra(EXTRA_SERVICE_ID, service.serviceId.toString())
                 putExtra(EXTRA_SERVICE_NAME, service.serviceName)
@@ -286,13 +286,6 @@ class MainFragment : Fragment() {
 
                 R.id.addService -> {
                     openAddEditService(null)
-                    binding.drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START)
-                    true
-                }
-
-                R.id.manageExceptions -> {
-                    // TODO: NAVEGAR A LA PÁGINA DE INTERVALOS
-
                     binding.drawerLayout.closeDrawer(androidx.core.view.GravityCompat.START)
                     true
                 }

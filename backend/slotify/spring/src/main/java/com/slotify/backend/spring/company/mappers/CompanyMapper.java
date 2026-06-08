@@ -1,6 +1,7 @@
 package com.slotify.backend.spring.company.mappers;
 
 import com.slotify.backend.spring.company.dtos.GetCompanyResponse;
+import com.slotify.backend.spring.company.dtos.PatchCompanyResponse;
 import com.slotify.backend.spring.company.dtos.SearchCompaniesResponse;
 import com.slotify.backend.spring.company.enums.CompanyFetchMode;
 import com.slotify.backend.spring.company.models.CompanyEntity;
@@ -18,7 +19,7 @@ public class CompanyMapper {
 
     private final ServiceMapper serviceMapper;
 
-    public GetCompanyResponse toGetCompanyResponse(CompanyEntity company, CompanyFetchMode fetchMode) {
+    public GetCompanyResponse toGetCompanyResponse(CompanyEntity company, String s3ImageUrl, CompanyFetchMode fetchMode) {
         GetCompanyResponse.GetCompanyResponseBuilder builder = GetCompanyResponse.builder()
                 .companyId(company.getUserId())
                 .defaultMaxConcurrentServices(company.getDefaultMaxConcurrentServices())
@@ -26,7 +27,7 @@ public class CompanyMapper {
                 .phoneNumber(company.getPhoneNumber())
                 .emailAddress(company.getEmailAddress())
                 .physicalAddress(company.getPhysicalAddress())
-                .s3ImageKey(company.getS3ImageKey())
+                .s3ImageUrl(s3ImageUrl)
                 .description(company.getDescription())
                 .rattingAvg(company.getRattingAvg());
 
@@ -42,6 +43,18 @@ public class CompanyMapper {
         }
 
         return builder.build();
+    }
+
+    public PatchCompanyResponse toPatchCompanyResponse(CompanyEntity company, String s3ImageUrl) {
+        return PatchCompanyResponse.builder()
+                .companyId(company.getUserId())
+                .defaultMaxConcurrentServices(company.getDefaultMaxConcurrentServices())
+                .companyName(company.getCompanyName())
+                .phoneNumber(company.getPhoneNumber())
+                .physicalAddress(company.getPhysicalAddress())
+                .s3ImageUrl(s3ImageUrl)
+                .description(company.getDescription())
+                .build();
     }
 
     public SearchCompaniesResponse toSearchCompaniesResponse(CompanyEntity companyEntity, String s3ImageUrl) {

@@ -14,7 +14,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString
+@ToString(exclude = "company")
 public class CompanyIntervalEntity {
 
     @Id

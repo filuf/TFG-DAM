@@ -1,5 +1,6 @@
 package com.raj.slotify.activities
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -156,6 +157,13 @@ class ReserveDetailsActivity : AppCompatActivity() {
                 // MAP CARD DATA
                 binding.reserveSite.text = reserveSummary.companyName
                 binding.reserveDirection.text = reserveSummary.companyPhysicalAddress
+
+                // OPEN COMPANY PROFILE ON CLICK
+                binding.cardDirectionInfo.setOnClickListener {
+                    val intent = Intent(this, CompanyProfileActivity::class.java)
+                    intent.putExtra("COMPANY_ID", reserveSummary.companyId.toString())
+                    startActivity(intent)
+                }
             }
             is CompanyReserveSummary -> {
                 // CLIENT NAME TEXT
@@ -163,6 +171,13 @@ class ReserveDetailsActivity : AppCompatActivity() {
                 binding.clientDataLayout.visibility = View.VISIBLE
 
                 binding.clientName.text = reserveSummary.userName
+
+                // OPEN CLIENT PROFILE ON CLICK
+                binding.clientDataLayout.setOnClickListener {
+                    val intent = Intent(this, ClientProfileActivity::class.java)
+                    intent.putExtra("USER_ID", reserveSummary.userId.toString())
+                    startActivity(intent)
+                }
             }
         }
 
