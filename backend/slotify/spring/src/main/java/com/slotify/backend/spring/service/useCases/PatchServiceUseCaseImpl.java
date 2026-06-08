@@ -1,7 +1,9 @@
 package com.slotify.backend.spring.service.useCases;
 
+import com.slotify.backend.spring.company.models.CompanyEntity;
 import com.slotify.backend.spring.s3.ImageFormatValidator;
 import com.slotify.backend.spring.s3.S3Service;
+import com.slotify.backend.spring.service.dtos.ServicePatchedEvent;
 import com.slotify.backend.spring.service.dtos.ServiceSummary;
 import com.slotify.backend.spring.service.mappers.ServiceMapper;
 import com.slotify.backend.spring.service.models.ServiceEntity;
@@ -10,6 +12,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openapitools.jackson.nullable.JsonNullable;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +30,7 @@ public class PatchServiceUseCaseImpl implements PatchServiceUseCase {
     private final ServiceMapper serviceMapper;
     private final ImageFormatValidator imageFormatValidator;
     private final S3Service s3Service;
+    private final ApplicationEventPublisher publisher;
 
     @Override
     @Transactional
@@ -43,14 +47,17 @@ public class PatchServiceUseCaseImpl implements PatchServiceUseCase {
 
         ServiceEntity serviceEntity = this.serviceService.findServiceByIdWithCompany(serviceId)
                 .orElseThrow(() -> new EntityNotFoundException("No existe un servicio en la base de datos con el id: " + serviceId));
+        CompanyEntity companyEntity = serviceEntity.getCompany();
 
-        if (!serviceEntity.getCompany().getUserId().equals(companyId)) {
+        if (!companyEntity.getUserId().equals(companyId)) {
             log.warn("Una empresa intenta editar un servicio que no le pertenece, empresaMalvada: {}, servicioAfectado: {}",
                     companyId, serviceEntity.getServiceId());
             throw new AccessDeniedException("No posees los permisos necesarios para modificar este recurso");
         }
 
-        patchEntity(file, serviceName, minutesDuration, priceCent, description, serviceEntity);
+        this.patchEntity(file, serviceName, minutesDuration, priceCent, description, serviceEntity);
+
+        this.publisher.publishEvent(new ServicePatchedEvent(serviceEntity, companyEntity));
 
         return this.serviceMapper.toServiceSummary(serviceEntity);
     }
