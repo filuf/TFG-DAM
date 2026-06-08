@@ -9,6 +9,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import com.raj.slotify.R
 import com.raj.slotify.databinding.FragmentAddExceptionBinding
 import com.raj.slotify.dtos.company.CreateIntervalRequest
@@ -34,7 +36,7 @@ class AddExceptionFragment : Fragment() {
     private var selectedStart: LocalDateTime? = null
     private var selectedEnd: LocalDateTime? = null
 
-    private val displayFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+    private val displayFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -98,9 +100,34 @@ class AddExceptionFragment : Fragment() {
             ).withHour(23).withMinute(59).withSecond(59)
 
             updatePeriodTexts()
+
+            showTimePicker(R.string.select_start_time, selectedStart!!) { hour, minute ->
+                selectedStart = selectedStart?.withHour(hour)?.withMinute(minute)?.withSecond(0)
+                updatePeriodTexts()
+
+                showTimePicker(R.string.select_end_time, selectedEnd!!) { hour2, minute2 ->
+                    selectedEnd = selectedEnd?.withHour(hour2)?.withMinute(minute2)?.withSecond(0)
+                    updatePeriodTexts()
+                }
+            }
         }
 
         picker.show(parentFragmentManager, "date_range_picker")
+    }
+
+    private fun showTimePicker(titleRes: Int, initial: LocalDateTime, onTimeSelected: (Int, Int) -> Unit) {
+        val picker = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_24H)
+            .setHour(initial.hour)
+            .setMinute(initial.minute)
+            .setTitleText(getString(titleRes))
+            .build()
+
+        picker.addOnPositiveButtonClickListener {
+            onTimeSelected(picker.hour, picker.minute)
+        }
+
+        picker.show(parentFragmentManager, "time_picker")
     }
 
     private fun updatePeriodTexts() {

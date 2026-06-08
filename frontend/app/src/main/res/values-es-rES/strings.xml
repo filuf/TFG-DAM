@@ -129,6 +129,8 @@
     <string name="edit_exception">Editar una excepción</string>
     <string name="establish_a_period">Establezca el período correspondiente</string>
     <string name="establish_period_button">ESTABLECE EL PERIODO</string>
+    <string name="select_start_time">Selecciona la hora de inicio</string>
+    <string name="select_end_time">Selecciona la hora de fin</string>
     <string name="number_of_services_with_exception">Número de servicios simultáneos con la excepción aplicada</string>
     <string name="established_period">Periodo establecido</string>
     <string name="discard_word">Descartar</string>
