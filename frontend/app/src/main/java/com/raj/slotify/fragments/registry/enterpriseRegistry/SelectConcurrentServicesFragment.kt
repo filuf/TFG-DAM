@@ -32,7 +32,7 @@ class SelectConcurrentServicesFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         layoutViewModel.setExplicationVisibility(View.VISIBLE)
 
         viewModel.setTitle(TextModel(R.string.enter_simultaneous_services))

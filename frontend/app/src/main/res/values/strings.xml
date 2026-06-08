@@ -262,6 +262,12 @@
     <string name="modify_service_image">Modify the service image</string>
     <string name="client_profile_title">Client profile</string>
     <string name="company_profile_title">Company profile</string>
-    <string name="address_word">Adress</string>
+    <string name="address_word">Address</string>
     <string name="member_since">Member since</string>
+    <string name="discard_changes_link">Discard changes</string>
+    <string name="edit_exception">Edit exception</string>
+    <string name="delete_exception_confirmation">You are sure to delete?</string>
+    <string name="delete_exception_title">Delete exception</string>
+    <string name="select_start_time">Select start time</string>
+    <string name="select_end_time">Select end time</string>
 </resources>
