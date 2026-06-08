@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,8 +17,8 @@ public class ServiceSummary {
     private String serviceName;
     private Integer serviceMinutesDuration;
     private Integer servicePriceCent;
-    private String s3ImageKey;
+    private String s3ImageUrl;
     private String description;
 
-    private List<ScheduleSummary> schedules;
+    private List<ScheduleSummary> schedules = new ArrayList<>();
 }
