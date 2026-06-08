@@ -194,8 +194,8 @@ class SelectReserveDetailsFragment : Fragment() {
             val company = clientReservesViewModel.companyToReserve.value
             if (company != null) {
 
-                if (company.s3ImageKey != null)
-                    binding.companyImage.load(company.s3ImageKey) {
+                if (company.s3ImageUrl != null)
+                    binding.companyImage.load(company.s3ImageUrl) {
                         crossfade(true)
                         placeholder(R.drawable._logoslotify_retocado) // Pon un placeholder si tienes
                     }

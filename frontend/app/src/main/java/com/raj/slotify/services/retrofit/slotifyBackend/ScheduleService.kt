@@ -15,4 +15,10 @@ interface ScheduleService {
         @Body request: PatchScheduleRequest
     ): Response<ScheduleSummary>
 
+    @DELETE("schedules/{scheduleId}")
+    suspend fun deleteSchedule(
+        @Path("scheduleId") scheduleId: UUID,
+        @Header("Authorization") authHeader: String
+    ): Response<Unit>
+
 }

@@ -26,12 +26,6 @@
             android:name=".activities.EditUserDataActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.company.EditCompanyDataActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.client.EditClientDataActivity"
-            android:exported="false" />
-        <activity
             android:name=".activities.ReserveDetailsActivity"
             android:exported="false" />
         <activity

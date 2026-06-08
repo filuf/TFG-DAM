@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.company.services.AddEditSchedulesFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/editSchedulesToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:title="@string/edit_the_schedule" />
+
+        <TextView
+            android:id="@+id/textView19"
+            style="@style/TextAppearance.Slotify.Description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/select_service_days" />
+
+        <TextView
+            android:id="@+id/textView20"
+            style="@style/TextAppearance.Slotify.Explication"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/specify_day_slot" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_weight="1">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:stretchColumns="1"> <!-- La columna 1 (textos) ocupará el resto del espacio -->
+
+                <!-- MONDAY -->
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipMonday"
+                        style="@style/Widget.Material3.Chip.Suggestion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/monday_word"
+                        android:textAlignment="center" />
+
+                    <LinearLayout
+                        android:id="@+id/mondayChipLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/mondayStartText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Inicio: --:--"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/mondayEndText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Fin: --:--"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </TableRow>
+
+                <!-- TUESDAY -->
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipTuesday"
+                        style="@style/Widget.Material3.Chip.Suggestion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/tuesday_word"
+                        android:textAlignment="center" />
+
+                    <LinearLayout
+                        android:id="@+id/tuesdayChipLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/tuesdayStartText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Inicio: --:--"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/tuesdayEndText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Fin: --:--"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </TableRow>
+
+                <!-- WEDNESDAY -->
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipWednesday"
+                        style="@style/Widget.Material3.Chip.Suggestion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/wednesday_word"
+                        android:textAlignment="center" />
+
+                    <LinearLayout
+                        android:id="@+id/wednesdayChipLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/wednesdayStartText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Inicio: --:--"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/wednesdayEndText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Fin: --:--"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </TableRow>
+
+                <!-- THURSDAY -->
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipThursday"
+                        style="@style/Widget.Material3.Chip.Suggestion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/thursday_word"
+                        android:textAlignment="center" />
+
+                    <LinearLayout
+                        android:id="@+id/thursdayChipLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/thursdayStartText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Inicio: --:--"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/thursdayEndText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Fin: --:--"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </TableRow>
+
+                <!-- FRIDAY -->
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipFriday"
+                        style="@style/Widget.Material3.Chip.Suggestion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/friday_word"
+                        android:textAlignment="center" />
+
+                    <LinearLayout
+                        android:id="@+id/fridayChipLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/fridayStartText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Inicio: --:--"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/fridayEndText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Fin: --:--"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </TableRow>
+
+                <!-- SATURDAY -->
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipSaturday"
+                        style="@style/Widget.Material3.Chip.Suggestion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/saturday_word"
+                        android:textAlignment="center" />
+
+                    <LinearLayout
+                        android:id="@+id/saturdayChipLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/saturdayStartText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Inicio: --:--"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/saturdayEndText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Fin: --:--"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </TableRow>
+
+                <!-- SUNDAY -->
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipSunday"
+                        style="@style/Widget.Material3.Chip.Suggestion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/sunday_word"
+                        android:textAlignment="center" />
+
+                    <LinearLayout
+                        android:id="@+id/sundayChipLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/sundayStartText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Inicio: --:--"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/sundayEndText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Fin: --:--"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </TableRow>
+
+            </TableLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="32dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/goBackSchedulesButton"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/go_back" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>
