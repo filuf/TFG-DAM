@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <!-- El tamaño debe ser cuadrado para que sea un círculo -->
+    <size
+        android:width="10dp"
+        android:height="10dp" />
+    <!-- Cambia el color por el de tu app -->
+    <solid android:color="?attr/colorPrimary" />
+</shape>

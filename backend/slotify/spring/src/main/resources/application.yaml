@@ -1,0 +1,92 @@
+spring:
+  application:
+    name: slotify-backend
+
+  # hilos virtuales de Java 25
+  threads:
+    virtual:
+      enabled: true
+
+  # POSTGRE
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:postgres}:${POSTGRES_PORT:5432}/appdb?currentSchema=reserves
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+
+  # REDIS
+  data:
+    redis:
+      host: ${REDIS_HOST:redis-service}
+      port: ${REDIS_PORT:6379}
+
+  # ELASTIC
+  elasticsearch:
+    uris: http://${ELASTIC_HOST:elastic-es-http}:9200
+    username: elastic
+    password: ${ELASTIC_PASSWORD}
+
+  # KEYCLOAK
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://${KEYCLOAK_HOST:keycloak}:80/realms/${KEYCLOAK_REALM:slotify}/protocol/openid-connect/certs
+
+  # OLLAMA
+  ai:
+    ollama:
+      base-url: http://${OLLAMA_HOST:ollama}:11434
+      chat:
+        model: llama3:instruct
+
+  # mail
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_ADDRESS}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
+  cloud:
+    aws:
+      credentials:
+        access-key: ${AWS_ACCESS_KEY_ID}
+        secret-key: ${AWS_SECRET_ACCESS_KEY}
+        session-token: ${AWS_SESSION_TOKEN}
+      region:
+        static: us-east-1
+      s3:
+        region: us-east-1
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+  javadoc-enabled: true # Soporte nativo para Markdown en Javadoc (Java 25)
+
+# LOGS
+logging:
+  level:
+    org.springframework.security: INFO
+    com.slotify.backend: DEBUG
+    software.amazon.awssdk.request: DEBUG
+
+# PROPIEDAD REUTILIZABLE
+keycloak:
+  server-url: http://${KEYCLOAK_HOST:keycloak}:80
+  realm: ${KEYCLOAK_REALM:slotify}

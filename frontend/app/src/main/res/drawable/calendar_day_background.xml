@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <!-- Fondo transparente para que se vea el número del día -->
+    <solid android:color="@android:color/transparent" />
+
+    <stroke
+        android:width="1dp"
+        android:color="?attr/colorPrimary" /> <!-- Recomiendo usar el color primario de tu app -->
+
+    <size
+        android:width="10dp"
+        android:height="10dp" />
+
+</shape>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_home"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.raj.slotify.fragments.general.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_reserveDetailsFragment"
+            app:destination="@id/reserveDetailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_viewAllReservesFragment"
+            app:destination="@id/viewAllReservesFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_exceptionsListFragment"
+            app:destination="@id/exceptionsListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/servicesFragment"
+        android:name="com.raj.slotify.fragments.company.services.ServicesFragment"
+        android:label="fragment_services"
+        tools:layout="@layout/fragment_services" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.raj.slotify.fragments.general.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_languageFragment"
+            app:destination="@id/languageFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.raj.slotify.fragments.general.CalendarFragment"
+        android:label="fragment_calendar"
+        tools:layout="@layout/fragment_calendar" >
+        <action
+            android:id="@+id/action_calendarFragment_to_reserveDetailsFragment"
+            app:destination="@id/reserveDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewAllReservesFragment"
+        android:name="com.raj.slotify.fragments.general.ViewReservesFragment"
+        android:label="fragment_view_all_reserves"
+        tools:layout="@layout/fragment_view_reserves" >
+        <action
+            android:id="@+id/action_viewAllReservesFragment_to_reserveDetailsFragment"
+            app:destination="@id/reserveDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/languageFragment"
+        android:name="com.raj.slotify.fragments.general.LanguageFragment"
+        android:label="fragment_language"
+        tools:layout="@layout/fragment_language" />
+    <fragment
+        android:id="@+id/reserveDetailsFragment"
+        android:name="com.raj.slotify.fragments.reserves.client.ReserveDetailsFragment"
+        android:label="fragment_reserve_details_client"
+        tools:layout="@layout/fragment_reserve_details_client" />
+    <fragment
+        android:id="@+id/exceptionsListFragment"
+        android:name="com.raj.slotify.fragments.company.intervals.ExceptionsListFragment"
+        android:label="fragment_exceptions_list"
+        tools:layout="@layout/fragment_exceptions_list">
+        <action
+            android:id="@+id/action_exceptionsListFragment_to_addExceptionFragment"
+            app:destination="@id/addExceptionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addExceptionFragment"
+        android:name="com.raj.slotify.fragments.company.intervals.AddExceptionFragment"
+        android:label="fragment_add_exception"
+        tools:layout="@layout/fragment_add_exception" />
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.raj.slotify.fragments.general.AboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about" />
+</navigation>

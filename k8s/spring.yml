@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: slotify-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: slotify-backend
+  template:
+    metadata:
+      labels:
+        app: slotify-backend
+    spec:
+      containers:
+      - name: spring
+        image: slotify-backend:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+        env:
+          # --- POSTGRES ---
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: password
+          
+          # --- ELASTICSEARCH ---
+          - name: ELASTIC_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: elastic-es-elastic-user
+                key: elastic
+
+          # --- KEYCLOAK ---
+          - name: KEYCLOAK_HOST
+            value: "keycloak"
+          - name: KEYCLOAK_REALM
+            value: "slotify"
+
+          # --- MAIL ---
+          - name: MAIL_ADDRESS
+            valueFrom:
+              secretKeyRef:
+                name: mail-secret
+                key: email
+          - name: MAIL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mail-secret
+                key: password
+
+          # --- AWS ---
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: aws-lab-credentials
+                key: aws-access-key-id
+
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: aws-lab-credentials
+                key: aws-secret-access-key
+                
+          - name: AWS_SESSION_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: aws-lab-credentials
+                key: aws-session-token
+            
+
+          - name: JAVA_TOOL_OPTIONS
+            value: "-XX:MaxRAMPercentage=75.0"
+        
+        resources:
+          requests:
+            memory: "384Mi"
+            cpu: "500m"
+          limits:
+            memory: "768Mi"
+            cpu: "1000m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring  # Este nombre debe coincidir con el del IngressRoute
+spec:
+  selector:
+    app: slotify-backend
+  ports: # mapeo del 8080 al 80
+    - protocol: TCP
+      port: 80        
+      targetPort: 8080 
