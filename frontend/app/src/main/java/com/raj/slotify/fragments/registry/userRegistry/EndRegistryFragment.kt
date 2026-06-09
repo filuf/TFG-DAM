@@ -65,7 +65,6 @@ class EndRegistryFragment : Fragment() {
             }
         })
 
-        // TODO: CONNECT TO SPRING SERVER AND SAVE DATA
         val userType: String = userDataViewModel.userType.value?: "USER"
 
         if (userType == "USER") {
@@ -95,15 +94,26 @@ class EndRegistryFragment : Fragment() {
     }
 
     private fun performCompanyRegistry() {
-        val registerCompanyRequest = RegisterCompanyRequest(
-            userDataViewModel.name.value,
-            userDataViewModel.password.value,
-            userDataViewModel.email.value,
-            enterpriseViewModel.concurrentServices.value,
-            enterpriseViewModel.ubicationPlaceSuggestion.value?.displayName?:"empty"
-        )
-        registerUserViewModel.registerCompany(registerCompanyRequest)
-        Log.i("COMPANY", "Petición de registro hecha")
+        userDataViewModel.name.observe(viewLifecycleOwner) { name ->
+            enterpriseViewModel.concurrentServices.observe(viewLifecycleOwner) { concurrentServices ->
+                var physicalAddress: String? = null
+                if(enterpriseViewModel.ubicationPlaceSuggestion.value != null)
+                    physicalAddress = enterpriseViewModel.ubicationPlaceSuggestion.value!!.displayName
+
+                val registerCompanyRequest = RegisterCompanyRequest(
+                    name,
+                    userDataViewModel.password.value,
+                    userDataViewModel.email.value,
+                    concurrentServices,
+                    physicalAddress
+                )
+                registerUserViewModel.registerCompany(registerCompanyRequest)
+                Log.i("COMPANY", "Petición de registro hecha")
+
+                enterpriseViewModel.concurrentServices.removeObservers(viewLifecycleOwner)
+                userDataViewModel.name.removeObservers(viewLifecycleOwner)
+            }
+        }
     }
 
     private fun exitWithoutRegistry() {
@@ -113,6 +123,8 @@ class EndRegistryFragment : Fragment() {
             .setPositiveButton(getString(R.string.dialog_ok)) { _, _ ->
                 layoutViewModel.setInferiorFragmentVisibility(View.VISIBLE)
                 view?.findNavController()?.popBackStack()
+                layoutViewModel.setBackButtonVisibility(View.VISIBLE)
+                layoutViewModel.setNextButtonVisibility(View.VISIBLE)
             }
             .setNegativeButton(getString(R.string.cancel), null)
             .show()
@@ -174,6 +186,8 @@ class EndRegistryFragment : Fragment() {
                         .setMessage(getString(R.string.account_already_exists))
                         .setPositiveButton(getString(R.string.dialog_ok)) { _, _ ->
                             view?.findNavController()?.navigate(R.id.action_endRegistryFragment_to_registryPhoneEmailFragment2)
+                            layoutViewModel.setBackButtonVisibility(View.VISIBLE)
+                            layoutViewModel.setNextButtonVisibility(View.VISIBLE)
                         }
                         .show()
                 } else {
@@ -191,6 +205,13 @@ class EndRegistryFragment : Fragment() {
             }
         }
         performCompanyRegistry()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        layoutViewModel.setBackButtonVisibility(View.VISIBLE)
+        layoutViewModel.setNextButtonVisibility(View.VISIBLE)
     }
 
 }
